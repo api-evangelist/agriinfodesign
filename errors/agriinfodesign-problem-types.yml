@@ -1,0 +1,142 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  Derived from the 4xx/5xx responses declared in openapi/agriinfodesign-auth-openapi.yml,
+  openapi/agriinfodesign-datastore-openapi.yml, openapi/agriinfodesign-pay-openapi.yml and
+  openapi/agriinfodesign-manager-swagger.json (there are none), then established by live anonymous
+  probes of the four production hosts on 2026-09-12.
+format: vendor
+rfc9457: false
+rfc9457_note: >-
+  No operation in any published contract declares application/problem+json, and no live response
+  carries it. The platform uses two vendor envelopes instead.
+declared_in_spec:
+  operations_total: 186
+  operations_declaring_a_4xx_or_5xx_response: 0
+  note: >-
+    Every one of the 186 operations across the four contracts declares exactly one response - HTTP
+    200 - and nothing else. The contracts are springdoc/Springfox output with no error modelling, so
+    an integrator reading only the spec has no way to know what a failure looks like. The catalogue
+    below could therefore not be derived from the specs; it was observed by calling the live hosts
+    without credentials.
+envelopes:
+  - id: application-error
+    shape: '{ "code": "<DOMAIN>-<int>", "message": "<human string>" }'
+    fields:
+      - name: code
+        type: string
+        note: >-
+          A three-letter domain prefix, a hyphen, and a large integer. Observed prefixes: IAM
+          (authorization), TKN (token), ATH (authentication). The integer appears to be a hash rather
+          than a stable catalogue number; nothing in the contracts or on the provider's site
+          enumerates these codes, so an integrator cannot switch on them with confidence.
+      - name: message
+        type: string
+        note: English human-readable string.
+    observed_on:
+      - datastore.agribus-connect.net
+      - auth.agribus-connect.net
+  - id: spring-default
+    shape: '{ "timestamp": "<ISO8601 or epoch ms>", "status": <int>, "error": "<reason phrase>", "path": "<request path>" }'
+    fields:
+      - name: timestamp
+        type: string|integer
+        note: >-
+          ISO 8601 with offset on the springdoc services (auth, datastore, pay); epoch milliseconds
+          on the Springfox service (manager). The two generations of the platform disagree on the
+          type of this field.
+      - name: status
+        type: integer
+      - name: error
+        type: string
+      - name: path
+        type: string
+      - name: message
+        type: string
+        note: Present only on manager.agribus-connect.net.
+    note: >-
+      The Spring Boot framework default error body. It is what any unhandled condition returns,
+      including routing misses and unhandled server errors.
+    observed_on:
+      - auth.agribus-connect.net
+      - datastore.agribus-connect.net
+      - pay.agribus-connect.net
+      - manager.agribus-connect.net
+problem_type_count: 6
+problem_types:
+  - id: IAM-permission-invalid
+    envelope: application-error
+    http_status: 403
+    code: IAM-2076068935
+    title: Permission is invalid
+    observed:
+      request: GET https://datastore.agribus-connect.net/v1/agricultural-machinery/devices
+      no_credentials: true
+      status: 403
+    remediation: >-
+      Present a valid RS256 bearer JWT issued by auth.agribus-connect.net. Note that the platform
+      answers an unauthenticated request with 403, not 401, and returns no WWW-Authenticate header.
+  - id: TKN-access-token-required
+    envelope: application-error
+    http_status: 403
+    code: TKN-2036125155
+    title: Access Token required
+    observed:
+      request: GET https://auth.agribus-connect.net/v1/user
+      no_credentials: true
+      status: 403
+    remediation: Supply the Authorization bearer header.
+  - id: ATH-user-not-found
+    envelope: application-error
+    http_status: 404
+    code: ATH-969348351
+    title: User not found.
+    observed:
+      request: POST https://auth.agribus-connect.net/v1/oauth with an empty JSON body
+      status: 404
+    note: >-
+      The sign-in endpoint answers a failed credential lookup with HTTP 404 rather than 401. Recorded
+      as observed; an integrator must not treat 404 from this endpoint as a routing error.
+  - id: not-found
+    envelope: spring-default
+    http_status: 404
+    title: Not Found
+    observed:
+      request: GET https://datastore.agribus-connect.net/v1/nope
+      status: 404
+    remediation: Check the path against the published contract.
+  - id: unauthorized-swagger-ui
+    envelope: spring-default
+    http_status: 401
+    title: Unauthorized
+    observed:
+      request: GET https://datastore.agribus-connect.net/swagger-ui/
+      status: 401
+    note: >-
+      The interactive Swagger UI is gated on all four hosts even though the underlying
+      /v3/api-docs document is served anonymously.
+  - id: internal-server-error-on-missing-auth
+    envelope: spring-default
+    http_status: 500
+    title: Internal Server Error
+    observed:
+      request: GET https://pay.agribus-connect.net/v1/pay/purchases
+      no_credentials: true
+      status: 500
+    note: >-
+      A defect worth reporting to the provider: the billing service answers a request with no
+      Authorization header with HTTP 500 rather than 401/403, unlike auth and datastore, which
+      answer 403. An agent cannot distinguish "you forgot to authenticate" from "the service is
+      broken" on this host.
+    remediation: Supply a bearer token; a 500 here does not necessarily indicate an outage.
+not_found_behaviour:
+  content_negotiation: >-
+    GET /poc/devices/{device_id}/locations on datastore.agribus-connect.net answers HTTP 406 Not
+    Acceptable to a default curl Accept header - the deprecated proof-of-concept Open API path is
+    stricter about content negotiation than the rest of the surface.
+gaps:
+  - No error reference page exists on the provider's site or in its help centre.
+  - No contract declares any non-200 response, so error handling cannot be generated from the specs.
+  - Application error codes are unenumerated and appear non-stable; no machine-readable catalogue exists.
+  - No RFC 9457 / problem+json anywhere.
+  - No WWW-Authenticate header on authentication failures.

@@ -1,0 +1,142 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  Derived from openapi/agriinfodesign-datastore-openapi.yml and
+  openapi/agriinfodesign-auth-openapi.yml. Searched first for a published server: web search for
+  "AgriBus / Agri Info Design MCP server" returned nothing; no MCP endpoint is referenced anywhere
+  on agri-info-design.com, in the AgriBus-Web SPA bundle (every backend host the app calls was
+  enumerated from https://app.agribus-connect.com/js/app.73f054a1.js), in the GitHub organisation,
+  or in any npm/PyPI package.
+status: candidate
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+note: >-
+  AGRI INFO DESIGN SHIPS NO MCP SERVER. `mode: none` is the finding, not a placeholder. The tool list
+  below is a CANDIDATE derived by API Evangelist from the provider's own published OpenAPI
+  operations - it describes what an MCP server over this platform could expose, and nothing in it
+  should be read as something the provider offers today. No endpoint URL is guessed here, because a
+  guessed path that happened to answer would read as a verified agent surface.
+why_this_is_a_plausible_candidate: >-
+  The read surface is unusually well suited to an agent: fields, reference lines, work records,
+  plantings and machine location history are all small, well-named, geospatially indexed resources,
+  the location endpoint already returns RFC 7946 GeoJSON, and the platform already operates an OAuth
+  2.0 authorization surface with a published ten-scope catalogue governing exactly these resources
+  (noki.devices.*, noki.locations.*, noki.work-records.*, noki.field-boundaries.*,
+  noki.environmental-data.*). The authorization model an MCP server would need already exists.
+blockers:
+  - >-
+    No operation in any contract declares a non-200 response, so a tool built from these specs has
+    no defined failure semantics.
+  - >-
+    No idempotency mechanism, so every write tool would be unsafe to retry
+    (see conventions/agriinfodesign-conventions.yml).
+  - >-
+    No rate-limit signal, so an agent has no backpressure
+    (see rate-limits/agriinfodesign-rate-limits.yml).
+  - >-
+    No documented client registration for the OAuth surface, so a third-party agent has no way to
+    obtain credentials.
+candidate_tools:
+  - tool: list_fields
+    rest: [listFieldItemsForPage]
+    category: fields
+    description: List the authenticated user's cultivated land parcels, paged.
+    mutating: false
+  - tool: get_field_task_count
+    rest: [countTasksInField]
+    category: fields
+    description: Count work records recorded inside a given field.
+    mutating: false
+  - tool: find_fields_near
+    rest: [listFieldsAround]
+    category: fields
+    description: Find fields near a position (geohash-indexed proximity query).
+    mutating: false
+  - tool: get_field_elevation_map
+    rest: [getElevationMapById]
+    category: fields
+    description: Retrieve the elevation surface for a field.
+    mutating: false
+  - tool: list_reference_lines
+    rest: [listRefLines]
+    category: guidance
+    description: List saved A-B guidance lines.
+    mutating: false
+  - tool: get_reference_line_geojson
+    rest: [getGeoJson]
+    category: guidance
+    description: Retrieve one reference line as GeoJSON.
+    mutating: false
+  - tool: list_work_records
+    rest: [listWithFilter]
+    category: work-records
+    description: Query work records by filter - date range, field, operation type.
+    mutating: false
+  - tool: get_work_record
+    rest: [get, getTaskInfo]
+    category: work-records
+    description: Retrieve one work record group with worked area, distance, speed and overlap.
+    mutating: false
+  - tool: list_machines
+    rest: [getDevices]
+    category: machinery
+    description: >-
+      List agricultural machines linked to the account, via the 農機オープンAPI device surface.
+    mutating: false
+  - tool: get_machine_locations
+    rest: [getLocationsByDeviceId]
+    category: machinery
+    description: >-
+      Retrieve a machine's work-position history over a time window as a GeoJSON FeatureCollection.
+    mutating: false
+  - tool: list_plantings
+    rest: [list]
+    category: agronomy
+    description: List crop planting records.
+    mutating: false
+  - tool: list_soil_moisture_observations
+    rest: [listPfObservations]
+    category: agronomy
+    description: List pF soil-moisture observations.
+    mutating: false
+  - tool: list_accumulated_temperature_observations
+    rest: [listAtObservations]
+    category: agronomy
+    description: List accumulated-temperature observations.
+    mutating: false
+  - tool: get_oauth_scopes
+    rest: [getScopes, getAvailableScopes]
+    category: platform
+    description: >-
+      Read the live agricultural-machinery OAuth scope catalogue. The one operation on the whole
+      platform that answers without credentials.
+    mutating: false
+excluded_from_candidate:
+  - reason: internal data-repair and admin routes that are published but not integration surface
+    operations:
+      - fixAll
+      - fixAllForUsername
+      - copyAllDuplicatedDataFromRdsToFirestore
+      - copyDuplicatedDataFromRdsToFirestore
+      - countAllDuplicatedData
+      - countDuplicatedData
+      - getTaskRecordItems
+      - exportTasksCsv
+  - reason: >-
+      mutating operations, excluded from the candidate because the platform offers no idempotency,
+      no dry-run and no stated reversal window
+    operations:
+      - importFields
+      - updateFieldItemPolygon
+      - updateFieldItemMetaData
+      - deleteFieldItem
+      - importRefLines
+      - deleteRefLineItem
+      - delete (task records)
+      - create / update / delete (plantings)
+      - subscribe / unsubscribe / changePlan / addCard / deleteCard

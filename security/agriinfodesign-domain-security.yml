@@ -1,0 +1,31 @@
+generated: '2026-09-12'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: agri-info-design.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Mar 25 23:59:59 2027 GMT
+  hsts: false
+- host: datastore.agribus-connect.net
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Jan 27 23:59:59 2027 GMT
+  hsts: null
+- host: auth.agribus-connect.net
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Dec 27 23:59:59 2026 GMT
+  hsts: null
+domains:
+- domain: agri-info-design.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none
+- domain: agribus-connect.net
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false

@@ -1,0 +1,57 @@
+generated: '2026-09-12'
+method: generated
+source: >-
+  Skills authored by API Evangelist and grounded operation-by-operation in the OpenAPI documents
+  Agri Info Design serves publicly (openapi/agriinfodesign-datastore-openapi.yml, harvested from
+  https://datastore.agribus-connect.net/v3/api-docs) and in the live scope catalogue at
+  https://auth.agribus-connect.net/v1/agricultural-api/oauth/scopes. The provider publishes no
+  skills, no AGENTS.md and no documentation of any kind - a search of agri-info-design.com, its
+  Zendesk help centre and its GitHub organisation found none.
+note: >-
+  Every operationId, path, parameter, schema field and enum value quoted in these skills is taken
+  verbatim from the provider's own contracts. The runtime cautions - no declared error responses, no
+  idempotency, no rate-limit headers, no stated reversal window - are findings recorded elsewhere in
+  this repository, not invented guidance.
+skills:
+  - name: agribus-machine-track-readout
+    file: agriinfodesign-machine-track-readout.md
+    api: AgriBus Datastore API
+    summary: >-
+      Read a machine's work-position history as GeoJSON over the 農機オープンAPI (Agricultural
+      Machinery Open API v2.0.0) device and location surface.
+    operations:
+      - getDevices
+      - getLocationsByDeviceId
+    scopes:
+      - noki.devices.read
+      - noki.locations.read
+    mutating: false
+  - name: agribus-field-work-summary
+    file: agriinfodesign-field-work-summary.md
+    api: AgriBus Datastore API
+    summary: >-
+      Summarise the passes recorded on a farmer's fields - list parcels, count tasks, filter work
+      records by date range, field, area, distance or operation type.
+    operations:
+      - listFieldItemsForPage
+      - listFieldsAround
+      - countTasksInField
+      - listWithFilter
+      - getTaskInfo
+      - archiveTsv
+    mutating: false
+  - name: agribus-guidance-lines
+    file: agriinfodesign-guidance-lines.md
+    api: AgriBus Datastore API
+    summary: >-
+      Read and write A-B guidance (reference) lines, including the Firestore sync wait a write
+      requires and the reasons a write here is risky.
+    operations:
+      - listRefLines
+      - getGeoJson
+      - listRefLinesAround
+      - importRefLines
+      - updateRefLineItemMetaData
+      - waitSyncAsUpdateRefLineItem
+      - deleteRefLineItem
+    mutating: true

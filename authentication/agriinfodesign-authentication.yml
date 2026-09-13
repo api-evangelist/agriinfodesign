@@ -1,0 +1,157 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  Derived from openapi/agriinfodesign-auth-openapi.yml, openapi/agriinfodesign-datastore-openapi.yml,
+  openapi/agriinfodesign-manager-swagger.json and openapi/agriinfodesign-pay-openapi.yml, then upgraded
+  from two live anonymous fetches: https://auth.agribus-connect.net/.well-known/openid_configuration
+  (HTTP 200) and https://auth.agribus-connect.net/.well-known/jwks.json (HTTP 200).
+docs: null
+docs_note: >-
+  Agri Info Design publishes no human-readable authentication guide. There is no developer portal,
+  no API reference page and no auth documentation on agri-info-design.com or in the Zendesk help
+  centre. Everything below is read from the contracts and discovery documents the platform serves
+  anonymously.
+summary:
+  types:
+    - http
+    - apiKey
+  api_key_in:
+    - header
+  oauth2: true
+  openid_connect: true
+  mtls: false
+schemes:
+  - name: bearerAuth
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+    sources:
+      - openapi/agriinfodesign-auth-openapi.yml
+      - openapi/agriinfodesign-datastore-openapi.yml
+      - openapi/agriinfodesign-pay-openapi.yml
+    note: >-
+      The dominant scheme across the platform. RS256-signed JWTs verified against the JWKS at
+      https://auth.agribus-connect.net/.well-known/jwks.json (one key, kid connect-auth-key-1).
+  - name: mykey
+    type: apiKey
+    in: header
+    parameter: mykey
+    sources:
+      - openapi/agriinfodesign-manager-swagger.json
+    note: >-
+      Declared in the Springfox-generated Swagger 2.0 document for the AgriBus-Web Manager API as an
+      apiKey header literally named "mykey". This is the Springfox securityDefinitions default and is
+      very likely a scaffold left in the generated document rather than the real header name; no
+      operation in that document references it in a security[] block. Recorded because it is what the
+      contract says, flagged because it should not be trusted as an integration instruction.
+openid_connect:
+  discovery_url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  discovery_status: 200
+  standard_path_status: 404
+  standard_path_note: >-
+    The OpenID Connect Discovery / RFC 8414 path /.well-known/openid-configuration (hyphen) returns
+    404 on the same host. Only the underscore spelling answers, so a conformant client cannot
+    discover this issuer automatically.
+  file: well-known/agriinfodesign-auth-openid-configuration.json
+  issuer: https://manager-development.agribus-connect.net
+  issuer_note: >-
+    The production auth host advertises a DEVELOPMENT issuer and development endpoints
+    (manager-development.agribus-connect.net) in the discovery document it serves. Recorded verbatim,
+    not corrected. An integrator following this document is pointed at a non-production environment.
+  authorization_endpoint: https://manager-development.agribus-connect.net/v1/oauth/authorize
+  token_endpoint: https://manager-development.agribus-connect.net/token
+  userinfo_endpoint: https://manager-development.agribus-connect.net/v1/oidc/userinfo
+  jwks_uri: https://manager-development.agribus-connect.net/.well-known/jwks.json
+  jwks_served_locally: https://auth.agribus-connect.net/.well-known/jwks.json
+  grant_types_supported:
+    - authorization_code
+    - client_credentials
+    - refresh_token
+  response_types_supported:
+    - code
+    - token
+    - id_token
+    - code id_token
+    - code token
+    - id_token token
+    - code id_token token
+  scopes_supported:
+    - openid
+    - profile
+    - email
+    - offline_access
+  token_endpoint_auth_methods_supported:
+    - client_secret_basic
+    - client_secret_post
+  id_token_signing_alg_values_supported:
+    - RS256
+  subject_types_supported:
+    - public
+  claims_supported:
+    - sub
+    - iss
+    - aud
+    - exp
+    - iat
+    - auth_time
+    - nonce
+    - name
+    - given_name
+    - family_name
+    - email
+    - email_verified
+    - username
+    - groups
+    - permissions
+flows:
+  - name: Password / OAuth login
+    operation: login
+    method: POST
+    path: /v1/oauth
+    host: auth.agribus-connect.net
+    note: Primary sign-in used by the AgriBus-Web SPA; returns the bearer JWT.
+  - name: Authorization Code (OAuth 2.0 / OIDC)
+    operation: authorize
+    method: GET
+    path: /v1/oauth/authorize
+    host: auth.agribus-connect.net
+    note: >-
+      Used by the agricultural-machinery Open API third-party integration flow; the SPA registers
+      redirect URIs https://app.agribus-connect.com/oauth_callback and .../oauth_callback/sso.
+  - name: UserInfo
+    operation: userInfo
+    method: GET
+    path: /v1/oidc/userinfo
+    host: auth.agribus-connect.net
+  - name: Client validation
+    operation: validateClient
+    method: GET
+    path: /v1/agricultural-api/oauth/client/validate
+    host: auth.agribus-connect.net
+    note: Also mirrored on datastore.agribus-connect.net at /agricultural-api/oauth/client/validate.
+  - name: Firebase custom token exchange
+    operation: getCustomToken
+    method: GET
+    path: /v1/firebase/custom_token
+    host: auth.agribus-connect.net
+    note: >-
+      The platform exchanges its own JWT for a Firebase custom token; several datastore resources
+      (task records, reference lines) are Firestore-backed, so an integrator holds two credentials.
+  - name: Impersonation (system admin only)
+    operation: impersonate
+    method: POST
+    path: /v1/impersonate
+    host: auth.agribus-connect.net
+    note: Requires the caller to be a systemAdmin; documented in the contract's own summary.
+signup:
+  self_serve: true
+  operation: simpleSignUpAndSignIn
+  path: POST /v1/signup
+  note: >-
+    The contract describes this as "SignUp without email-reachability confirmation"
+    (メアド到達確認なしのSignUp). End-user signup is also available through the AgriBus-NAVI Android app
+    and the AgriBus-Web console at https://app.agribus-connect.com/.
+gaps:
+  - No public authentication documentation of any kind.
+  - No client-registration endpoint or documented process for obtaining an OAuth client_id.
+  - OIDC discovery is unreachable at the standard path and advertises a development issuer.

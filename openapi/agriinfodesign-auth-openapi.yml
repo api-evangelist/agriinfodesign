@@ -1,0 +1,1378 @@
+openapi: 3.0.1
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1User
+  description: ユーザー情報API
+- name: V1AgriculturalApiOAuth
+  description: 農機API用OAuth2管理
+- name: OpenID Connect
+  description: OpenID Connect Discovery and endpoints
+- name: V1UserIcon
+  description: ユーザーアイコンAPI
+- name: V1SignUp
+  description: サインアップAPI
+- name: V1Caster
+  description: Caster関連API
+- name: V1Impersonate
+  description: Connect管理者権限ユーザー専用のなりすましユーザートークン発行API
+- name: V1Firebase
+  description: Firebase関連API
+- name: V1System
+  description: システム情報API
+- name: V1OAuth
+  description: OAuth関連API
+paths:
+  /v1/user:
+    get:
+      tags:
+      - V1User
+      summary: ログインしている自分自身の情報を取得します。
+      operationId: getMe
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+    put:
+      tags:
+      - V1User
+      summary: "ログインしている自分自身の情報を更新します。変更する項目はnickname,sendMeNews,language,systemOfUnitsで\
+        す。"
+      operationId: updateMe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+  /v1/user/password:
+    put:
+      tags:
+      - V1User
+      summary: パスワードを変更します。
+      operationId: changePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+  /v1/user/password/reset:
+    put:
+      tags:
+      - V1User
+      summary: パスワードをリセットします。リセット確認メールが送信されます。
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/user/icon:
+    put:
+      tags:
+      - V1UserIcon
+      summary: アイコンを設定する
+      operationId: updateIcon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIconRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/system/users/{username}:
+    get:
+      tags:
+      - V1System
+      summary: ユーザー情報取得
+      description: ユーザー情報を取得します。他人の情報を取得できるので扱いに注意してください。
+      operationId: getUser
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+    put:
+      tags:
+      - V1System
+      summary: PayサーバからUser情報の更新を行います。
+      operationId: updateUserFromOtherServer
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserFromPayRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/user/icon/custom:
+    post:
+      tags:
+      - V1UserIcon
+      summary: アイコン画像をアップロードする
+      operationId: uploadIconImage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - img
+              type: object
+              properties:
+                img:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadIconImageResult'
+  /v1/signup:
+    post:
+      tags:
+      - V1SignUp
+      summary: メアド到達確認なしのSignUp
+      operationId: simpleSignUpAndSignIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimpleSignUpAndSignInRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /v1/oauth:
+    post:
+      tags:
+      - V1OAuth
+      summary: OAuthLogin
+      description: CognitoのOAuth認証で認証されたConnectユーザーのログイン（サインアップ直後であればConnectユーザーへの紐付け）を行います。
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthLoginRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /v1/oauth/password:
+    post:
+      tags:
+      - V1OAuth
+      summary: OAuthユーザのパスワードを新規作成する
+      operationId: createNewPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthCreateNewPasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+  /v1/impersonate:
+    post:
+      tags:
+      - V1Impersonate
+      summary: SwitchUserしたトークンを発行します。このAPI実行にはUserがsystemAdminである必要があります
+      operationId: impersonate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImpersonationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /v1/user/groups:
+    get:
+      tags:
+      - V1User
+      summary: ログインしている自分自身が所属するグループ情報を取得します
+      operationId: getUserGroupsInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupsInfo'
+  /v1/oidc/userinfo:
+    get:
+      tags:
+      - OpenID Connect
+      summary: OpenID Connect UserInfo
+      description: Returns user claims for the authenticated user
+      operationId: userInfo
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer access token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoResponse'
+      security:
+      - bearerAuth: []
+  /v1/oauth/authorize:
+    get:
+      tags:
+      - OpenID Connect
+      summary: OAuth2/OpenID Connect Authorization
+      description: OAuth2 Authorization Code Grant and OpenID Connect Authentication
+        Request
+      operationId: authorize
+      parameters:
+      - name: request
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/AuthorizeRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RedirectView'
+  /v1/firebase/custom_token:
+    get:
+      tags:
+      - V1Firebase
+      summary: FirebaseよりCustomTokenを発行します
+      operationId: getCustomToken
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirebaseCustomTokenResponse'
+  /v1/caster/setting/rtk:
+    get:
+      tags:
+      - V1Caster
+      summary: RTK設定情報を返します
+      operationId: getRtkSettingInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RtkSettingInfo'
+  /v1/caster/current:
+    get:
+      tags:
+      - V1Caster
+      summary: 現在のBase/Rover情報を返します
+      operationId: currentBaseAndRovers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonNode'
+  /v1/agricultural-api/oauth/scopes:
+    get:
+      tags:
+      - V1AgriculturalApiOAuth
+      summary: スコープ一覧取得
+      description: 農機API用OAuth2スコープの一覧を取得します
+      operationId: getScopes
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScopeInfo'
+  /v1/agricultural-api/oauth/client/validate:
+    get:
+      tags:
+      - V1AgriculturalApiOAuth
+      summary: クライアント検証
+      description: クライアントIDとリダイレクトURIの組み合わせを検証します
+      operationId: validateClient
+      parameters:
+      - name: clientId
+        in: query
+        description: クライアントID
+        required: true
+        schema:
+          type: string
+      - name: redirectUri
+        in: query
+        description: リダイレクトURI
+        required: true
+        schema:
+          type: string
+      - name: scope
+        in: query
+        description: 要求スコープ
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ClientValidationResult'
+  /.well-known/openid_configuration:
+    get:
+      tags:
+      - OpenID Connect
+      summary: OpenID Connect Discovery
+      description: Returns OpenID Connect provider configuration metadata
+      operationId: openidConfiguration
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenIdConfigurationResponse'
+  /.well-known/jwks.json:
+    get:
+      tags:
+      - OpenID Connect
+      summary: JSON Web Key Set
+      description: Returns public keys used for JWT signature verification
+      operationId: jwks
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    UpdateUserRequest:
+      type: object
+      properties:
+        nickname:
+          type: string
+        sendMeNews:
+          type: boolean
+        language:
+          type: string
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+          - JpUnitsOfArea
+          - ThUnitsOfArea
+    UserInfo:
+      type: object
+      properties:
+        username:
+          type: string
+        nickname:
+          type: string
+        email:
+          type: string
+        language:
+          type: string
+        zoneinfo:
+          type: string
+        sendMeNews:
+          type: boolean
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+          - JpUnitsOfArea
+          - ThUnitsOfArea
+        icon:
+          $ref: '#/components/schemas/UserPicture'
+        iconUrl:
+          type: string
+        customIconUrl:
+          type: string
+        stripeId:
+          type: string
+        trialAvailable:
+          type: boolean
+          description: トライアル可能かどうかを示します。何度もトライアルを繰り返さないようにするためです。
+        systemAdmin:
+          type: boolean
+          description: システム管理者かどうかを示します。
+        functionality:
+          type: string
+          description: Functionalityを示します。
+          enum:
+          - AsFree
+          - AsPlus
+          - AsProfessional
+          - Custom
+          - AsStandard
+        fsMigrated:
+          type: boolean
+          description: Fire移行が完了しているかどうかを示します。
+        enforcedPlan:
+          type: string
+          description: 強制指定されたプランを示します。
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        passwordEntered:
+          type: boolean
+          description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
+        oauthUser:
+          type: boolean
+    UserPicture:
+      type: object
+      properties:
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        url:
+          type: string
+    ChangePasswordRequest:
+      required:
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          description: 現在のパスワード
+        newPassword:
+          type: string
+          description: 新しいパスワード
+    ResetPasswordRequest:
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+          description: Eメール
+    UpdateIconRequest:
+      type: object
+      properties:
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        preset:
+          type: string
+          enum:
+          - Preset1
+          - Preset2
+          - Preset3
+          - Preset4
+          - Preset5
+          - Preset6
+        base64EncordedImage:
+          type: string
+          description: Base64エンコードされた画像
+    UpdateUserFromPayRequest:
+      type: object
+      properties:
+        stripeId:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsPlus
+          - AsProfessional
+          - Custom
+          - AsStandard
+        trialAvailable:
+          type: boolean
+        continuousSince:
+          type: string
+    UploadIconImageResult:
+      type: object
+      properties:
+        url:
+          type: string
+    SimpleSignUpAndSignInRequest:
+      required:
+      - email
+      - password
+      - sendMeNews
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        sendMeNews:
+          type: boolean
+        language:
+          type: string
+          description: 表示言語・en/ja
+        zoneinfo:
+          type: string
+          description: タイムゾーン
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+          nullable: true
+        accessTokenExpiredAt:
+          type: string
+          format: 2016-01-01T00:00:00.000Z
+        refreshTokenExpiredAt:
+          type: string
+          format: 2016-01-01T00:00:00.000Z
+    OAuthLoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        language:
+          type: string
+          description: 言語。en、jaなど
+        zoneinfo:
+          type: string
+          description: タイムゾーン。Asia/Tokyoなど
+        username:
+          type: string
+          description: Cognitoのusername。ただしGoogleOAuthでサインアップした場合は、CognitoがGoogleログインフェデレーションで生成したユーザーID
+        nickname:
+          type: string
+          description: Cognitoのnickname。ただしGoogleOAuthでサインアップした場合は、Googleから渡された氏名
+    OAuthCreateNewPasswordRequest:
+      required:
+      - newPassword
+      type: object
+      properties:
+        newPassword:
+          type: string
+          description: 新しいパスワード
+    ImpersonationRequest:
+      type: object
+      properties:
+        targetUserEmail:
+          type: string
+    UserGroupInfo:
+      type: object
+      properties:
+        name:
+          type: string
+    UserGroupsInfo:
+      type: object
+      properties:
+        userGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroupInfo'
+    UserInfoResponse:
+      type: object
+      properties:
+        sub:
+          type: string
+          description: Subject identifier
+        name:
+          type: string
+          description: User's full name
+        given_name:
+          type: string
+          description: Given name
+        family_name:
+          type: string
+          description: Family name
+        email:
+          type: string
+          description: Email address
+        email_verified:
+          type: boolean
+          description: Email verification status
+        username:
+          type: string
+          description: Username
+        groups:
+          type: array
+          description: User groups
+          items:
+            type: string
+            description: User groups
+    AuthorizeRequest:
+      required:
+      - clientId
+      - responseType
+      type: object
+      properties:
+        responseType:
+          type: string
+          description: Response type
+          example: code
+        clientId:
+          type: string
+          description: Client identifier
+        redirectUri:
+          type: string
+          description: Redirection URI
+        scope:
+          type: string
+          description: Scope of access request
+          example: openid profile email
+        state:
+          type: string
+          description: State parameter for CSRF protection
+        nonce:
+          type: string
+          description: Nonce for ID Token security (OpenID Connect)
+        codeChallenge:
+          type: string
+          description: Code challenge for PKCE
+        codeChallengeMethod:
+          type: string
+          description: Code challenge method for PKCE
+          example: S256
+    ApplicationContext:
+      type: object
+      properties:
+        parent:
+          $ref: '#/components/schemas/ApplicationContext'
+        id:
+          type: string
+        displayName:
+          type: string
+        applicationName:
+          type: string
+        startupDate:
+          type: integer
+          format: int64
+        autowireCapableBeanFactory:
+          $ref: '#/components/schemas/AutowireCapableBeanFactory'
+        environment:
+          $ref: '#/components/schemas/Environment'
+        beanDefinitionCount:
+          type: integer
+          format: int32
+        beanDefinitionNames:
+          type: array
+          items:
+            type: string
+        parentBeanFactory:
+          $ref: '#/components/schemas/BeanFactory'
+        classLoader:
+          type: object
+          properties:
+            name:
+              type: string
+            registeredAsParallelCapable:
+              type: boolean
+            parent:
+              type: object
+              properties:
+                name:
+                  type: string
+                registeredAsParallelCapable:
+                  type: boolean
+                unnamedModule:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    classLoader:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        registeredAsParallelCapable:
+                          type: boolean
+                        definedPackages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              annotations:
+                                type: array
+                                items:
+                                  type: object
+                              declaredAnnotations:
+                                type: array
+                                items:
+                                  type: object
+                              sealed:
+                                type: boolean
+                              specificationTitle:
+                                type: string
+                              specificationVersion:
+                                type: string
+                              specificationVendor:
+                                type: string
+                              implementationTitle:
+                                type: string
+                              implementationVersion:
+                                type: string
+                              implementationVendor:
+                                type: string
+                        defaultAssertionStatus:
+                          type: boolean
+                          writeOnly: true
+                    descriptor:
+                      type: object
+                      properties:
+                        open:
+                          type: boolean
+                        automatic:
+                          type: boolean
+                    named:
+                      type: boolean
+                    annotations:
+                      type: array
+                      items:
+                        type: object
+                    declaredAnnotations:
+                      type: array
+                      items:
+                        type: object
+                    packages:
+                      uniqueItems: true
+                      type: array
+                      items:
+                        type: string
+                    layer:
+                      type: object
+                definedPackages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      annotations:
+                        type: array
+                        items:
+                          type: object
+                      declaredAnnotations:
+                        type: array
+                        items:
+                          type: object
+                      sealed:
+                        type: boolean
+                      specificationTitle:
+                        type: string
+                      specificationVersion:
+                        type: string
+                      specificationVendor:
+                        type: string
+                      implementationTitle:
+                        type: string
+                      implementationVersion:
+                        type: string
+                      implementationVendor:
+                        type: string
+                defaultAssertionStatus:
+                  type: boolean
+                  writeOnly: true
+            unnamedModule:
+              type: object
+              properties:
+                name:
+                  type: string
+                classLoader:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    registeredAsParallelCapable:
+                      type: boolean
+                    definedPackages:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          annotations:
+                            type: array
+                            items:
+                              type: object
+                          declaredAnnotations:
+                            type: array
+                            items:
+                              type: object
+                          sealed:
+                            type: boolean
+                          specificationTitle:
+                            type: string
+                          specificationVersion:
+                            type: string
+                          specificationVendor:
+                            type: string
+                          implementationTitle:
+                            type: string
+                          implementationVersion:
+                            type: string
+                          implementationVendor:
+                            type: string
+                    defaultAssertionStatus:
+                      type: boolean
+                      writeOnly: true
+                descriptor:
+                  type: object
+                  properties:
+                    open:
+                      type: boolean
+                    automatic:
+                      type: boolean
+                named:
+                  type: boolean
+                annotations:
+                  type: array
+                  items:
+                    type: object
+                declaredAnnotations:
+                  type: array
+                  items:
+                    type: object
+                packages:
+                  uniqueItems: true
+                  type: array
+                  items:
+                    type: string
+                layer:
+                  type: object
+            definedPackages:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                  declaredAnnotations:
+                    type: array
+                    items:
+                      type: object
+                  sealed:
+                    type: boolean
+                  specificationTitle:
+                    type: string
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationTitle:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+            defaultAssertionStatus:
+              type: boolean
+              writeOnly: true
+    AutowireCapableBeanFactory:
+      type: object
+    BeanFactory:
+      type: object
+    Environment:
+      type: object
+      properties:
+        activeProfiles:
+          type: array
+          items:
+            type: string
+        defaultProfiles:
+          type: array
+          items:
+            type: string
+    FilterRegistration:
+      type: object
+      properties:
+        servletNameMappings:
+          type: array
+          items:
+            type: string
+        urlPatternMappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    HttpStatusCode:
+      type: object
+      properties:
+        is4xxClientError:
+          type: boolean
+        error:
+          type: boolean
+        is1xxInformational:
+          type: boolean
+        is2xxSuccessful:
+          type: boolean
+        is3xxRedirection:
+          type: boolean
+        is5xxServerError:
+          type: boolean
+    JspConfigDescriptor:
+      type: object
+      properties:
+        taglibs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaglibDescriptor'
+        jspPropertyGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/JspPropertyGroupDescriptor'
+    JspPropertyGroupDescriptor:
+      type: object
+      properties:
+        defaultContentType:
+          type: string
+        elIgnored:
+          type: string
+        errorOnELNotFound:
+          type: string
+        pageEncoding:
+          type: string
+        scriptingInvalid:
+          type: string
+        isXml:
+          type: string
+        includePreludes:
+          type: array
+          items:
+            type: string
+        includeCodas:
+          type: array
+          items:
+            type: string
+        deferredSyntaxAllowedAsLiteral:
+          type: string
+        trimDirectiveWhitespaces:
+          type: string
+        errorOnUndeclaredNamespace:
+          type: string
+        buffer:
+          type: string
+        urlPatterns:
+          type: array
+          items:
+            type: string
+    RedirectView:
+      type: object
+      properties:
+        applicationContext:
+          $ref: '#/components/schemas/ApplicationContext'
+        servletContext:
+          $ref: '#/components/schemas/ServletContext'
+        contentType:
+          type: string
+        requestContextAttribute:
+          type: string
+        staticAttributes:
+          type: object
+          additionalProperties:
+            type: string
+            format: 2016-01-01T00:00:00.000Z
+        exposePathVariables:
+          type: boolean
+        exposeContextBeansAsAttributes:
+          type: boolean
+          writeOnly: true
+        exposedContextBeanNames:
+          type: array
+          writeOnly: true
+          items:
+            type: string
+        beanName:
+          type: string
+        url:
+          type: string
+        contextRelative:
+          type: boolean
+          writeOnly: true
+        http10Compatible:
+          type: boolean
+          writeOnly: true
+        exposeModelAttributes:
+          type: boolean
+          writeOnly: true
+        encodingScheme:
+          type: string
+          writeOnly: true
+        statusCode:
+          $ref: '#/components/schemas/HttpStatusCode'
+        expandUriTemplateVariables:
+          type: boolean
+          writeOnly: true
+        propagateQueryParams:
+          type: boolean
+          writeOnly: true
+        hosts:
+          type: array
+          items:
+            type: string
+        redirectView:
+          type: boolean
+        propagateQueryProperties:
+          type: boolean
+        attributesMap:
+          type: object
+          additionalProperties:
+            type: string
+            format: 2016-01-01T00:00:00.000Z
+        attributesCSV:
+          type: string
+          writeOnly: true
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          writeOnly: true
+    ServletContext:
+      type: object
+      properties:
+        classLoader:
+          type: object
+          properties:
+            name:
+              type: string
+            registeredAsParallelCapable:
+              type: boolean
+            definedPackages:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                  declaredAnnotations:
+                    type: array
+                    items:
+                      type: object
+                  sealed:
+                    type: boolean
+                  specificationTitle:
+                    type: string
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationTitle:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+            defaultAssertionStatus:
+              type: boolean
+              writeOnly: true
+        majorVersion:
+          type: integer
+          format: int32
+        minorVersion:
+          type: integer
+          format: int32
+        attributeNames:
+          type: object
+        servletRegistrations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ServletRegistration'
+        sessionTrackingModes:
+          uniqueItems: true
+          type: array
+          writeOnly: true
+          items:
+            type: string
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        effectiveMajorVersion:
+          type: integer
+          format: int32
+        effectiveMinorVersion:
+          type: integer
+          format: int32
+        serverInfo:
+          type: string
+        servletContextName:
+          type: string
+        initParameterNames:
+          type: object
+        filterRegistrations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/FilterRegistration'
+        sessionCookieConfig:
+          $ref: '#/components/schemas/SessionCookieConfig'
+        defaultSessionTrackingModes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        effectiveSessionTrackingModes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        jspConfigDescriptor:
+          $ref: '#/components/schemas/JspConfigDescriptor'
+        virtualServerName:
+          type: string
+        requestCharacterEncoding:
+          type: string
+        responseCharacterEncoding:
+          type: string
+        sessionTimeout:
+          type: integer
+          format: int32
+        contextPath:
+          type: string
+    ServletRegistration:
+      type: object
+      properties:
+        mappings:
+          type: array
+          items:
+            type: string
+        runAsRole:
+          type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    SessionCookieConfig:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        comment:
+          type: string
+          deprecated: true
+        httpOnly:
+          type: boolean
+        maxAge:
+          type: integer
+          format: int32
+        secure:
+          type: boolean
+        domain:
+          type: string
+    TaglibDescriptor:
+      type: object
+      properties:
+        taglibURI:
+          type: string
+        taglibLocation:
+          type: string
+    FirebaseCustomTokenResponse:
+      type: object
+      properties:
+        customToken:
+          type: string
+    RtkSettingInfo:
+      type: object
+      properties:
+        host:
+          type: string
+        port:
+          type: integer
+          format: int32
+        mountpoint:
+          type: string
+        baseUserId:
+          type: string
+        basePassword:
+          type: string
+        roverUserId:
+          type: string
+        roverPassword:
+          type: string
+    JsonNode:
+      type: object
+    ScopeInfo:
+      type: object
+      properties:
+        scope:
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+    ClientValidationResult:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        message:
+          type: string
+        allowedScopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    OpenIdConfigurationResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+        authorization_endpoint:
+          type: string
+        token_endpoint:
+          type: string
+        userinfo_endpoint:
+          type: string
+        jwks_uri:
+          type: string
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        subject_types_supported:
+          type: array
+          items:
+            type: string
+        id_token_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        scopes_supported:
+          type: array
+          items:
+            type: string
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        claims_supported:
+          type: array
+          items:
+            type: string
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+        claim_types_supported:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

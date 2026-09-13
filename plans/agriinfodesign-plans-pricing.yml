@@ -1,0 +1,112 @@
+generated: '2026-09-12'
+method: searched
+source: https://agri-info-design.com/en/plan-comparison-chart/
+sources:
+  - https://agri-info-design.com/en/plan-comparison-chart/
+  - https://agri-info-design.com/paidplans/
+  - https://agri-info-design.com/transactions/
+note: >-
+  These are end-user plans for the AgriBus-NAVI app and AgriBus-Web console, not API plans. Agri Info
+  Design publishes NO pricing for API access - there is no developer tier, no per-call price, and no
+  published commercial path to the agricultural-machinery Open API surface its contracts describe.
+  Prices are shown in USD on the English comparison chart and in JPY on the Japanese pricing page;
+  both are recorded because they are separately published, not converted.
+currency: USD
+billing_period: annual
+plan_count: 4
+plans:
+  - name: Free
+    price: 0
+    currency: USD
+    billing_period: none
+    included:
+      - Visualization of work trajectory
+      - Linear (straight-line) guidance
+      - Creation and management of cultivated land (fields)
+      - Bluetooth connection for AgriBus-GMiniR
+    limits:
+      - metric: work_data_retention
+        value: 2
+        unit: days
+        note: >-
+          The single hardest limit on the platform - free-tier work data is retained for two days.
+          Nothing in the API exposes this retention boundary.
+      - metric: ads
+        value: shown
+    note: Ad-supported.
+  - name: Plus
+    price: 134.99
+    currency: USD
+    price_jpy: 19800
+    billing_period: year
+    included:
+      - Everything in Free
+      - Curve guidance
+      - Indefinite storage and viewing of work data
+      - RTK using AgriBus hardware
+      - My Reference Station - receive correction data
+      - Open My Reference Station to other AgriBus users
+      - Save and reuse guidance (reference) lines
+      - Section guidance / overlap display
+      - Fill toggle from headset buttons
+      - Data management in AgriBus-Web
+      - Export of saved work data
+      - Ads removed
+    limits:
+      - metric: reference_station_simultaneous_connections
+        value: unlimited
+        scope: other AgriBus users
+      - metric: work_data_retention
+        value: indefinite
+  - name: Professional
+    price: 274.99
+    currency: USD
+    price_jpy: 39800
+    billing_period: year
+    included:
+      - Everything in Plus
+      - Third-party GNSS receiver connection over Bluetooth and USB
+      - NTRIP transfer to a Bluetooth dongle
+      - Port connection with third-party apps
+      - Correction data reception from non-AgriBus casters
+      - Bank transfer as a payment method
+    limits:
+      - metric: reference_station_simultaneous_connections_third_party
+        value: 4
+        unit: connections
+        note: The only hard numeric cap published for any machine-to-machine feature.
+  - name: Enterprise
+    price: null
+    price_display: Upon request / 応相談
+    currency: USD
+    billing_period: year
+    contact_sales: true
+    included:
+      - Everything in Professional
+      - Team creation in AgriBus-Web
+      - Team member invitations
+      - Sharing of fields and work history within a team
+      - Shared reference stations
+      - Real-time visibility of team members' work status
+    limits: []
+api_access:
+  published_plan: false
+  detail: >-
+    No plan mentions API access. The OpenAPI contracts are served publicly but the platform they
+    describe is reachable only with an AgriBus account credential, and the agricultural-machinery
+    Open API OAuth surface has no published client-registration or commercial process.
+payment:
+  processor: Stripe
+  evidence: >-
+    openapi/agriinfodesign-pay-openapi.yml (V1Stripe tag, cards, coupons, invoices, subscriptions)
+    and https://js.stripe.com/v3/ loaded by the AgriBus-Web console.
+  alternatives:
+    - Google Play in-app purchase (Android; V1Google and V1Navi tags in the pay contract)
+    - Bank transfer (Professional plan only)
+  legal_disclosure: https://agri-info-design.com/transactions/
+refunds:
+  published: false
+  note: >-
+    No refund, proration or cooling-off window is stated on the pricing pages or on the Japanese
+    特定商取引法に基づく表記 page. Plans bill annually, so this is a material omission - see the
+    reversibility block in conventions/agriinfodesign-conventions.yml.

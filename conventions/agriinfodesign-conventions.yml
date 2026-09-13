@@ -1,0 +1,223 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  Derived from openapi/agriinfodesign-auth-openapi.yml, openapi/agriinfodesign-datastore-openapi.yml,
+  openapi/agriinfodesign-pay-openapi.yml and openapi/agriinfodesign-manager-swagger.json, plus live
+  anonymous probes of the four production hosts on 2026-09-12 (response headers and error bodies).
+  No provider documentation exists to search - see docs_note.
+docs_note: >-
+  Agri Info Design publishes no API documentation of any kind: no developer portal, no reference
+  site, no getting-started guide, no auth page. Everything here is read from the contracts the
+  platform serves and from live responses.
+auth_style:
+  scheme: Bearer JWT (RS256)
+  header: 'Authorization: Bearer <token>'
+  issuer: auth.agribus-connect.net
+  jwks: https://auth.agribus-connect.net/.well-known/jwks.json
+  detail: >-
+    A single securityScheme (bearerAuth) covers auth, datastore and pay. No operation declares an
+    operation-level security[] requirement, so the contracts do not say which routes are public.
+    Observed behaviour: an unauthenticated call returns HTTP 403 (not 401) with no WWW-Authenticate
+    header on auth and datastore, and HTTP 500 on pay. Several datastore resources are Firestore
+    backed and additionally require a Firebase custom token obtained from
+    GET /v1/firebase/custom_token.
+  see_also: authentication/agriinfodesign-authentication.yml
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  retention: null
+  detail: >-
+    No idempotency mechanism exists anywhere on the platform. The string "idempoten" does not appear
+    in any of the four contracts, no operation accepts an Idempotency-Key or similar header (the only
+    header parameter declared across all 186 operations is Authorization), and no documentation
+    describes replay protection. This matters most on pay.agribus-connect.net, where POST
+    /v1/stripe/subscription (subscribe) and POST /v1/stripe/card (addCard) are money-moving writes
+    with no replay guard - a retried request after a timeout can double-subscribe.
+  evidence:
+    - openapi/agriinfodesign-pay-openapi.yml
+    - openapi/agriinfodesign-datastore-openapi.yml
+reversibility:
+  grade: documented
+  detail: >-
+    Reversal operations exist for the main write surfaces, but no window is stated anywhere - there
+    is no documentation to state one in. Graded `documented`, not `verified`, for exactly that
+    reason: an agent can find the undo call in the contract but cannot learn from the provider how
+    long it has to make it.
+  surfaces:
+    - write_surface: Field boundaries
+      write_operations:
+        - importFields (POST /v1/field_items)
+        - updateFieldItemPolygon (PUT /v1/field_items/{id}/polygon)
+        - updateFieldItemMetaData (PUT /v1/field_items/{id}/meta)
+      reversal_operation: deleteFieldItem (DELETE /v1/field_items/{id})
+      reversal_type: delete
+      window: null
+      window_note: >-
+        Destructive only. There is no restore, trash or soft-delete operation in the contract, so the
+        "reversal" of a create is a delete and the reversal of an edit is nothing - a previous
+        polygon or metadata value cannot be recovered through the API.
+      docs: null
+    - write_surface: Reference lines
+      write_operations:
+        - importRefLines (POST /v1/ref_line_items)
+        - updateRefLineItemMetaData (PUT /v1/ref_line_items/{id}/meta)
+      reversal_operation: deleteRefLineItem (DELETE /v1/ref_line_items/{id})
+      reversal_type: delete
+      window: null
+      docs: null
+    - write_surface: Work records (task records)
+      write_operations:
+        - updateMetaData (PUT /v1/task_record_items/{id}/meta)
+        - saveTaskFilter (POST /v1/task_record_items/filters)
+      reversal_operation: delete (DELETE /v1/task_record_items/{taskGroupId})
+      reversal_type: delete
+      window: null
+      window_note: >-
+        Retention is a plan feature, not an API guarantee: the pricing page states that indefinite
+        retention of work history requires the Plus plan. Nothing states what happens to records on
+        a free account, and nothing in the API exposes it.
+      docs: https://agri-info-design.com/paidplans/
+    - write_surface: Plantings and observations
+      write_operations:
+        - create (POST /v1/plantings), update (PUT /v1/plantings/{id})
+        - createAtObservation / updateAtObservation, createPfObservation / updatePfObservation
+      reversal_operation: delete (DELETE /v1/plantings/{id}), deleteAtObservation, deletePfObservation
+      reversal_type: delete
+      window: null
+      docs: null
+    - write_surface: Elevation maps
+      write_operations:
+        - createElevationMapById (POST /v1/field_items/{id}/elevation)
+      reversal_operation: null
+      reversal_type: none
+      window: null
+      window_note: No delete or replace operation for an elevation map appears in the contract.
+      docs: null
+    - write_surface: Billing - subscriptions
+      write_operations:
+        - subscribe (POST /v1/stripe/subscription)
+        - changePlan (PUT /v1/stripe/subscriptions/{subscriptionId}/{planId})
+      reversal_operation: unsubscribe (POST /v1/stripe/subscriptions/{subscriptionId})
+      reversal_type: cancel
+      window: null
+      window_note: >-
+        No refund operation exists in the contract - cancellation only. No cooling-off period,
+        proration rule, or refund window is published, including on the Japanese
+        特定商取引法に基づく表記 page at https://agri-info-design.com/transactions/, which is the page
+        where a Japanese seller would normally state it. Plans are billed annually
+        (Plus JPY 19,800/yr, Professional JPY 39,800/yr), which makes the unstated refund window the
+        most consequential missing fact on the platform.
+      docs: https://agri-info-design.com/paidplans/
+    - write_surface: Billing - payment methods
+      write_operations:
+        - addCard (POST /v1/stripe/card), selectCard (PUT /v1/stripe/card/{cardId})
+      reversal_operation: deleteCard (DELETE /v1/stripe/card/{cardId})
+      reversal_type: delete
+      window: null
+      docs: null
+  dry_run_mode: none
+  dry_run_note: >-
+    No sandbox, test mode, or dry-run parameter exists on any operation. The nearest thing is
+    calculateFunctionality (POST /v1/pay/calculate/functionality), which prices a plan change without
+    committing it - a preview of one billing decision, not a dry-run facility.
+pagination:
+  styles:
+    - style: page-number
+      applies_to:
+        - listFieldItemsForPage (GET /v1/field_items/page)
+      params:
+        - name: page
+          in: query
+          default: 0
+        - name: pageSize
+          in: query
+          default: 20
+        - name: sortKey
+          in: query
+        - name: sortDirection
+          in: query
+      response_envelope:
+        wrapper: PagingResponseRemote<T>
+        items_field: contents
+        meta_field: paginationInfo
+        meta_fields:
+          - number (current page)
+          - numberOfElements
+          - size
+          - totalElements
+          - totalPages
+    - style: limit-and-time-window
+      applies_to:
+        - getLocationsByDeviceId (GET /v1/agricultural-machinery/devices/{device_id}/locations)
+      params:
+        - name: since
+          in: query
+          format: ISO 8601
+        - name: until
+          in: query
+          format: ISO 8601
+        - name: limit
+          in: query
+        - name: sort
+          in: query
+          values: asc | desc
+      response_envelope:
+        wrapper: GeoJSON FeatureCollection
+        note: No cursor or next-page token; the client re-windows with since/until.
+  detail: >-
+    Pagination is inconsistent. Most list operations - listAllFieldItems, listRefLines,
+    listPlantings, listAtObservations, listPfObservations, getDevices - take no paging parameters at
+    all and return an unbounded array or FeatureCollection, and several resources expose both a
+    trailing-slash and a non-trailing-slash variant of the same list route
+    (/v1/field_items and /v1/field_items/, /v1/plantings and /v1/plantings/,
+    /v1/ref_line_items and /v1/ref_line_items/) with different operationIds.
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: true
+  detail: >-
+    Fields, reference lines and task records each carry a separate metadata sub-resource updated
+    through PUT .../{id}/meta, and each has a POST .../sync/metadata operation the client calls to
+    wait for a Firestore write to settle - an eventual-consistency contract exposed as an explicit
+    client-side wait.
+request_id_tracing:
+  supported: false
+  detail: >-
+    No request-id or correlation header is declared in any contract, and no live response carries
+    one. Observed response headers on all four hosts are limited to the AWS ALB session cookies,
+    Vary, and the Spring Security defaults X-Content-Type-Options, X-XSS-Protection (set to 0),
+    X-Frame-Options DENY, and no-store cache directives.
+versioning:
+  style: uri-path
+  see_also: lifecycle/agriinfodesign-lifecycle.yml
+error_envelope:
+  formats:
+    - '{"code":"<DOMAIN>-<int>","message":"..."}'
+    - '{"timestamp":...,"status":...,"error":"...","path":"..."}'
+  rfc9457: false
+  see_also: errors/agriinfodesign-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  detail: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After header appears on any observed response, and no
+    limit is documented. See rate-limits/agriinfodesign-rate-limits.yml.
+content_types:
+  request: application/json
+  response: >-
+    application/json, with several springdoc operations declaring the wildcard */* instead of a
+    concrete media type. GeoJSON payloads are returned as application/json rather than
+    application/geo+json.
+  charset_note: >-
+    The datastore 403 error body is served as application/json;charset=ISO-8859-1 while its 404 body
+    is UTF-8 - a real inconsistency on a platform whose error strings and tag descriptions are
+    largely Japanese.
+localization:
+  detail: >-
+    Operation summaries, tag descriptions and parameter descriptions across the contracts are written
+    in Japanese; error `message` strings observed live are in English. A LocalizedValues schema and a
+    `language` field on the user profile exist in the datastore and auth contracts.

@@ -1,0 +1,131 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  Deprecated flags read from openapi/agriinfodesign-datastore-openapi.yml,
+  openapi/agriinfodesign-pay-openapi.yml and openapi/agriinfodesign-manager-swagger.json; versioning
+  read from the path structure of all four contracts; status-page and changelog absence established
+  by live probes on 2026-09-12.
+versioning:
+  style: uri-path
+  detail: >-
+    Every service versions in the URI path. auth, datastore and pay use /v1/...; the AgriBus-Web
+    Manager API runs /v1/ and /v2/ side by side, with v2 controllers (StripeV2, CasterV2,
+    WebMarkerV2) shipped alongside the v1 originals rather than replacing them. The datastore
+    additionally carries a /poc/ prefix for a deprecated proof-of-concept of the agricultural
+    machinery Open API, and an underscore-prefixed /v1/_connect/ and /v1/_errors/ namespace for
+    internal admin and data-repair routes that are nonetheless published in the public contract.
+  current_versions:
+    auth: v1
+    datastore: v1 (plus a deprecated /poc surface)
+    manager: v1 and v2
+    pay: v1
+  domain_standard_version: >-
+    The datastore contract tags its agricultural-machinery surface "農機オープンAPI v2.0.0"
+    (Agricultural Machinery Open API v2.0.0) - a version of the Japanese cross-vendor standard, not
+    of Agri Info Design's own API.
+deprecation_policy:
+  published: false
+  detail: >-
+    No deprecation or sunset policy is published anywhere on agri-info-design.com, in the Zendesk
+    help centre, or in any contract. Thirteen operations are flagged deprecated: true in the specs,
+    but none carries a sunset date, a replacement pointer, or an explanatory description, and a live
+    call to a deprecated path returns no Deprecation or Sunset header (RFC 8594).
+  rfc8594_headers: false
+  deprecated_operation_count: 13
+deprecated_operations:
+  - service: datastore
+    operationId: getLocationByDeviceId
+    method: GET
+    path: /poc/devices/{device_id}/locations
+    tag: PocNokiOpenApi
+    note: >-
+      The proof-of-concept version of the agricultural-machinery location endpoint, superseded by
+      GET /v1/agricultural-machinery/devices/{device_id}/locations. Still routable - a live call
+      returns HTTP 406 with no Deprecation or Sunset header.
+  - service: pay
+    operationId: getInvoices
+    method: GET
+    path: /v1/stripe/invoices
+  - service: pay
+    operationId: getInvoicesUpcoming
+    method: GET
+    path: /v1/stripe/invoices/upcoming
+  - service: manager
+    operationId: createClientUsingPOST
+    method: POST
+    path: /v1/caster/client
+    note: Superseded by the CasterV2 controller.
+  - service: manager
+    operationId: createClientByNameUsingPOST
+    method: POST
+    path: /v1/caster/client/{clientName}
+  - service: manager
+    operationId: saveSettingsUsingPUT
+    method: PUT
+    path: /v1/navi/settings/{deviceId}
+  - service: manager
+    operationId: saveStatusUsingPUT
+    method: PUT
+    path: /v1/navi/status/{deviceId}
+  - service: manager
+    operationId: subscribeUsingPOST
+    method: POST
+    path: /v1/stripe/plans/{planId}/subscription
+    note: Billing moved to pay.agribus-connect.net; the manager copy is deprecated in place.
+  - service: manager
+    operationId: subscribeWithDiscountUsingPOST
+    method: POST
+    path: /v1/stripe/plans/{planId}/subscription/discount/{couponCode}
+  - service: manager
+    operationId: publishTokenUsingPOST
+    method: POST
+    path: /v1/token
+    note: Token issuance moved to auth.agribus-connect.net POST /v1/oauth.
+  - service: manager
+    operationId: impersonateUsingPOST
+    method: POST
+    path: /v1/token/impersonate
+  - service: manager
+    operationId: deleteImpersonationUsingDELETE
+    method: DELETE
+    path: /v1/token/impersonate
+  - service: manager
+    operationId: refreshTokenUsingPOST
+    method: POST
+    path: /v1/token/refresh
+status_page:
+  published: false
+  probes:
+    - url: https://status.agri-info-design.com/
+      status: 0
+      note: Host does not resolve (NXDOMAIN).
+    - url: https://agri-info-design.com/status/
+      status: 404
+    - url: https://agribus.statuspage.io/
+      status: 200
+      note: >-
+        NOT a status page for this company - the request lands on Atlassian's Statuspage marketing
+        site (title "Real-Time Incident Communication with Statuspage"). Recorded so a later run does
+        not mistake the 200 for a hit.
+changelog:
+  published: false
+  probes:
+    - url: https://agri-info-design.com/changelog/
+      status: 404
+  detail: >-
+    There is no API changelog or release-notes page. Product news is published as WordPress posts at
+    https://agri-info-design.com/en/news/ (RSS at /en/feed/), and the AgriBus-NAVI Android app
+    carries a "What's new" section on its Google Play listing, but neither is an API changelog and
+    neither is dated per API version.
+sla:
+  published: false
+  detail: No uptime or support SLA is published for any plan, including Enterprise.
+sunset_of_products:
+  note: >-
+    AgriBus-G+ and AgriBus-GMini remain as product pages on the site alongside their successors
+    AgriBus-G2 and AgriBus-GMiniR; no end-of-life statement was found for either.
+gaps:
+  - No deprecation policy, no sunset dates, no RFC 8594 headers on deprecated routes.
+  - No status page, so no machine-readable availability signal.
+  - No API changelog.
+  - No SLA.

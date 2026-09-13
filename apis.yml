@@ -1,23 +1,231 @@
 aid: agriinfodesign
-name: Agriinfodesign
-description: 'Agriinfodesign is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+name: Agri Info Design
+description: >-
+  Agri Info Design, Ltd. (株式会社農業情報設計社) is a Japanese agricultural-technology company founded
+  21 April 2014 in Obihiro, Hokkaido, building precision-farming guidance for tractors and other
+  agricultural machinery. Its AgriBus product line pairs the AgriBus-NAVI Android GPS/GNSS guidance
+  app (100,000+ downloads worldwide) with AgriBus-GMiniR and AgriBus-G2 RTK-GNSS receivers, the
+  AgriBus-AutoSteer automatic steering package, and AgriBus-Web, a browser console for field
+  boundaries, reference lines, work-record history, elevation maps and RTK base-station management.
+  The company also sells ISOBUS / ISO 11783 / AG-PORT consulting. Its cloud platform is a set of
+  Spring Boot microservices on agribus-connect.net, each of which publishes a machine-readable
+  OpenAPI/Swagger contract anonymously, including an implementation of Japan's NARO-led
+  農機オープンAPI (Agricultural Machinery Open API) device and location surface.
 url: https://raw.githubusercontent.com/api-evangelist/agriinfodesign/refs/heads/main/apis.yml
+image: https://agri-info-design.com/wp-content/uploads/2019/05/AID-logo_sq-06.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-12'
 modified: '2026-09-12'
+position: Producing
 tags:
-- Company
-apis: []
+  - Agriculture
+  - AgTech
+  - Precision Agriculture
+  - Precision Farming
+  - GNSS
+  - GPS
+  - RTK
+  - Farm Management
+  - Agricultural Machinery
+  - ISOBUS
+  - Geospatial
+  - Japan
+  - Telematics
+  - Company
+tags_raw:
+  - agriculture
+  - agtech
+  - precision-agriculture
+  - precision-farming
+  - gnss
+  - gps
+  - rtk
+  - farm-management
+  - agricultural-machinery
+  - isobus
+  - geospatial
+  - japan
+  - telematics
+  - company
+apis:
+  - name: AgriBus Datastore API
+    description: >-
+      Field, reference-line, work-record, planting, observation and elevation-map datastore behind
+      AgriBus-NAVI and AgriBus-Web, plus Agri Info Design's implementation of the Japanese
+      農機オープンAPI (Agricultural Machinery Open API v2.0.0) device and location surface, which
+      returns machine position history as a GeoJSON FeatureCollection. 50 paths / 61 operations.
+      Bearer JWT. The OpenAPI is served anonymously by springdoc at /v3/api-docs; the Swagger UI
+      on the same host is authenticated (HTTP 401).
+    humanURL: https://agri-info-design.com/en/agribus-web/
+    baseURL: https://datastore.agribus-connect.net
+    tags:
+      - Agriculture
+      - Precision Agriculture
+      - Farm Management
+      - Agricultural Machinery
+      - Geospatial
+      - GNSS
+    tags_raw:
+      - agriculture
+      - precision-agriculture
+      - farm-management
+      - agricultural-machinery
+      - geospatial
+      - gnss
+    properties:
+      - type: OpenAPI
+        url: openapi/agriinfodesign-datastore-openapi.yml
+      - type: Overlay
+        url: overlays/agriinfodesign-datastore-overlay.yaml
+      - type: DataModel
+        url: data-model/agriinfodesign-data-model.yml
+      - type: ErrorCatalog
+        url: errors/agriinfodesign-problem-types.yml
+  - name: AgriBus Authentication & OpenID Connect API
+    description: >-
+      Identity service for the AgriBus platform - sign-up, sign-in, password reset, user profile and
+      icon, group membership, Firebase custom tokens, RTK caster settings, impersonation for system
+      admins, and an OAuth 2.0 / OpenID Connect authorization surface with a published scope
+      catalogue for the agricultural-machinery Open API. 20 paths / 22 operations. Bearer JWT.
+      Serves OIDC discovery at the non-standard path /.well-known/openid_configuration and a JWKS
+      at /.well-known/jwks.json.
+    humanURL: https://agri-info-design.com/en/agribus-web/
+    baseURL: https://auth.agribus-connect.net
+    tags:
+      - Agriculture
+      - Authentication
+      - OAuth
+      - OpenID Connect
+      - RTK
+    tags_raw:
+      - agriculture
+      - authentication
+      - oauth
+      - openid-connect
+      - rtk
+    properties:
+      - type: OpenAPI
+        url: openapi/agriinfodesign-auth-openapi.yml
+      - type: Overlay
+        url: overlays/agriinfodesign-auth-overlay.yaml
+      - type: OpenIDConnect
+        url: https://auth.agribus-connect.net/.well-known/openid_configuration
+      - type: Authentication
+        url: authentication/agriinfodesign-authentication.yml
+      - type: OAuthScopes
+        url: scopes/agriinfodesign-scopes.yml
+  - name: AgriBus-Web Manager API
+    description: >-
+      The AgriBus-Web Manager API - devices, users, tokens, teams/groups, web markers, search,
+      system administration, RTK caster (base/rover) management and Stripe billing controllers,
+      in v1 and v2 generations. 71 paths. Described by a Swagger 2.0 document served anonymously
+      by Springfox at /v2/api-docs, listed in /swagger-resources as "AgriBus-Web API"; its
+      info.termsOfService and license both point at agri-info-design.com.
+    humanURL: https://agri-info-design.com/en/agribus-web/
+    baseURL: https://manager.agribus-connect.net
+    tags:
+      - Agriculture
+      - Farm Management
+      - RTK
+      - Telematics
+    tags_raw:
+      - agriculture
+      - farm-management
+      - rtk
+      - telematics
+    properties:
+      - type: Swagger
+        url: openapi/agriinfodesign-manager-swagger.json
+      - type: OpenAPI
+        url: openapi/agriinfodesign-manager-swagger.json
+      - type: Overlay
+        url: overlays/agriinfodesign-manager-overlay.yaml
+  - name: AgriBus Billing & Payments API
+    description: >-
+      Subscription and purchase service for the AgriBus paid plans - Stripe cards, coupons,
+      invoices, upcoming invoices, plans, subscriptions and payment-method changes, Google Play
+      real-time developer notifications and Android purchase verification, AgriBus-NAVI purchase
+      status, and AgriBus-DWH market-monitor access tokens. 21 paths / 22 operations. Bearer JWT.
+      OpenAPI served anonymously at /v3/api-docs.
+    humanURL: https://agri-info-design.com/paidplans/
+    baseURL: https://pay.agribus-connect.net
+    tags:
+      - Agriculture
+      - Billing
+      - Payments
+      - Subscriptions
+    tags_raw:
+      - agriculture
+      - billing
+      - payments
+      - subscriptions
+    properties:
+      - type: OpenAPI
+        url: openapi/agriinfodesign-pay-openapi.yml
+      - type: Overlay
+        url: overlays/agriinfodesign-pay-overlay.yaml
+      - type: Plans
+        url: plans/agriinfodesign-plans-pricing.yml
 maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
-- FN: APIs.json
-  email: info@apis.io
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+  - FN: APIs.json
+    email: info@apis.io
 common:
-- type: Website
-  url: https://equityzen.com/company/agriinfodesign
+  - type: Website
+    url: https://agri-info-design.com/
+  - type: Login
+    url: https://app.agribus-connect.com/
+  - type: Support
+    url: https://support.agri-info-design.com/
+  - type: HelpCenter
+    url: https://agri-info-design.com/faq/
+  - type: Blog
+    url: https://agri-info-design.com/en/news/
+  - type: BlogRSS
+    url: https://agri-info-design.com/en/feed/
+  - type: Pricing
+    url: https://agri-info-design.com/paidplans/
+  - type: TermsOfService
+    url: https://agri-info-design.com/term/
+  - type: PrivacyPolicy
+    url: https://agri-info-design.com/privacy-policy/
+  - type: GitHubOrganization
+    url: https://github.com/agri-info-design
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Conventions
+    url: conventions/agriinfodesign-conventions.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/agriinfodesign-lifecycle.yml
+  - type: Conformance
+    url: conformance/agriinfodesign-conformance.yml
+  - type: WellKnown
+    url: well-known/agriinfodesign-well-known.yml
+  - type: LLMsTxt
+    url: llms/agriinfodesign-llms.txt
+  - type: Packages
+    url: packages/agriinfodesign-packages.yml
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/agriinfodesign-rate-limits.yml
+  - type: DomainSecurity
+    url: security/agriinfodesign-domain-security.yml
+  - type: MCPServer
+    url: mcp/agriinfodesign-mcp.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+x-enrichment:
+  date: '2026-09-12'
+  status: enriched
+  artifacts_added: 34
+  pass: local-v3

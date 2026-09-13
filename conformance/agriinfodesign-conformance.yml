@@ -1,0 +1,189 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  Read from the contracts the platform serves - openapi/agriinfodesign-auth-openapi.yml,
+  openapi/agriinfodesign-datastore-openapi.yml, openapi/agriinfodesign-pay-openapi.yml,
+  openapi/agriinfodesign-manager-swagger.json - and from live anonymous fetches of
+  https://auth.agribus-connect.net/.well-known/openid_configuration (HTTP 200),
+  https://auth.agribus-connect.net/.well-known/jwks.json (HTTP 200) and
+  https://auth.agribus-connect.net/v1/agricultural-api/oauth/scopes (HTTP 200), on 2026-09-12.
+note: >-
+  Agri Info Design makes no compliance or certification claims anywhere on its public site, in its
+  help centre, or in any contract. Every entry below is read from the contract or the live discovery
+  documents, never from a marketing page. Entries with conforms: false are recorded because the
+  contract or a live response demonstrates the standard is NOT met, which is as useful as a hit.
+conformance:
+  - id: openapi-3.0
+    conforms: true
+    evidence: >-
+      Three services publish OpenAPI 3.0.1 anonymously at /v3/api-docs and /v3/api-docs.yaml
+      (auth, datastore, pay). Served with content-type application/vnd.oai.openapi for the YAML form.
+    urls:
+      - https://auth.agribus-connect.net/v3/api-docs
+      - https://datastore.agribus-connect.net/v3/api-docs
+      - https://pay.agribus-connect.net/v3/api-docs
+  - id: swagger-2.0
+    conforms: true
+    evidence: >-
+      The AgriBus-Web Manager API publishes a Swagger 2.0 document at
+      /v2/api-docs?group=AgriBus-Web API, listed in /swagger-resources.
+    urls:
+      - https://manager.agribus-connect.net/swagger-resources
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      The auth service exposes GET /v1/oauth/authorize (OAuth2/OpenID Connect Authorization),
+      a client validation endpoint, and a live scope catalogue at
+      /v1/agricultural-api/oauth/scopes. The discovery document advertises grant types
+      authorization_code, client_credentials and refresh_token.
+  - id: oidc
+    conforms: partial
+    evidence: >-
+      A real OpenID Connect discovery document and JWKS are served, with RS256 id_token signing,
+      a userinfo endpoint, and the standard openid/profile/email/offline_access scopes.
+    deviations:
+      - >-
+        Discovery is served at /.well-known/openid_configuration (underscore). The OpenID Connect
+        Discovery 1.0 / RFC 8414 path /.well-known/openid-configuration returns 404 on the same host,
+        so an automatic client cannot find the issuer.
+      - >-
+        The document served from the PRODUCTION host advertises the development environment
+        (issuer, authorization, token, userinfo and jwks_uri all on
+        manager-development.agribus-connect.net).
+      - No registration_endpoint, no end_session_endpoint, no code_challenge_methods_supported (no PKCE advertised).
+    urls:
+      - https://auth.agribus-connect.net/.well-known/openid_configuration
+  - id: jwt-rs256
+    conforms: true
+    evidence: >-
+      bearerFormat JWT on the shared securityScheme; a live JWKS with one RSA key
+      (kid connect-auth-key-1, alg RS256, use sig).
+    urls:
+      - https://auth.agribus-connect.net/.well-known/jwks.json
+  - id: rfc7946-geojson
+    conforms: true
+    evidence: >-
+      The datastore contract models geometry as a full GeoJSON object graph - FeatureCollection,
+      Feature, Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon,
+      GeometryCollection, LngLatAlt, BoundingBox, Crs - and returns machine location history as a
+      FeatureCollection from
+      GET /v1/agricultural-machinery/devices/{device_id}/locations. A dedicated
+      GET /v1/ref_line_items/{id}/geo.json returns a reference line as GeoJSON, and
+      POST /v1/import/geo_json converts uploads.
+    deviations:
+      - >-
+        GeoJSON payloads are served as application/json, not the RFC 7946 media type
+        application/geo+json.
+      - >-
+        A Crs schema is present; RFC 7946 removed the crs member (all coordinates are WGS 84),
+        so its presence indicates a pre-RFC GeoJSON heritage.
+    source: openapi/agriinfodesign-datastore-openapi.yml
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      No operation in any of the four contracts declares application/problem+json, and no live error
+      response uses it. Two vendor envelopes are used instead - see
+      errors/agriinfodesign-problem-types.yml.
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No Idempotency-Key header or equivalent appears in any contract; the only header parameter
+      declared across 186 operations is Authorization. See conventions/agriinfodesign-conventions.yml.
+  - id: pagination
+    conforms: partial
+    evidence: >-
+      Page/pageSize/sortKey/sortDirection with a PaginationInfo envelope on
+      GET /v1/field_items/page, and since/until/limit/sort on the machine location endpoint. Most
+      other list operations take no paging parameters and return unbounded arrays.
+  - id: rfc8594-deprecation-headers
+    conforms: false
+    evidence: >-
+      Thirteen operations carry deprecated: true in the specs, but a live call to the deprecated
+      /poc/devices/{device_id}/locations returns no Deprecation or Sunset header.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: >-
+      /.well-known/security.txt returns 404 on all eight hosts probed. See
+      well-known/agriinfodesign-well-known.yml.
+  - id: rfc8615-api-catalog
+    conforms: false
+    evidence: /.well-known/api-catalog returns 404 on every host.
+domain_standards:
+  - id: noki-open-api
+    name: 農機オープンAPI (Agricultural Machinery Open API) v2.0.0
+    body: >-
+      農機API共通化コンソーシアム (Agricultural Machinery API Standardization Consortium), convened by
+      NARO (National Agriculture and Food Research Organization) under the Japanese Ministry of
+      Agriculture, Forestry and Fisheries data-infrastructure programme. Since FY2022 MAFF has
+      conditioned agricultural-machinery subsidies on manufacturers providing open-API data linkage.
+    conforms: true
+    grade: implemented
+    evidence: >-
+      The datastore contract DECLARES the standard by name in its own tag metadata - tag
+      "V1AgriculturalMachinery" carries the description "農機オープンAPI v2.0.0" - and implements the
+      standard's device and location surface: GET /v1/agricultural-machinery/devices returning a
+      DeviceListResponse of DeviceInfo (device_id UUID, device_name, manufacturer, model,
+      serial_number, firmware_version, all snake_case per the standard rather than the camelCase
+      used everywhere else in the platform), and
+      GET /v1/agricultural-machinery/devices/{device_id}/locations returning work-position history as
+      a GeoJSON FeatureCollection with since / until / limit / sort windowing. A superseded
+      proof-of-concept of the same surface survives at /poc/devices/{device_id}/locations under the
+      tag PocNokiOpenApi, marked deprecated.
+      The access model is declared too: a dedicated OAuth surface
+      (tag "農機API用OAuth2管理" / AgriculturalApiOAuth) with client validation and a live,
+      anonymously readable catalogue of ten "noki.*" scopes covering devices, locations, work
+      records, environmental data and field boundaries, read and write.
+    evidence_locations:
+      - openapi/agriinfodesign-datastore-openapi.yml#/tags (name V1AgriculturalMachinery, description 農機オープンAPI v2.0.0)
+      - openapi/agriinfodesign-datastore-openapi.yml#/paths/~1v1~1agricultural-machinery~1devices
+      - openapi/agriinfodesign-datastore-openapi.yml#/paths/~1v1~1agricultural-machinery~1devices~1{device_id}~1locations
+      - openapi/agriinfodesign-auth-openapi.yml#/tags (name V1AgriculturalApiOAuth, description 農機API用OAuth2管理)
+      - https://auth.agribus-connect.net/v1/agricultural-api/oauth/scopes
+    urls:
+      - https://www.naro.go.jp/org/iam/API/index.html
+    caveats:
+      - >-
+        The implementation is partial against its own declared scope catalogue: only two of the ten
+        noki.* scopes (devices.read, locations.read) have a corresponding published operation. The
+        write half of the standard's surface, environmental data, and field boundaries are declared
+        as scopes with nothing behind them in any published contract.
+      - >-
+        No conformance statement, certification, or consortium membership claim was found on the
+        provider's own site; the evidence for this entry is entirely in the contract.
+  - id: isobus-iso11783
+    name: ISOBUS / ISO 11783 / AG-PORT
+    conforms: unknown
+    grade: services-offered-not-implemented-in-api
+    evidence: >-
+      Agri Info Design sells ISOBUS / ISO 11783 / AG-PORT consulting as a line of business
+      (https://agri-info-design.com/en/consulting/) and its GitHub organisation carries forks of
+      AgGateway's ADAPT framework and the ISOv4Plugin (ISOXML) reader. That is real domain expertise
+      and it is recorded here, but NO ISOBUS or ISOXML surface appears in any API contract the
+      company publishes, and the AgriBus-Web import/export formats are KML in and TSV/CSV out. This
+      entry is deliberately NOT marked conforms: true - the standard is a service they sell, not a
+      contract they ship.
+    urls:
+      - https://agri-info-design.com/en/consulting/
+      - https://github.com/agri-info-design/ISOv4Plugin
+      - https://github.com/agri-info-design/ADAPT
+  - id: ntrip
+    name: NTRIP (Networked Transport of RTCM via Internet Protocol)
+    conforms: partial
+    evidence: >-
+      The platform operates RTK caster infrastructure - CasterV1 and CasterV2 controllers on the
+      manager service, GET /v1/caster/current (base and rover state) and GET /v1/caster/setting/rtk
+      on the auth service - and the Professional plan advertises NTRIP transfer and correction-data
+      reception from third-party casters. The correction stream itself is NTRIP/RTCM and is not
+      described by any published contract; only its management surface is.
+    urls:
+      - https://agri-info-design.com/paidplans/
+compliance_certifications:
+  published: false
+  detail: >-
+    No SOC 2, ISO 27001, ISO 27701, PCI DSS, HIPAA, FedRAMP, GDPR DPA, APPI statement or trust centre
+    was found. The only compliance-adjacent published documents are the Japanese privacy policy
+    (https://agri-info-design.com/privacy-policy/), the terms of use
+    (https://agri-info-design.com/term/) and the 特定商取引法に基づく表記 disclosure required of Japanese
+    sellers (https://agri-info-design.com/transactions/). Card data is handled by Stripe, which the
+    pay contract makes explicit, so PCI scope is largely delegated - but the company makes no
+    statement to that effect.

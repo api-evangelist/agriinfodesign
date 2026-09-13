@@ -1,0 +1,68 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the AgriBus Billing & Payments API
+  version: 1.0.0
+extends: ../openapi/agriinfodesign-pay-openapi.yml
+x-provenance:
+  generated: '2026-09-12'
+  method: generated
+  source: >-
+    Authored by API Evangelist over the provider's own spec at https://pay.agribus-connect.net/v3/api-docs.
+    Every action below either supplies metadata the springdoc-generated document omits, or records
+    behaviour observed on live anonymous probes of pay.agribus-connect.net on 2026-09-12. The original
+    document is never mutated.
+  note: >-
+    The base document has a null info object and an http:// server URL. Both are springdoc
+    generation defaults rather than statements by the provider, and both break tooling: a null info
+    fails OpenAPI validation, and the http server is not the scheme the host actually serves.
+actions:
+  - target: $.info
+    description: >-
+      The published document carries info: null. Supply the identity fields, attributed to
+      API Evangelist rather than presented as the provider's own.
+    update:
+      title: AgriBus Billing & Payments API
+      version: '1.0.0'
+      description: >-
+        Stripe-backed subscription, card, coupon and invoice management plus Google Play purchase verification for the AgriBus paid plans.
+        Contract harvested verbatim from https://pay.agribus-connect.net/v3/api-docs; this description is
+        supplied by API Evangelist because the published document has no info object.
+      contact:
+        name: Agri Info Design, Ltd.
+        url: https://agri-info-design.com/
+      x-api-evangelist-note: Identity supplied by API Evangelist; not published by the provider.
+  - target: $.servers
+    description: >-
+      The published servers[] entry is http://pay.agribus-connect.net with the springdoc placeholder
+      description "Generated server url". The host serves HTTPS only (HTTP/2, TLS observed
+      2026-09-12). Record the https origin without removing the provider's own entry.
+    update:
+      - url: https://pay.agribus-connect.net
+        description: >-
+          Production origin as observed by API Evangelist. The provider's own document says http.
+  - target: $.components.securitySchemes.bearerAuth
+    description: Record where the verification key actually lives.
+    update:
+      description: >-
+        RS256 JWT issued by auth.agribus-connect.net. Verify against the JWKS at
+        https://auth.agribus-connect.net/.well-known/jwks.json (kid connect-auth-key-1). Note that
+        an unauthenticated request is answered with HTTP 403 and no WWW-Authenticate header on the
+        auth and datastore services, and with HTTP 500 on the pay service.
+  - target: $
+    description: >-
+      Record, at document level, that no operation in the published contract declares any non-200
+      response. The error envelopes below were observed live, not published.
+    update:
+      x-api-evangelist-error-envelopes:
+        observed: true
+        source: errors/agriinfodesign-problem-types.yml
+        formats:
+          - '{"code":"<DOMAIN>-<int>","message":"..."}'
+          - '{"timestamp":"<ISO8601>","status":<int>,"error":"<reason>","path":"<path>"}'
+        rfc9457: false
+      x-api-evangelist-known-defects:
+        - >-
+          Timestamp properties declare "format": "2016-01-01T00:00:00.000Z" - an example value in
+          the format keyword - instead of "date-time".
+        - No operation declares a 4xx or 5xx response.
+        - No operation declares an operation-level security[] requirement.

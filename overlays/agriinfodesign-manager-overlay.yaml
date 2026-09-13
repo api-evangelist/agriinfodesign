@@ -1,0 +1,76 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the AgriBus-Web Manager API
+  version: 1.0.0
+extends: ../openapi/agriinfodesign-manager-swagger.json
+x-provenance:
+  generated: '2026-09-12'
+  method: generated
+  source: >-
+    Authored by API Evangelist over the provider's own Swagger 2.0 document at
+    https://manager.agribus-connect.net/v2/api-docs?group=AgriBus-Web%20API, discovered through
+    https://manager.agribus-connect.net/swagger-resources. Live probes of the host on 2026-09-12.
+  note: >-
+    This base document is Swagger 2.0, not OpenAPI 3.x - the only one of the four contracts on the
+    older generation. OpenAPI Overlay 1.0.0 targets a JSONPath into any structured document, so the
+    actions below apply, but a consumer should be aware the target shapes differ from the sibling
+    overlays (securityDefinitions rather than components.securitySchemes, host/basePath rather than
+    servers[]).
+actions:
+  - target: $.info
+    description: >-
+      Unlike the three springdoc documents, this Springfox document DOES carry an info object, with
+      title "AgriBus-Web Manager API", version 0.0.1, termsOfService http://agri-info-design.com/
+      and a license literally named "Some License". Enrich it without overwriting the provider's own
+      title, and flag the placeholder license.
+    update:
+      description: >-
+        Device, user, token, team, web-marker, search, system-administration, RTK caster and Stripe
+        billing controllers for AgriBus-Web, in v1 and v2 generations. Description supplied by
+        API Evangelist; the published document has none.
+      contact:
+        name: Agri Info Design, Ltd.
+        url: https://agri-info-design.com/
+      x-api-evangelist-note: >-
+        info.license.name is "Some License" with url http://agri-info-design.com/ - a Springfox
+        placeholder left in the published document, not a licence grant. Do not read it as one.
+  - target: $
+    description: >-
+      Record the https scheme. The document declares host manager.agribus-connect.net and
+      basePath / but no schemes[]; the host serves HTTPS only (HTTP/2 observed 2026-09-12).
+    update:
+      schemes:
+        - https
+      x-api-evangelist-origin: https://manager.agribus-connect.net
+  - target: $.securityDefinitions.mykey
+    description: >-
+      Flag the Springfox default securityDefinition. No operation in the document references it, and
+      the platform authenticates with a bearer JWT from auth.agribus-connect.net.
+    update:
+      description: >-
+        SUSPECT. "mykey" is the Springfox securityDefinitions sample name and is referenced by no
+        operation in this document. The platform's real credential is an RS256 bearer JWT issued by
+        auth.agribus-connect.net and verified against
+        https://auth.agribus-connect.net/.well-known/jwks.json. Do not integrate against this
+        definition.
+  - target: $
+    description: Record contract-level findings observed by API Evangelist.
+    update:
+      x-api-evangelist-error-envelopes:
+        observed: true
+        source: errors/agriinfodesign-problem-types.yml
+        formats:
+          - '{"timestamp":<epoch-ms>,"status":<int>,"error":"<reason>","message":"<detail>","path":"<path>"}'
+        note: >-
+          This service emits timestamp as epoch milliseconds, while the three springdoc services emit
+          an ISO 8601 string for the same field.
+      x-api-evangelist-known-defects:
+        - No operation declares a 4xx or 5xx response (81 operations, all 200-only).
+        - info.license is a Springfox placeholder ("Some License").
+        - securityDefinitions.mykey is a Springfox placeholder referenced by no operation.
+        - >-
+          Ten operations are flagged deprecated with no sunset date and no replacement pointer; see
+          lifecycle/agriinfodesign-lifecycle.yml.
+        - >-
+          v1 and v2 controllers are published side by side (StripeV1/StripeV2, CasterV1/CasterV2,
+          WebMarkerV1/WebMarkerV2) with no statement of which is current.

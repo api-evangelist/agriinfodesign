@@ -1,0 +1,229 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  openapi/agriinfodesign-datastore-openapi.yml (66 schemas), with supporting entities from
+  openapi/agriinfodesign-auth-openapi.yml, openapi/agriinfodesign-pay-openapi.yml and
+  openapi/agriinfodesign-manager-swagger.json. Relationships are read from id-reference fields in
+  the schemas; the contracts declare almost no $ref links between top-level entities, so the graph
+  below is built from the foreign-key-shaped string fields (fieldItemId, username, device_id,
+  documentId) the schemas carry.
+note: >-
+  There is no published object reference. The platform models a farm as geospatial items owned by a
+  username: a field (圃場) has reference lines and task records; a task record is a completed pass of
+  a machine across a field. Geometry is carried as GeoJSON (RFC 7946) throughout.
+id_conventions:
+  - field: username
+    note: The owning account's login name; present on every remote geo entity. This is the tenancy key.
+  - field: id / documentId / geoDocumentId
+    note: >-
+      Every remote entity carries three identifiers: a string `id`, a Firestore `documentId`, and a
+      `geoDocumentId` for the geometry document, plus an integer `pk` from the relational store.
+      The dual RDS/Firestore persistence is visible in the contract - there is an entire
+      /v1/_errors/duplication/ namespace of published operations for repairing rows duplicated
+      between the two stores.
+  - field: device_id
+    note: UUID, on the agricultural-machinery Open API surface. Example given in the spec is 550e8400-e29b-41d4-a716-446655440000.
+  - field: geohash
+    note: Geohash string on field items, used for the "around" proximity queries AgriBus-NAVI makes.
+  - field: deleted
+    note: >-
+      A boolean tombstone on every remote geo entity, indicating soft delete at the storage layer -
+      though no API operation exposes an undelete.
+entities:
+  - name: RemoteFieldItem
+    label: Field (圃場)
+    description: >-
+      A cultivated land parcel - name, caption, area, perimeter length, GeoJSON geometry, centroid,
+      bounding polygon and geohash.
+    operations:
+      - listAllFieldItems (GET /v1/field_items/)
+      - listFieldItemsForPage (GET /v1/field_items/page)
+      - importFields (POST /v1/field_items)
+      - updateFieldItemPolygon (PUT /v1/field_items/{id}/polygon)
+      - updateFieldItemMetaData (PUT /v1/field_items/{id}/meta)
+      - deleteFieldItem (DELETE /v1/field_items/{id})
+      - centroid (GET /v1/field_items/centroid)
+      - countTasksInField (GET /v1/field_items/{id}/tasks/count)
+      - listFieldsAround (GET /v1/agribus_navi/field_items/around)
+  - name: RemoteRefLineItem
+    label: Reference line (基準線)
+    description: >-
+      The A-B guidance line a tractor follows, with refLineType, guidanceInterval (implement width
+      spacing), refDirection and length. Belongs to a field.
+    operations:
+      - listRefLines (GET /v1/ref_line_items/)
+      - importRefLines (POST /v1/ref_line_items)
+      - getGeoJson (GET /v1/ref_line_items/{id}/geo.json)
+      - updateRefLineItemMetaData (PUT /v1/ref_line_items/{id}/meta)
+      - deleteRefLineItem (DELETE /v1/ref_line_items/{id})
+      - archiveTsv (GET /v1/ref_line_items/archives/tsv)
+      - listRefLinesAround (GET /v1/agribus_navi/refline_items/around)
+  - name: RemoteTaskRecordItem
+    label: Work record (作業記録)
+    description: >-
+      One machine pass - start/end timestamps, GNSS source, work width at start and end, worked area,
+      distance travelled, average speed, overlap, completion flag, and an operationType enum of
+      Tilling, Sowing, Planting, Fertilizing, CropProtection, Harvesting, Other. Belongs to a field.
+    operations:
+      - listWithFilter (POST /v1/task_record_items)
+      - get (GET /v1/task_record_items/{taskGroupId})
+      - getTaskInfo (GET /v1/task_record_items/info/{taskGroupId})
+      - updateMetaData (PUT /v1/task_record_items/{id}/meta)
+      - delete (DELETE /v1/task_record_items/{taskGroupId})
+      - archiveTsv (GET /v1/task_record_items/archives/tsv/{filterName})
+      - exportTasksCsv (POST /v1/_connect/admin/task/csv)
+  - name: RemoteFieldElevationMap
+    label: Elevation map
+    description: Per-field elevation surface with ColorRanges for rendering. Belongs to a field.
+    operations:
+      - getElevationMapById (GET /v1/field_items/{id}/elevation)
+      - createElevationMapById (POST /v1/field_items/{id}/elevation)
+  - name: RemotePlanting
+    label: Planting (作付)
+    description: Crop planting records for a field.
+    operations:
+      - list (GET /v1/plantings)
+      - create (POST /v1/plantings)
+      - update (PUT /v1/plantings/{id})
+      - delete (DELETE /v1/plantings/{id})
+  - name: RemoteAccumulatedTemperatureObservation
+    label: Accumulated temperature observation (積算温度)
+    operations:
+      - listAtObservations (GET /v1/observations/at)
+      - createAtObservation (POST /v1/observations/at)
+      - updateAtObservation (PUT /v1/observations/at/{id})
+      - deleteAtObservation (DELETE /v1/observations/at/{id})
+  - name: RemoteSoilMoistureObservation
+    label: Soil moisture observation (土壌水分)
+    operations:
+      - listPfObservations (GET /v1/observations/pf)
+      - createPfObservation (POST /v1/observations/pf)
+      - updatePfObservation (PUT /v1/observations/pf/{id})
+      - deletePfObservation (DELETE /v1/observations/pf/{id})
+  - name: DeviceInfo
+    label: Agricultural machine (農機デバイス)
+    description: >-
+      The agricultural-machinery Open API device record - device_id (UUID), device_name,
+      manufacturer, model, serial_number, firmware_version. Snake-case, unlike the camelCase used
+      everywhere else in the platform, because it follows the Japanese cross-vendor standard.
+    operations:
+      - getDevices (GET /v1/agricultural-machinery/devices)
+      - getLocationsByDeviceId (GET /v1/agricultural-machinery/devices/{device_id}/locations)
+  - name: FeatureCollection
+    label: GeoJSON FeatureCollection (RFC 7946)
+    description: >-
+      The geometry carrier used throughout - Feature, Point, LineString, Polygon, MultiPoint,
+      MultiLineString, MultiPolygon, GeometryCollection, LngLatAlt, BoundingBox, Crs. Machine
+      location history is returned as a FeatureCollection.
+  - name: RemoteSpaceAgriField
+    label: Space Agri partner field
+    description: Fields linked from the SpaceAgri partner integration.
+    operations:
+      - getSpaceAgriFields (GET /v1/partners/sac)
+      - putSpaceAgriLinkageInfo (PUT /v1/partners/sac)
+  - name: UserInfo
+    label: User account
+    service: auth
+    description: username, nickname, language, systemOfUnits, sendMeNews, picture, groups, permissions.
+    operations:
+      - getMe (GET /v1/user)
+      - updateMe (PUT /v1/user)
+      - getUserGroupsInfo (GET /v1/user/groups)
+  - name: RtkSettingInfo
+    label: RTK base/rover configuration
+    service: auth and manager
+    description: >-
+      NTRIP caster configuration for the user's own RTK reference station - the "My Reference
+      Station" feature of the Plus plan.
+    operations:
+      - getRtkSettingInfo (GET /v1/caster/setting/rtk)
+      - currentBaseAndRovers (GET /v1/caster/current)
+  - name: Device
+    label: Registered hardware device
+    service: manager
+    description: AgriBus-G2 / GMiniR receivers and NAVI installations, with IMEI lock and SIM activation.
+  - name: StripeSubscription
+    label: Subscription
+    service: pay
+    description: Stripe-backed subscription, plan, coupon, card and invoice records for the paid plans.
+relationships:
+  - from: RemoteFieldItem
+    to: RemoteRefLineItem
+    type: has_many
+    via: RemoteRefLineItem.fieldItemId
+  - from: RemoteFieldItem
+    to: RemoteTaskRecordItem
+    type: has_many
+    via: RemoteTaskRecordItem.fieldItemId
+  - from: RemoteFieldItem
+    to: RemoteFieldElevationMap
+    type: has_one
+    via: path parameter /v1/field_items/{id}/elevation
+  - from: RemoteRefLineItem
+    to: RemoteFieldItem
+    type: belongs_to
+    via: fieldItemId
+  - from: RemoteTaskRecordItem
+    to: RemoteFieldItem
+    type: belongs_to
+    via: fieldItemId
+  - from: UserInfo
+    to: RemoteFieldItem
+    type: has_many
+    via: RemoteFieldItem.username
+  - from: UserInfo
+    to: RemoteRefLineItem
+    type: has_many
+    via: RemoteRefLineItem.username
+  - from: UserInfo
+    to: RemoteTaskRecordItem
+    type: has_many
+    via: RemoteTaskRecordItem.username
+  - from: UserInfo
+    to: UserGroupInfo
+    type: has_many
+    via: getUserGroupsInfo
+  - from: DeviceInfo
+    to: FeatureCollection
+    type: has_many
+    via: getLocationsByDeviceId (location history as GeoJSON features)
+  - from: UserInfo
+    to: DeviceInfo
+    type: has_many
+    via: getDevices ("devices linked to the authenticated user")
+  - from: UserInfo
+    to: StripeSubscription
+    type: has_one
+    via: getPurchaseInfoFromUsername (pay service)
+  - from: RemoteFieldItem
+    to: RemotePlanting
+    type: has_many
+    via: planting records reference the field
+spec_hygiene_findings:
+  - finding: invalid-format-values
+    detail: >-
+      Every timestamp property in the datastore contract declares
+      `"format": "2016-01-01T00:00:00.000Z"` - an example value written into the `format` keyword
+      instead of `date-time`. A code generator reading these schemas produces string fields with an
+      unrecognised format across the whole model.
+    evidence: components.schemas.RemoteFieldItem.properties.createdDateTime.format
+  - finding: framework-internals-leaked-into-the-contract
+    detail: >-
+      The auth contract publishes 36 schemas, of which at least 13 are Spring/Servlet framework
+      internals rather than domain objects - ApplicationContext, AutowireCapableBeanFactory,
+      BeanFactory, Environment, FilterRegistration, JspConfigDescriptor, JspPropertyGroupDescriptor,
+      ServletContext, ServletRegistration, SessionCookieConfig, TaglibDescriptor, RedirectView,
+      HttpStatusCode. They are reachable from the OAuth authorize operation's return type and are
+      not part of the API.
+    evidence: openapi/agriinfodesign-auth-openapi.yml components.schemas
+  - finding: duplicate-list-routes
+    detail: >-
+      /v1/field_items and /v1/field_items/, /v1/plantings and /v1/plantings/, /v1/ref_line_items and
+      /v1/ref_line_items/ are each published twice with different operationIds
+      (listAllFieldItems_1, list_1, listRefLines_1).
+  - finding: internal-operations-published
+    detail: >-
+      The /v1/_errors/duplication/ data-repair namespace (including a test sub-namespace that copies
+      data from RDS to Firestore) and /v1/_connect/admin/ are in the public contract. They are
+      tagged ErrorsDuplicationForTest and V1ConnectAdmin and are almost certainly not intended as
+      integration surface.

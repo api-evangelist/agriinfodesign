@@ -1,4 +1,4 @@
-# Agriinfodesign
+# Agri Info Design
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,5 +64,56 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Agriinfodesign is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://equityzen.com/company/agriinfodesign
+Agri Info Design, Ltd. (株式会社農業情報設計社) is a Japanese agricultural-technology company founded
+21 April 2014 in Obihiro, Hokkaido, with a Tokyo office in Nihonbashi. It builds the **AgriBus**
+precision-farming line: **AgriBus-NAVI**, an Android GPS/GNSS guidance app for tractors with more
+than 100,000 downloads worldwide; **AgriBus-GMiniR** and **AgriBus-G2** RTK-GNSS receivers; the
+**AgriBus-AutoSteer** automatic steering package; and **AgriBus-Web**, a browser console for field
+boundaries, guidance lines, work-record history, elevation maps and RTK base-station management. The
+company also sells ISOBUS / ISO 11783 / AG-PORT consulting.
+
+## What this profile found
+
+The AgriBus cloud platform is a set of Spring Boot microservices on `agribus-connect.net`, and each
+one **publishes a machine-readable contract anonymously** at the framework's default path. Four
+contracts, 186 operations, harvested verbatim into `openapi/`:
+
+| Service | Contract | Size |
+|---|---|---|
+| [datastore](https://datastore.agribus-connect.net/v3/api-docs) | OpenAPI 3.0.1 | 50 paths / 61 operations |
+| [auth](https://auth.agribus-connect.net/v3/api-docs) | OpenAPI 3.0.1 | 20 paths / 22 operations |
+| [manager](https://manager.agribus-connect.net/swagger-resources) | Swagger 2.0 | 71 paths |
+| [pay](https://pay.agribus-connect.net/v3/api-docs) | OpenAPI 3.0.1 | 21 paths / 22 operations |
+
+The datastore contract **declares a domain standard in its own tag metadata** — `農機オープンAPI
+v2.0.0`, the Japanese cross-vendor Agricultural Machinery Open API coordinated by NARO under MAFF's
+data-infrastructure programme — and implements its device and location surface, returning machine
+work-position history as RFC 7946 GeoJSON. The auth service backs it with an OAuth 2.0 surface and a
+**live, anonymously readable catalogue of ten `noki.*` scopes**.
+
+## And what it did not find
+
+There is no developer program around any of it. No developer portal, no API reference, no
+getting-started guide, no authentication documentation, no SDK in any language, no CLI, no sandbox,
+no Postman collection, no status page, no changelog, no published rate limits, no error catalogue,
+no MCP server, no agent card, and no documented way for a third party to register an OAuth client.
+Not one of the 186 published operations declares a single non-200 response.
+
+Everything in this repository was therefore established by reading the contracts the platform serves
+and by calling the live hosts without credentials. Notable findings are recorded in place:
+
+- `conformance/` — the 農機オープンAPI domain-standard signature, and an OIDC discovery document
+  served at `/.well-known/openid_configuration` (underscore) that **404s at the standard hyphenated
+  path** and advertises a *development* issuer from the production host.
+- `errors/` — the two vendor error envelopes, probed live, including a billing endpoint that answers
+  a missing credential with **HTTP 500**.
+- `lifecycle/` — 13 operations flagged deprecated with no sunset date, no replacement and no RFC 8594
+  headers.
+- `conventions/` — `idempotency.coverage: none` across a surface that includes money-moving writes,
+  and a `reversibility` grade of `documented` with no stated window anywhere.
+- `data-model/` — the entity graph, plus spec-hygiene findings: every timestamp declares
+  `"format": "2016-01-01T00:00:00.000Z"`, and the auth contract publishes 13 Spring framework
+  internals as schemas.
+- `skills/` — three Agent Skills grounded operation-by-operation in the provider's own contracts.
+
+Full machine-readable index: [`apis.yml`](apis.yml).

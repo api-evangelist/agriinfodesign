@@ -1,0 +1,127 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  https://auth.agribus-connect.net/v1/agricultural-api/oauth/scopes (HTTP 200, anonymous) - the
+  platform's own live scope catalogue. Mirrored by
+  https://datastore.agribus-connect.net/agricultural-api/oauth/scopes (operationId getAvailableScopes).
+  OIDC-level scopes come from the discovery document at
+  https://auth.agribus-connect.net/.well-known/openid_configuration (HTTP 200).
+docs: null
+docs_note: >-
+  There is no published scopes or permissions reference page. The list below is the verbatim body of
+  a live, unauthenticated endpoint the platform serves; display names and descriptions are the
+  provider's own Japanese strings, with English glosses added by API Evangelist and marked as such.
+note: >-
+  These scopes govern the 農機オープンAPI (Agricultural Machinery Open API) third-party integration
+  surface - the Japanese cross-vendor machine-data standard coordinated by NARO. The "noki." prefix
+  is 農機 (nouki, "agricultural machinery"). The catalogue names read/write pairs for five resource
+  families plus an admin scope, but only two of the read scopes have a corresponding operation in
+  any contract Agri Info Design publishes (see coverage below) - the rest are declared ahead of the
+  surface that would honour them.
+scope_count: 14
+scopes:
+  - scope: openid
+    source: openid_configuration
+    description: Standard OpenID Connect scope.
+  - scope: profile
+    source: openid_configuration
+    description: Standard OpenID Connect profile claims.
+  - scope: email
+    source: openid_configuration
+    description: Standard OpenID Connect email claim.
+  - scope: offline_access
+    source: openid_configuration
+    description: Refresh-token issuance.
+  - scope: noki.devices.read
+    display_name: デバイス情報の読み取り
+    display_name_en: Read device information
+    description: デバイス一覧やデバイス詳細情報の取得
+    description_en: Retrieve the device list and device detail information.
+    source: agricultural-api/oauth/scopes
+    backing_operations:
+      - getDevices (GET /v1/agricultural-machinery/devices, datastore)
+  - scope: noki.devices.write
+    display_name: デバイス情報の書き込み
+    display_name_en: Write device information
+    description: デバイス登録や設定変更
+    description_en: Register devices and change device settings.
+    source: agricultural-api/oauth/scopes
+    backing_operations: []
+  - scope: noki.locations.read
+    display_name: 位置情報の読み取り
+    display_name_en: Read location information
+    description: 作業位置履歴やトラッキングデータの取得
+    description_en: Retrieve work-position history and tracking data.
+    source: agricultural-api/oauth/scopes
+    backing_operations:
+      - getLocationsByDeviceId (GET /v1/agricultural-machinery/devices/{device_id}/locations, datastore)
+      - getLocationByDeviceId (GET /poc/devices/{device_id}/locations, datastore, tag PocNokiOpenApi)
+  - scope: noki.work-records.read
+    display_name: 作業記録の読み取り
+    display_name_en: Read work records
+    description: 作業履歴や作業統計情報の取得
+    description_en: Retrieve work history and work statistics.
+    source: agricultural-api/oauth/scopes
+    backing_operations: []
+    note: >-
+      Work records exist in the datastore contract under /v1/task_record_items, but those operations
+      are part of the first-party AgriBus surface, not the agricultural-machinery Open API surface
+      this scope governs.
+  - scope: noki.work-records.write
+    display_name: 作業記録の書き込み
+    display_name_en: Write work records
+    description: 作業データの送信や更新
+    description_en: Submit and update work data.
+    source: agricultural-api/oauth/scopes
+    backing_operations: []
+  - scope: noki.environmental-data.read
+    display_name: 環境データの読み取り
+    display_name_en: Read environmental data
+    description: 気象データや土壌データの取得
+    description_en: Retrieve weather and soil data.
+    source: agricultural-api/oauth/scopes
+    backing_operations: []
+  - scope: noki.environmental-data.write
+    display_name: 環境データの書き込み
+    display_name_en: Write environmental data
+    description: センサーデータの送信
+    description_en: Submit sensor data.
+    source: agricultural-api/oauth/scopes
+    backing_operations: []
+  - scope: noki.field-boundaries.read
+    display_name: 圃場境界の読み取り
+    display_name_en: Read field boundaries
+    description: 圃場形状や境界情報の取得
+    description_en: Retrieve field geometry and boundary information.
+    source: agricultural-api/oauth/scopes
+    backing_operations: []
+    note: >-
+      Field boundaries exist in the datastore contract under /v1/field_items, but those are
+      first-party AgriBus operations rather than the Open API surface this scope governs.
+  - scope: noki.field-boundaries.write
+    display_name: 圃場境界の書き込み
+    display_name_en: Write field boundaries
+    description: 圃場情報の登録や更新
+    description_en: Register and update field information.
+    source: agricultural-api/oauth/scopes
+    backing_operations: []
+  - scope: noki.admin
+    display_name: 管理者権限
+    display_name_en: Administrator
+    description: 全API機能への無制限アクセス
+    description_en: Unrestricted access to all API functionality.
+    source: agricultural-api/oauth/scopes
+    backing_operations: []
+    note: A single all-access scope with no documented issuance process.
+coverage:
+  scopes_declared: 10
+  scopes_with_a_published_backing_operation: 2
+  note: >-
+    Of the ten agricultural-machinery scopes the platform advertises, only noki.devices.read and
+    noki.locations.read map onto operations that appear in any contract Agri Info Design serves.
+    The remaining eight - every write scope, environmental data, and admin - are declared without a
+    published operation behind them.
+gaps:
+  - No operation-level security[] requirements in any published contract, so no spec declares which scope a given operation needs.
+  - No documented client registration, so no way for a third party to request these scopes.
+  - No scopes or permissions reference page on the provider's site.

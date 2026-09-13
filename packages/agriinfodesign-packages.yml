@@ -1,0 +1,100 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  Registry searches on 2026-09-12 against registry.npmjs.org, pypi.org, rubygems.org, crates.io,
+  search.maven.org, azuresearch-usnc.nuget.org (NuGet) and the iTunes/App Store search API;
+  plus the GitHub organisation https://github.com/agri-info-design (GitHub API, 5 public repos) and
+  the Google Play listing for AgriBus-NAVI.
+official_sdk_count: 0
+package_count: 2
+note: >-
+  Agri Info Design ships NO client SDKs. There is no first-party library for any of the four APIs it
+  publishes, in any language, on any package registry - npm, PyPI, RubyGems, crates.io, Maven Central
+  and NuGet all return zero results for "agribus" and "agri-info-design". The two entries below are
+  the company's only published distributables: the Android application itself, and one first-party
+  firmware repository. Neither is an API client library, and neither is registered anywhere that
+  carries version metadata, so the `SDKs` pointer is deliberately NOT wired in apis.yml.
+packages:
+  - name: AgriBus-NAVI
+    id: com.agri_info_design.AgriBusNavi
+    registry: google-play
+    url: https://play.google.com/store/apps/details?id=com.agri_info_design.AgriBusNavi
+    kind: mobile-application
+    official: true
+    language: Android
+    version: 6.0.2
+    published: '2026-08-18'
+    version_note: >-
+      Google Play no longer exposes a labelled "current version" field to an anonymous fetch. 6.0.2
+      is the highest version string present in the listing payload fetched 2026-09-12, and
+      "Updated on Aug 18, 2026" is the listing's own update date - read together these are the best
+      available reading, not a registry metadata field.
+    note: >-
+      The GPS guidance application itself - the client of the APIs profiled here, not a library for
+      third parties. No iOS build exists; a search of the App Store for "agribus" returns only
+      unrelated third-party tractor-GPS apps.
+  - name: FlowRateLogger
+    registry: github
+    url: https://github.com/agri-info-design/FlowRateLogger
+    kind: source-repository
+    official: true
+    language: C++
+    version: null
+    published: '2025-09-09'
+    published_note: >-
+      Date of the last push to the repository, from the GitHub API. The repository publishes no
+      tagged release and is not distributed through any package registry, so there is no version to
+      record - `version: null` here means "checked, nothing to record", not "not checked".
+    note: >-
+      The only non-forked repository in the organisation, and the only one still receiving commits.
+      A flow-rate logging utility, not an API client.
+forks_not_packages:
+  note: >-
+    The remaining four repositories in the GitHub organisation are forks of AgGateway's ADAPT
+    ecosystem, last pushed in 2019. They are evidence of the company's ISOBUS/ISOXML consulting
+    practice (see conformance/agriinfodesign-conformance.yml) but they are other organisations'
+    code, not Agri Info Design packages, and are recorded here only so a later run does not
+    mistake them for first-party SDKs.
+  repositories:
+    - name: ADAPT
+      url: https://github.com/agri-info-design/ADAPT
+      fork: true
+      last_push: '2019-02-05'
+    - name: ADAPT-Visualizer
+      url: https://github.com/agri-info-design/ADAPT-Visualizer
+      fork: true
+      last_push: '2019-04-04'
+    - name: ADMPlugin
+      url: https://github.com/agri-info-design/ADMPlugin
+      fork: true
+      last_push: '2019-04-16'
+    - name: ISOv4Plugin
+      url: https://github.com/agri-info-design/ISOv4Plugin
+      fork: true
+      last_push: '2019-01-16'
+registries_searched:
+  - registry: npm
+    query: agribus, agri-info-design, agribus-navi
+    result: 404 - no package
+  - registry: pypi
+    query: agribus, agri-info-design
+    result: 404 - no package
+  - registry: rubygems
+    query: agribus, agri-info-design
+    result: 404 - no gem
+  - registry: crates.io
+    query: agribus, agri-info-design
+    result: 403 to an unauthenticated crawler; no crate found by search
+  - registry: maven-central
+    query: agribus
+    result: numFound 0
+  - registry: nuget
+    query: agribus
+    result: totalHits 0
+  - registry: apple-app-store
+    query: agribus
+    result: no Agri Info Design title (5 unrelated third-party results)
+gaps:
+  - No client SDK in any language.
+  - No generated client published despite four machine-readable contracts being served publicly.
+  - No CLI.

@@ -1,0 +1,50 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  Live anonymous requests to https://auth.agribus-connect.net/v1/agricultural-api/oauth/scopes,
+  https://datastore.agribus-connect.net/v1/agricultural-machinery/devices,
+  https://pay.agribus-connect.net/v1/pay/purchases and
+  https://manager.agribus-connect.net/swagger-resources on 2026-09-12, with full response headers
+  captured; plus a search of agri-info-design.com, its Zendesk help centre and all four published
+  contracts for any documented limit.
+limit_count: 0
+documented: false
+headers: []
+status_on_exhaustion: null
+retry_after: false
+detail: >-
+  Agri Info Design publishes no rate limits, and its APIs emit no rate-limit signal. No RateLimit-*,
+  X-RateLimit-*, RateLimit-Policy or Retry-After header appeared on any observed response from any of
+  the four production hosts. No quota, throttle, burst or fair-use statement appears in any of the
+  186 published operations, on the pricing pages, or in the help centre. An agent integrating with
+  this platform has no runtime backpressure signal at all and must treat every 4xx/5xx as opaque -
+  which is made worse by the fact that no contract declares a non-200 response
+  (see errors/agriinfodesign-problem-types.yml).
+observed_response_headers:
+  - date
+  - content-type
+  - set-cookie (AWSALB, AWSALBCORS - AWS Application Load Balancer session affinity)
+  - vary (Origin, Access-Control-Request-Method, Access-Control-Request-Headers)
+  - x-content-type-options: nosniff
+  - x-xss-protection: '0'
+  - x-frame-options: DENY
+  - cache-control: no-cache, no-store, max-age=0, must-revalidate
+  - pragma: no-cache
+  - expires: '0'
+adjacent_limits:
+  - metric: reference_station_simultaneous_connections_third_party
+    value: 4
+    scope: per reference station, Professional plan
+    source: https://agri-info-design.com/en/plan-comparison-chart/
+    note: >-
+      A product capacity limit on the RTK correction stream, not an API rate limit. Recorded because
+      it is the only published numeric ceiling on any machine-to-machine feature.
+  - metric: work_data_retention_free_tier
+    value: 2
+    unit: days
+    source: https://agri-info-design.com/en/plan-comparison-chart/
+    note: A retention limit, not a rate limit; it bounds what a read API can return on a free account.
+gaps:
+  - No documented limits.
+  - No rate-limit response headers.
+  - No documented 429 behaviour or Retry-After.
