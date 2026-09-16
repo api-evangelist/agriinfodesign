@@ -50,130 +50,1294 @@ tags_raw:
   - telematics
   - company
 apis:
-  - name: AgriBus Datastore API
-    description: >-
-      Field, reference-line, work-record, planting, observation and elevation-map datastore behind
-      AgriBus-NAVI and AgriBus-Web, plus Agri Info Design's implementation of the Japanese
-      農機オープンAPI (Agricultural Machinery Open API v2.0.0) device and location surface, which
-      returns machine position history as a GeoJSON FeatureCollection. 50 paths / 61 operations.
-      Bearer JWT. The OpenAPI is served anonymously by springdoc at /v3/api-docs; the Swagger UI
-      on the same host is authenticated (HTTP 401).
-    humanURL: https://agri-info-design.com/en/agribus-web/
-    baseURL: https://datastore.agribus-connect.net
-    tags:
-      - Agriculture
-      - Precision Agriculture
-      - Farm Management
-      - Agricultural Machinery
-      - Geospatial
-      - GNSS
-    tags_raw:
-      - agriculture
-      - precision-agriculture
-      - farm-management
-      - agricultural-machinery
-      - geospatial
-      - gnss
-    properties:
-      - type: OpenAPI
-        url: openapi/agriinfodesign-datastore-openapi.yml
-      - type: Overlay
-        url: overlays/agriinfodesign-datastore-overlay.yaml
-      - type: DataModel
-        url: data-model/agriinfodesign-data-model.yml
-      - type: ErrorCatalog
-        url: errors/agriinfodesign-problem-types.yml
-  - name: AgriBus Authentication & OpenID Connect API
-    description: >-
-      Identity service for the AgriBus platform - sign-up, sign-in, password reset, user profile and
-      icon, group membership, Firebase custom tokens, RTK caster settings, impersonation for system
-      admins, and an OAuth 2.0 / OpenID Connect authorization surface with a published scope
-      catalogue for the agricultural-machinery Open API. 20 paths / 22 operations. Bearer JWT.
-      Serves OIDC discovery at the non-standard path /.well-known/openid_configuration and a JWKS
-      at /.well-known/jwks.json.
-    humanURL: https://agri-info-design.com/en/agribus-web/
-    baseURL: https://auth.agribus-connect.net
-    tags:
-      - Agriculture
-      - Authentication
-      - OAuth
-      - OpenID Connect
-      - RTK
-    tags_raw:
-      - agriculture
-      - authentication
-      - oauth
-      - openid-connect
-      - rtk
-    properties:
-      - type: OpenAPI
-        url: openapi/agriinfodesign-auth-openapi.yml
-      - type: Overlay
-        url: overlays/agriinfodesign-auth-overlay.yaml
-      - type: OpenIDConnect
-        url: https://auth.agribus-connect.net/.well-known/openid_configuration
-      - type: Authentication
-        url: authentication/agriinfodesign-authentication.yml
-      - type: OAuthScopes
-        url: scopes/agriinfodesign-scopes.yml
-  - name: AgriBus-Web Manager API
-    description: >-
-      The AgriBus-Web Manager API - devices, users, tokens, teams/groups, web markers, search,
-      system administration, RTK caster (base/rover) management and Stripe billing controllers,
-      in v1 and v2 generations. 71 paths. Described by a Swagger 2.0 document served anonymously
-      by Springfox at /v2/api-docs, listed in /swagger-resources as "AgriBus-Web API"; its
-      info.termsOfService and license both point at agri-info-design.com.
-    humanURL: https://agri-info-design.com/en/agribus-web/
-    baseURL: https://manager.agribus-connect.net
-    tags:
-      - Agriculture
-      - Farm Management
-      - RTK
-      - Telematics
-    tags_raw:
-      - agriculture
-      - farm-management
-      - rtk
-      - telematics
-    properties:
-      - type: Swagger
-        url: openapi/agriinfodesign-manager-swagger.json
-      - type: OpenAPI
-        url: openapi/agriinfodesign-manager-swagger.json
-      - type: Overlay
-        url: overlays/agriinfodesign-manager-overlay.yaml
-  - name: AgriBus Billing & Payments API
-    description: >-
-      Subscription and purchase service for the AgriBus paid plans - Stripe cards, coupons,
-      invoices, upcoming invoices, plans, subscriptions and payment-method changes, Google Play
-      real-time developer notifications and Android purchase verification, AgriBus-NAVI purchase
-      status, and AgriBus-DWH market-monitor access tokens. 21 paths / 22 operations. Bearer JWT.
-      OpenAPI served anonymously at /v3/api-docs.
-    humanURL: https://agri-info-design.com/paidplans/
-    baseURL: https://pay.agribus-connect.net
-    tags:
-      - Agriculture
-      - Billing
-      - Payments
-      - Subscriptions
-    tags_raw:
-      - agriculture
-      - billing
-      - payments
-      - subscriptions
-    properties:
-      - type: OpenAPI
-        url: openapi/agriinfodesign-pay-openapi.yml
-      - type: Overlay
-        url: overlays/agriinfodesign-pay-overlay.yaml
-      - type: Plans
-        url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-agriculturalapioauth-api
+  name: Agri Info Design Agricultural API O Auth API
+  description: 農機API OAuth管理
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - AgriculturalApiOAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-agriculturalapioauth-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-casterv1-api
+  name: Agri Info Design Caster V1 API
+  description: V 1 Caster Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - CasterV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-casterv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-casterv2-api
+  name: Agri Info Design Caster V2 API
+  description: V 2 Caster Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - CasterV2
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-casterv2-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-casterv3-api
+  name: Agri Info Design Caster V3 API
+  description: V 3 Caster Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - CasterV3
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-casterv3-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-devicev1-api
+  name: Agri Info Design Device V1 API
+  description: V 1 Device Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - DeviceV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-devicev1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-errorsduplication-api
+  name: Agri Info Design Errors Duplication API
+  description: データ修復API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - ErrorsDuplication
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-errorsduplication-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-errorsduplicationfortest-api
+  name: Agri Info Design Errors Duplication For Test API
+  description: データ修復テスト用API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - ErrorsDuplicationForTest
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-errorsduplicationfortest-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-firebasev1-api
+  name: Agri Info Design Firebase V1 API
+  description: V 1 Firebase Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - FirebaseV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-firebasev1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-googlev1-api
+  name: Agri Info Design Google V1 API
+  description: V 1 Google Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - GoogleV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-googlev1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-migrationv1-api
+  name: Agri Info Design Migration V1 API
+  description: V 1 Migration Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - MigrationV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-migrationv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-naviv1-api
+  name: Agri Info Design Navi V1 API
+  description: V 1 Navi Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - NaviV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-naviv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-openid-connect-api
+  name: Agri Info Design OpenID Connect API
+  description: OpenID Connect Discovery and endpoints
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - OpenID Connect
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-openid-connect-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-pocnokiopenapi-api
+  name: Agri Info Design Poc Noki Open API
+  description: The PocNokiOpenApi API from Agri Info Design — 1 operation(s) for pocnokiopenapi.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - PocNokiOpenApi
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-pocnokiopenapi-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-searchv1-api
+  name: Agri Info Design Search V1 API
+  description: V 1 Search Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - SearchV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-searchv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-soracomv1-api
+  name: Agri Info Design Soracom V1 API
+  description: V 1 Soracom Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - SoracomV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-soracomv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-stripev1-api
+  name: Agri Info Design Stripe V1 API
+  description: V 1 Stripe Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - StripeV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-stripev1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-stripev2-api
+  name: Agri Info Design Stripe V2 API
+  description: V 2 Stripe Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - StripeV2
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-stripev2-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-subscriptionv1-api
+  name: Agri Info Design Subscription V1 API
+  description: V 1 Subscription Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - SubscriptionV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-subscriptionv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-systemv1-api
+  name: Agri Info Design System V1 API
+  description: V 1 System Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - SystemV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-systemv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-tokenv1-api
+  name: Agri Info Design Token V1 API
+  description: V 1 Token Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - TokenV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-tokenv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-tokenv2-api
+  name: Agri Info Design Token V2 API
+  description: V 2 Token Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - TokenV2
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-tokenv2-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-userv1-api
+  name: Agri Info Design User V1 API
+  description: V 1 User Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - UserV1
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-userv1-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-userv2-api
+  name: Agri Info Design User V2 API
+  description: V 2 User Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - UserV2
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-userv2-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-userv3-api
+  name: Agri Info Design User V3 API
+  description: V 3 User Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - UserV3
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-userv3-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1agribusnavi-api
+  name: Agri Info Design V1 Agri Bus Navi API
+  description: AgriBus-NAVI専用のAPI
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1AgriBusNavi
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1agribusnavi-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1agriculturalapioauth-api
+  name: Agri Info Design V1 Agricultural API O Auth API
+  description: 農機API用OAuth2管理
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1AgriculturalApiOAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1agriculturalapioauth-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1agriculturalmachinery-api
+  name: Agri Info Design V1 Agricultural Machinery API
+  description: 農機オープンAPI v2.0.0
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1AgriculturalMachinery
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1agriculturalmachinery-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1caster-api
+  name: Agri Info Design V1 Caster API
+  description: Caster関連API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Caster
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1caster-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1connectadmin-api
+  name: Agri Info Design V1 Connect Admin API
+  description: The V1ConnectAdmin API from Agri Info Design — 2 operation(s) for v1connectadmin.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1ConnectAdmin
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1connectadmin-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1fieldelevationmap-api
+  name: Agri Info Design V1 Field Elevation Map API
+  description: >-
+    The V1FieldElevationMap API from Agri Info Design — 1 operation(s) for v1fieldelevationmap.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1FieldElevationMap
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1fieldelevationmap-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1fielditem-api
+  name: Agri Info Design V1 Field Item API
+  description: The V1FieldItem API from Agri Info Design — 9 operation(s) for v1fielditem.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1FieldItem
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1fielditem-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1firebase-api
+  name: Agri Info Design V1 Firebase API
+  description: Firebase関連API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Firebase
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1firebase-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1firereflineitem-api
+  name: Agri Info Design V1 Fire Ref Line Item API
+  description: The V1FireRefLineItem API from Agri Info Design — 7 operation(s) for v1firereflineitem.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1FireRefLineItem
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1firereflineitem-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1firetaskrecorditem-api
+  name: Agri Info Design V1 Fire Task Record Item API
+  description: >-
+    The V1FireTaskRecordItem API from Agri Info Design — 7 operation(s) for v1firetaskrecorditem.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1FireTaskRecordItem
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1firetaskrecorditem-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1google-api
+  name: Agri Info Design V1 Google API
+  description: Google関係のAPI
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Google
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1google-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1impersonate-api
+  name: Agri Info Design V1 Impersonate API
+  description: Connect管理者権限ユーザー専用のなりすましユーザートークン発行API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Impersonate
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1impersonate-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1import-api
+  name: Agri Info Design V1 Import API
+  description: The V1Import API from Agri Info Design — 1 operation(s) for v1import.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Import
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1import-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1marketmonitor-api
+  name: Agri Info Design V1 Market Monitor API
+  description: マーケット情報 (AgriBus-DWH) 連携API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1MarketMonitor
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1marketmonitor-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1migrationtest-api
+  name: Agri Info Design V1 Migration Test API
+  description: Migration Test Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1MigrationTest
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1migrationtest-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1navi-api
+  name: Agri Info Design V1 Navi API
+  description: Navi関係のAPI
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Navi
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1navi-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1oauth-api
+  name: Agri Info Design V1 O Auth API
+  description: OAuth関連API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1oauth-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1observation-api
+  name: Agri Info Design V1 Observation API
+  description: The V1Observation API from Agri Info Design — 4 operation(s) for v1observation.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Observation
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1observation-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1operation-api
+  name: Agri Info Design V1 Operation API
+  description: The V1Operation API from Agri Info Design — 1 operation(s) for v1operation.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Operation
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1operation-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1partner-api
+  name: Agri Info Design V1 Partner API
+  description: The V1Partner API from Agri Info Design — 1 operation(s) for v1partner.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Partner
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1partner-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1pay-api
+  name: Agri Info Design V1 Pay API
+  description: 課金関連のAPI
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Pay
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1pay-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1planting-api
+  name: Agri Info Design V1 Planting API
+  description: The V1Planting API from Agri Info Design — 3 operation(s) for v1planting.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Planting
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1planting-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1realtime-api
+  name: Agri Info Design V1 Real Time API
+  description: The V1RealTime API from Agri Info Design — 1 operation(s) for v1realtime.
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1RealTime
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1realtime-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1signup-api
+  name: Agri Info Design V1 Sign Up API
+  description: サインアップAPI
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1SignUp
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1signup-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1stripe-api
+  name: Agri Info Design V1 Stripe API
+  description: Stripe関係のAPI
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1Stripe
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1stripe-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1system-api
+  name: Agri Info Design V1 System API
+  description: システム情報API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1System
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1system-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1user-api
+  name: Agri Info Design V1 User API
+  description: ユーザー情報API
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1User
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1user-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-v1usericon-api
+  name: Agri Info Design V1 User Icon API
+  description: ユーザーアイコンAPI
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - V1UserIcon
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-v1usericon-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
+- aid: agriinfodesign:agriinfodesign-webmarkerv2-api
+  name: Agri Info Design Web Marker V2 API
+  description: V 2 Web Marker Controller
+  humanURL: https://agri-info-design.com/en/agribus-web/
+  baseURL: https://datastore.agribus-connect.net
+  tags:
+  - WebMarkerV2
+  properties:
+  - type: OpenAPI
+    url: openapi/agriinfodesign-webmarkerv2-api-openapi.yml
+  - type: DataModel
+    url: data-model/agriinfodesign-data-model.yml
+  - type: ErrorCatalog
+    url: errors/agriinfodesign-problem-types.yml
+  - type: OpenIDConnect
+    url: https://auth.agribus-connect.net/.well-known/openid_configuration
+  - type: Authentication
+    url: authentication/agriinfodesign-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agriinfodesign-scopes.yml
+  - type: Swagger
+    url: openapi/agriinfodesign-manager-swagger.json
+  - type: Plans
+    url: plans/agriinfodesign-plans-pricing.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
   - FN: APIs.json
     email: info@apis.io
 common:
+  - type: Overlay
+    url: overlays/agriinfodesign-datastore-overlay.yaml
+  - type: Overlay
+    url: overlays/agriinfodesign-auth-overlay.yaml
+  - type: Overlay
+    url: overlays/agriinfodesign-manager-overlay.yaml
+  - type: Overlay
+    url: overlays/agriinfodesign-pay-overlay.yaml
   - type: Website
     url: https://agri-info-design.com/
   - type: Login
