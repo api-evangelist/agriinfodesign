@@ -71,7 +71,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-casterv1-api
@@ -95,7 +95,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-casterv2-api
@@ -119,7 +119,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-casterv3-api
@@ -143,7 +143,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-devicev1-api
@@ -167,7 +167,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-errorsduplication-api
@@ -191,7 +191,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-errorsduplicationfortest-api
@@ -215,7 +215,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-firebasev1-api
@@ -239,7 +239,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-googlev1-api
@@ -263,7 +263,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-migrationv1-api
@@ -287,7 +287,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-naviv1-api
@@ -311,7 +311,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-openid-connect-api
@@ -335,7 +335,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-pocnokiopenapi-api
@@ -359,7 +359,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-soracomv1-api
@@ -383,7 +383,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-stripev1-api
@@ -407,7 +407,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-stripev2-api
@@ -431,7 +431,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-subscriptionv1-api
@@ -455,7 +455,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-tokenv1-api
@@ -479,7 +479,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-tokenv2-api
@@ -503,7 +503,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-userv3-api
@@ -527,7 +527,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1agribusnavi-api
@@ -551,7 +551,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1agriculturalapioauth-api
@@ -575,7 +575,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1agriculturalmachinery-api
@@ -599,7 +599,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1caster-api
@@ -623,7 +623,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1connectadmin-api
@@ -647,7 +647,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1fieldelevationmap-api
@@ -672,7 +672,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1fielditem-api
@@ -696,7 +696,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1firebase-api
@@ -720,7 +720,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1firereflineitem-api
@@ -744,7 +744,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1firetaskrecorditem-api
@@ -769,7 +769,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1google-api
@@ -793,7 +793,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1impersonate-api
@@ -817,7 +817,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1import-api
@@ -841,7 +841,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1marketmonitor-api
@@ -865,7 +865,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1migrationtest-api
@@ -889,7 +889,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1navi-api
@@ -913,7 +913,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1oauth-api
@@ -937,7 +937,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1observation-api
@@ -961,7 +961,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1operation-api
@@ -985,7 +985,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1partner-api
@@ -1009,7 +1009,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1pay-api
@@ -1033,7 +1033,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1planting-api
@@ -1057,7 +1057,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1realtime-api
@@ -1081,7 +1081,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1signup-api
@@ -1105,7 +1105,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1stripe-api
@@ -1129,7 +1129,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1system-api
@@ -1153,7 +1153,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1usericon-api
@@ -1177,7 +1177,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-webmarkerv2-api
@@ -1201,7 +1201,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-search-v1-api
@@ -1225,7 +1225,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-system-v1-api
@@ -1249,7 +1249,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-user-v1-api
@@ -1273,7 +1273,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-user-v2-api
@@ -1297,7 +1297,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 - aid: agriinfodesign:agriinfodesign-v1-user-api
@@ -1321,7 +1321,7 @@ apis:
   - type: OAuthScopes
     url: scopes/agriinfodesign-scopes.yml
   - type: Swagger
-    url: openapi/agriinfodesign-manager-swagger.json
+    url: openapi/_original/agriinfodesign-manager-swagger.json
   - type: Plans
     url: plans/agriinfodesign-plans-pricing.yml
 maintainers:
