@@ -14,8 +14,22 @@
       "title": "",
       "saved": 0,
       "method": "discovered"
+    },
+    {
+      "source": "https://agri-info-design.com/en/news/feed/",
+      "feed_url": "https://agri-info-design.com/en/news/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://agri-info-design.com/faq/blog/feed/",
+      "feed_url": "https://agri-info-design.com/faq/blog/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-09-13T13:00:00Z"
+  "post_count": 10,
+  "fetched": "2026-09-19T20:17:39Z"
 }
