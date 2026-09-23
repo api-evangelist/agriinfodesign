@@ -1,0 +1,123 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Partner API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Partner
+paths:
+  /v1/partners/sac:
+    get:
+      tags:
+      - V1Partner
+      description: 現在ログインしているユーザーのSpaceAgri圃場リストを返します
+      operationId: getSpaceAgriFields
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RemoteSpaceAgriField'
+      summary: Get space agri fields
+      x-summary-source: derived
+    put:
+      tags:
+      - V1Partner
+      description: AIDにSACのシステム連携情報を送信します
+      operationId: putSpaceAgriLinkageInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpaceAgriPutRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SpaceAgriPutRequest'
+      summary: Put space agri linkage info
+      x-summary-source: derived
+components:
+  schemas:
+    BoundingBox:
+      type: object
+      properties:
+        north:
+          type: number
+          format: double
+        south:
+          type: number
+          format: double
+        east:
+          type: number
+          format: double
+        west:
+          type: number
+          format: double
+    SpaceAgriPutRequest:
+      type: object
+      properties:
+        farmId:
+          type: string
+        fieldId:
+          type: string
+        sceneId:
+          type: string
+        globalImageFileName:
+          type: string
+        localImageFileName:
+          type: string
+        baseURL:
+          type: string
+    RemoteSpaceAgriField:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        aidUsername:
+          type: string
+        createdAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        name:
+          type: string
+        areaId:
+          type: string
+        farmId:
+          type: string
+        fieldId:
+          type: string
+        sceneId:
+          type: string
+        globalImageFileName:
+          type: string
+        localImageFileName:
+          type: string
+        boundingBox:
+          $ref: '#/components/schemas/BoundingBox'
+        globalImageUrl:
+          type: string
+        localImageUrl:
+          type: string
+        countryId:
+          type: string
+        baseUrl:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

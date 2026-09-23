@@ -1,0 +1,39 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Google API
+  description: Google関係のAPI
+servers:
+- url: http://pay.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Google
+  description: Google関係のAPI
+paths:
+  /v1/google/play/rtdn:
+    post:
+      tags:
+      - V1Google
+      description: Googleの課金情報自動同期
+      operationId: receiveNotification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+                format: '2016-01-01T00:00:00.000Z'
+        required: true
+      responses:
+        '200':
+          description: OK
+      summary: Receive notification
+      x-summary-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

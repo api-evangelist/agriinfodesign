@@ -1,0 +1,161 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Caster V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: CasterV1
+  description: V 1 Caster Controller
+paths:
+  /v1/caster:
+    post:
+      tags:
+      - CasterV1
+      summary: 利用しないでください
+      description: YouCORSにマウントポイントとNtripクライアントを作成する
+      operationId: setUpYouCorsUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SetUpYouCorsResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUpYouCorsRequest'
+        description: request
+        required: true
+  /v1/caster/cleanup:
+    get:
+      tags:
+      - CasterV1
+      summary: 利用しないでください
+      description: クリーンアップ対象の一覧（同時接続用クライアントおよびStandardプランから退会済みであるユーザーのマウントポイント・クライアント）を取得する
+      operationId: listCleanupTargetsUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/CleanupTargetsResponse'
+    post:
+      tags:
+      - CasterV1
+      summary: 利用しないでください
+      description: 同時接続用クライアントおよびStandardプランから退会済みであるユーザーのマウントポイント・クライアントを一括削除する
+      operationId: cleanupUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/CleanupCasterResponse'
+  /v1/caster/client:
+    post:
+      tags:
+      - CasterV1
+      summary: 利用しないでください
+      description: このAPIは非推奨です。後方互換性のためだけに残されています。CasterV2のcreateClientを使用してください。
+      operationId: createClientUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SetUpYouCorsResponse'
+      deprecated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUpYouCorsRequest'
+        description: request
+        required: true
+  /v1/caster/client/{clientName}:
+    post:
+      tags:
+      - CasterV1
+      summary: 利用しないでください
+      description: このAPIは非推奨です。後方互換性のためだけに残されています。CasterV2のcreateClientByNameを使用してください。
+      operationId: createClientByNameUsingPOST
+      parameters:
+      - name: clientName
+        in: path
+        description: clientName
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SetUpYouCorsResponse'
+      deprecated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUpYouCorsRequest'
+        description: request
+        required: true
+components:
+  schemas:
+    SetUpYouCorsRequest:
+      type: object
+    SetUpYouCorsResponse:
+      type: object
+      properties:
+        clientStatus:
+          type: string
+          enum:
+          - Succeeded
+          - Failure
+          - AlreadyExists
+          - None
+        mountpointStatus:
+          type: string
+          enum:
+          - Succeeded
+          - Failure
+          - AlreadyExists
+          - None
+    CleanupCasterResponse:
+      type: object
+      properties:
+        cleanupStatus:
+          type: string
+          enum:
+          - Execution
+          - NonExecution
+    CleanupTargetsResponse:
+      type: object
+      properties:
+        cleanupPossible:
+          type: boolean
+        clientNames:
+          type: array
+          items:
+            type: string
+        mountpointNames:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

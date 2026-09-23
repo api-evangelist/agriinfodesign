@@ -1,0 +1,171 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Planting API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Planting
+paths:
+  /v1/plantings/{id}:
+    put:
+      tags:
+      - V1Planting
+      description: 作付を更新
+      operationId: update
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditPlantingRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemotePlanting'
+      summary: Update
+      x-summary-source: derived
+    delete:
+      tags:
+      - V1Planting
+      description: 対象圃場の作付を削除
+      operationId: delete_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+      summary: Delete 1
+      x-summary-source: derived
+  /v1/plantings:
+    get:
+      tags:
+      - V1Planting
+      description: フォローしているユーザーを含む作付一覧
+      operationId: list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RemotePlanting'
+      summary: List
+      x-summary-source: derived
+    post:
+      tags:
+      - V1Planting
+      description: 対象圃場に作付を作成
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditPlantingRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemotePlanting'
+      summary: Create
+      x-summary-source: derived
+  /v1/plantings/:
+    get:
+      tags:
+      - V1Planting
+      description: フォローしているユーザーを含む作付一覧
+      operationId: list_1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RemotePlanting'
+      summary: List 1
+      x-summary-source: derived
+components:
+  schemas:
+    EditPlantingRequest:
+      type: object
+      properties:
+        fieldIds:
+          type: array
+          items:
+            type: string
+        masterCropId:
+          type: integer
+          format: int32
+        cropName:
+          type: string
+        varietyName:
+          type: string
+        colorHex:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+    RemotePlanting:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        fieldIds:
+          type: array
+          items:
+            type: string
+        masterCropId:
+          type: integer
+          format: int32
+        cropName:
+          type: string
+        varietyName:
+          type: string
+        colorHex:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        now:
+          type: boolean
+        fieldNames:
+          type: array
+          items:
+            type: string
+        fieldArea:
+          type: number
+          format: double
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,73 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Sign Up API
+  description: サインアップAPI
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1SignUp
+  description: サインアップAPI
+paths:
+  /v1/signup:
+    post:
+      tags:
+      - V1SignUp
+      summary: メアド到達確認なしのSignUp
+      operationId: simpleSignUpAndSignIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimpleSignUpAndSignInRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type:
+          - string
+          - 'null'
+        accessTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        refreshTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+    SimpleSignUpAndSignInRequest:
+      required:
+      - email
+      - password
+      - sendMeNews
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        sendMeNews:
+          type: boolean
+        language:
+          type: string
+          description: 表示言語・en/ja
+        zoneinfo:
+          type: string
+          description: タイムゾーン
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

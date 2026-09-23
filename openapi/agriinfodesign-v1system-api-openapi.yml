@@ -1,0 +1,150 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 System API
+  description: システム情報API
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1System
+  description: システム情報API
+paths:
+  /v1/system/users/{username}:
+    get:
+      tags:
+      - V1System
+      summary: ユーザー情報取得
+      description: ユーザー情報を取得します。他人の情報を取得できるので扱いに注意してください。
+      operationId: getUser
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+    put:
+      tags:
+      - V1System
+      summary: PayサーバからUser情報の更新を行います。
+      operationId: updateUserFromOtherServer
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserFromPayRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    UserInfo:
+      type: object
+      properties:
+        username:
+          type: string
+        nickname:
+          type: string
+        email:
+          type: string
+        language:
+          type: string
+        zoneinfo:
+          type: string
+        sendMeNews:
+          type: boolean
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+          - JpUnitsOfArea
+          - ThUnitsOfArea
+        icon:
+          $ref: '#/components/schemas/UserPicture'
+        iconUrl:
+          type: string
+        customIconUrl:
+          type: string
+        stripeId:
+          type: string
+        trialAvailable:
+          type: boolean
+          description: トライアル可能かどうかを示します。何度もトライアルを繰り返さないようにするためです。
+        systemAdmin:
+          type: boolean
+          description: システム管理者かどうかを示します。
+        functionality:
+          type: string
+          description: Functionalityを示します。
+          enum:
+          - AsFree
+          - AsPlus
+          - AsProfessional
+          - Custom
+          - AsStandard
+        fsMigrated:
+          type: boolean
+          description: Fire移行が完了しているかどうかを示します。
+        enforcedPlan:
+          type: string
+          description: 強制指定されたプランを示します。
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        passwordEntered:
+          type: boolean
+          description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
+        oauthUser:
+          type: boolean
+    UserPicture:
+      type: object
+      properties:
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        url:
+          type: string
+    UpdateUserFromPayRequest:
+      type: object
+      properties:
+        stripeId:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsPlus
+          - AsProfessional
+          - Custom
+          - AsStandard
+        trialAvailable:
+          type: boolean
+        continuousSince:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

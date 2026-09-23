@@ -1,0 +1,196 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Soracom V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: SoracomV1
+  description: V 1 Soracom Controller
+paths:
+  /v1/soracom/native/subscribers/{imsi}:
+    get:
+      tags:
+      - SoracomV1
+      summary: nativeGetSubscriberInfo
+      description: Soracom APIを直接叩きます。Subscriber情報を取得します
+      operationId: nativeGetSubscriberInfoUsingGET
+      parameters:
+      - name: imsi
+        in: path
+        description: imsi
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SoracomSubscriberInfo'
+  /v1/soracom/sims/{imsi}/activate:
+    post:
+      tags:
+      - SoracomV1
+      summary: activateSim
+      description: Soracom APIを直接叩きます。Subscriber情報を取得します
+      operationId: activateSimUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ActivateSimResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivateSimRequest'
+        description: request
+        required: true
+components:
+  schemas:
+    SoracomSubscriberInfo:
+      type: object
+      properties:
+        subscriber:
+          $ref: '#/components/schemas/Subscriber'
+    ActivateSimRequest:
+      type: object
+      required:
+      - imei
+      - imsi
+      - simGroupId
+      - simName
+      properties:
+        agriBusProductId:
+          type: string
+        agriBusProductSerialNumber:
+          type: string
+        imei:
+          type: string
+        imsi:
+          type: string
+        simGroupId:
+          type: string
+        simName:
+          type: string
+    SessionStatus:
+      type: object
+      properties:
+        dnsServers:
+          type: array
+          items:
+            type: string
+        gatewayPrivateIpAddress:
+          type: string
+        gatewayPublicIpAddress:
+          type: string
+        imei:
+          type: string
+        lastUpdatedAt:
+          type: integer
+          format: int64
+        online:
+          type: boolean
+        ueIpAddress:
+          type: string
+        vpgId:
+          type: string
+    Subscriber:
+      type: object
+      properties:
+        apn:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        expiredAt:
+          type: integer
+          format: int64
+        expiryAction:
+          type: string
+        groupId:
+          type: string
+        iccid:
+          type: string
+        imeiLock:
+          $ref: '#/components/schemas/ImeiLock'
+        imsi:
+          type: string
+        ipAddress:
+          type: string
+        lastModifiedAt:
+          type: integer
+          format: int64
+        moduleType:
+          type: string
+        msisdn:
+          type: string
+        operatorId:
+          type: string
+        plan:
+          type: integer
+          format: int32
+        serialNumber:
+          type: string
+        sessionStatus:
+          $ref: '#/components/schemas/SessionStatus'
+        speedClass:
+          type: string
+        status:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+        terminationEnabled:
+          type: boolean
+    ActivateSimResponse:
+      type: object
+      required:
+      - activationStatus
+      - imeiLockStatus
+      - setGroupIdResult
+      - setNameResult
+      properties:
+        activationStatus:
+          type: string
+          enum:
+          - AlreadyActivated
+          - Activated
+          - Deactivated
+          - Failure
+        imeiLockStatus:
+          type: string
+          enum:
+          - Locked
+          - Unlocked
+          - Failure
+        setGroupIdResult:
+          type: string
+          enum:
+          - Success
+          - Failure
+        setNameResult:
+          type: string
+          enum:
+          - Success
+          - Failure
+    ImeiLock:
+      type: object
+      properties:
+        imei:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

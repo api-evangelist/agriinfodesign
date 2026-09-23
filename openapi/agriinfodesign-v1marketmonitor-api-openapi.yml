@@ -1,0 +1,58 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Market Monitor API
+  description: マーケット情報 (AgriBus-DWH) 連携API
+servers:
+- url: http://pay.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1MarketMonitor
+  description: マーケット情報 (AgriBus-DWH) 連携API
+paths:
+  /v1/market-monitor/feed-access-token:
+    get:
+      tags:
+      - V1MarketMonitor
+      description: ニュースフィード (feed-api) 閲覧用の短命トークンを発行します。無料会員にも発行し、表示範囲は plan claim で feed-api 側が制御します。
+      operationId: getFeedAccessToken
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketMonitorAccessTokenResponse'
+      summary: Get feed access token
+      x-summary-source: derived
+  /v1/market-monitor/access-token:
+    get:
+      tags:
+      - V1MarketMonitor
+      description: 有料プラン会員に soybean/wheat-monitor 閲覧用の短命トークンを発行します。無料プランは403。
+      operationId: getMarketMonitorAccessToken
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketMonitorAccessTokenResponse'
+      summary: Get market monitor access token
+      x-summary-source: derived
+components:
+  schemas:
+    MarketMonitorAccessTokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        expiresIn:
+          type: integer
+          format: int64
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

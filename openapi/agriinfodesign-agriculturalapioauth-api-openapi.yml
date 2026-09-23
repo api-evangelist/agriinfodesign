@@ -1,0 +1,105 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign Agricultural API O Auth API
+  description: 農機API OAuth管理
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: AgriculturalApiOAuth
+  description: 農機API OAuth管理
+paths:
+  /agricultural-api/oauth/scopes:
+    get:
+      tags:
+      - AgriculturalApiOAuth
+      summary: 利用可能なスコープ一覧取得
+      description: 農機APIで利用可能なOAuth2スコープの一覧を取得します
+      operationId: getAvailableScopes
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScopeInfo'
+  /agricultural-api/oauth/client/validate:
+    get:
+      tags:
+      - AgriculturalApiOAuth
+      summary: クライアント検証
+      description: OAuth2クライアントの妥当性を検証します
+      operationId: validateClient
+      parameters:
+      - name: clientId
+        in: query
+        description: クライアントID
+        required: true
+        schema:
+          type: string
+      - name: redirectUri
+        in: query
+        description: リダイレクトURI
+        required: true
+        schema:
+          type: string
+      - name: scope
+        in: query
+        description: 要求スコープ（スペース区切り）
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ClientValidationResponse'
+components:
+  schemas:
+    ScopeInfo:
+      type: object
+      properties:
+        scope:
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+        required:
+          type: boolean
+    ClientValidationResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        clientId:
+          type: string
+        clientName:
+          type: string
+        redirectUri:
+          type: string
+        requestedScopes:
+          type: array
+          items:
+            type: string
+        validScopes:
+          type: array
+          items:
+            type: string
+        invalidScopes:
+          type: array
+          items:
+            type: string
+        errorMessage:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

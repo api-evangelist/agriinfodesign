@@ -1,0 +1,250 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Subscription V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: SubscriptionV1
+  description: V 1 Subscription Controller
+paths:
+  /v1/subscription:
+    get:
+      tags:
+      - SubscriptionV1
+      summary: get
+      description: 購読情報を取得します
+      operationId: getUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SubscriptionInfo'
+  /v1/subscription/account/{uuid}:
+    delete:
+      tags:
+      - SubscriptionV1
+      summary: unsubscribeAccount
+      description: アカウント購読（フォロー）を削除します
+      operationId: unsubscribeAccountUsingDELETE
+      parameters:
+      - name: uuid
+        in: path
+        description: uuid
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UnsubscribeResponse'
+  /v1/subscription/request:
+    post:
+      tags:
+      - SubscriptionV1
+      summary: createRequest
+      description: 購読リクエストを作成します
+      operationId: createRequestUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/CreateSubscriptionResponse'
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/CreateSubscriptionRequest'
+        description: request
+        required: true
+  /v1/subscription/request/{mode}:
+    get:
+      tags:
+      - SubscriptionV1
+      summary: listRequests
+      description: 購読リクエストのリストを取得します
+      operationId: listRequestsUsingGET
+      parameters:
+      - name: mode
+        in: path
+        description: mode
+        required: true
+        schema:
+          type: string
+          enum:
+          - incoming
+          - outgoing
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionRequestInfo'
+  /v1/subscription/request/{requestId}:
+    put:
+      tags:
+      - SubscriptionV1
+      summary: updateRequest
+      description: 購読リクエストを承認/否認します
+      operationId: updateRequestUsingPUT
+      parameters:
+      - name: requestId
+        in: path
+        description: requestId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UpdateSubscriptionResponse'
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/UpdateSubscriptionRequest'
+        description: request
+        required: true
+    delete:
+      tags:
+      - SubscriptionV1
+      summary: deleteRequest
+      description: 購読リクエストを削除します
+      operationId: deleteRequestUsingDELETE
+      parameters:
+      - name: requestId
+        in: path
+        description: requestId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/DeleteSubscriptionResponse'
+components:
+  schemas:
+    UpdateSubscriptionRequest:
+      type: object
+      required:
+      - action
+      properties:
+        action:
+          type: string
+          enum:
+          - Accept
+          - Reject
+    SubscriptionInfo:
+      type: object
+      properties:
+        subscriberAccounts:
+          type: array
+          description: 購読されているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingAccounts:
+          type: array
+          description: 購読しているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingGroups:
+          type: array
+          description: 購読しているグループ
+          items:
+            $ref: '#/components/schemas/Subscription'
+    CreateSubscriptionRequest:
+      type: object
+      required:
+      - fromUsername
+      - toUsername
+      properties:
+        fromUsername:
+          type: string
+        toUsername:
+          type: string
+    UnsubscribeResponse:
+      type: object
+    UpdateSubscriptionResponse:
+      type: object
+    CreateSubscriptionResponse:
+      type: object
+    DeleteSubscriptionResponse:
+      type: object
+    SubscriptionRequestInfo:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        fromIconUrl:
+          type: string
+        fromNickname:
+          type: string
+        fromUsername:
+          type: string
+        id:
+          type: string
+        toIconUrl:
+          type: string
+        toNickname:
+          type: string
+        toUsername:
+          type: string
+    Subscription:
+      type: object
+      required:
+      - type
+      - uuid
+      properties:
+        email:
+          type: string
+        enterprise:
+          type: boolean
+        groupUsernames:
+          type: array
+          items:
+            type: string
+        iconUrl:
+          type: string
+        name:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        nickname:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        organizationName:
+          type: string
+        region:
+          type: string
+        type:
+          type: string
+          enum:
+          - Account
+          - Group
+        uuid:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

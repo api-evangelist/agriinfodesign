@@ -1,0 +1,65 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Migration V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: MigrationV1
+  description: V 1 Migration Controller
+paths:
+  /v1/migration/completed/{username}:
+    post:
+      tags:
+      - MigrationV1
+      summary: completed
+      description: 指定ユーザのFirestoreへの移行完了を保存します
+      operationId: completedUsingPOST
+      parameters:
+      - name: username
+        in: path
+        description: username
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+  /v1/migration/follows:
+    post:
+      tags:
+      - MigrationV1
+      summary: migrationFollows
+      description: フォロー関係を全てFirestoreに移行します
+      operationId: migrationFollowsUsingPOST
+      responses:
+        '200':
+          description: OK
+  /v1/migration/follows/{username}:
+    post:
+      tags:
+      - MigrationV1
+      summary: migrationFollowsForUser
+      description: 指定ユーザのフォロー関係をFirestoreに移行します
+      operationId: migrationFollowsForUserUsingPOST
+      parameters:
+      - name: username
+        in: path
+        description: username
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+components:
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

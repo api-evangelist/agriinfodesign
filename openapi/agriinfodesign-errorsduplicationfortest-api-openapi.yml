@@ -1,0 +1,83 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign Errors Duplication For Test API
+  description: データ修復テスト用API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: ErrorsDuplicationForTest
+  description: データ修復テスト用API
+paths:
+  /v1/_errors/duplication/test/copy:
+    post:
+      tags:
+      - ErrorsDuplicationForTest
+      description: 全ての対象usernameの重複データをFirestoreへコピーします
+      operationId: copyAllDuplicatedDataFromRdsToFirestore
+      responses:
+        '200':
+          description: OK
+      summary: Copy all duplicated data from rds to firestore
+      x-summary-source: derived
+  /v1/_errors/duplication/test/copy/{username}:
+    post:
+      tags:
+      - ErrorsDuplicationForTest
+      description: 対象usernameの重複データをFirestoreへコピーします
+      operationId: copyDuplicatedDataFromRdsToFirestore
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      summary: Copy duplicated data from rds to firestore
+      x-summary-source: derived
+  /v1/_errors/duplication/test/{username}/count:
+    get:
+      tags:
+      - ErrorsDuplicationForTest
+      description: 対象usernameの重複データの件数をカウントします。戻り値は集計値を文字列で表現したものです。
+      operationId: countDuplicatedData
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+      summary: Count duplicated data
+      x-summary-source: derived
+  /v1/_errors/duplication/test/count:
+    get:
+      tags:
+      - ErrorsDuplicationForTest
+      description: 全体の重複データをカウントします。戻り値は集計値を文字列で表現したものです。
+      operationId: countAllDuplicatedData
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+      summary: Count all duplicated data
+      x-summary-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

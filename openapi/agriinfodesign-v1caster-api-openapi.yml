@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Caster API
+  description: Caster関連API
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Caster
+  description: Caster関連API
+paths:
+  /v1/caster/setting/rtk:
+    get:
+      tags:
+      - V1Caster
+      summary: RTK設定情報を返します
+      operationId: getRtkSettingInfo
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RtkSettingInfo'
+  /v1/caster/current:
+    get:
+      tags:
+      - V1Caster
+      summary: 現在のBase/Rover情報を返します
+      operationId: currentBaseAndRovers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonNode'
+components:
+  schemas:
+    JsonNode:
+      type: object
+    RtkSettingInfo:
+      type: object
+      properties:
+        host:
+          type: string
+        port:
+          type: integer
+          format: int32
+        mountpoint:
+          type: string
+        baseUserId:
+          type: string
+        basePassword:
+          type: string
+        roverUserId:
+          type: string
+        roverPassword:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

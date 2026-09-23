@@ -1,0 +1,123 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Caster V3 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: CasterV3
+  description: V 3 Caster Controller
+paths:
+  /v3/caster/current:
+    get:
+      tags:
+      - CasterV3
+      summary: currentBaseAndRovers
+      description: 現在のBase/Rover情報を返します
+      operationId: currentBaseAndRoversUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/JsonNode'
+  /v3/caster/setting/rtk:
+    get:
+      tags:
+      - CasterV3
+      summary: getRtkSettingInfo
+      description: RTK設定情報を返します
+      operationId: getRtkSettingInfoUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/RtkSettingInfo'
+components:
+  schemas:
+    JsonNode:
+      type: object
+      properties:
+        array:
+          type: boolean
+        bigDecimal:
+          type: boolean
+        bigInteger:
+          type: boolean
+        binary:
+          type: boolean
+        boolean:
+          type: boolean
+        containerNode:
+          type: boolean
+        double:
+          type: boolean
+        float:
+          type: boolean
+        floatingPointNumber:
+          type: boolean
+        int:
+          type: boolean
+        integralNumber:
+          type: boolean
+        long:
+          type: boolean
+        missingNode:
+          type: boolean
+        nodeType:
+          type: string
+          enum:
+          - ARRAY
+          - BINARY
+          - BOOLEAN
+          - MISSING
+          - 'NULL'
+          - NUMBER
+          - OBJECT
+          - POJO
+          - STRING
+        'null':
+          type: boolean
+        number:
+          type: boolean
+        object:
+          type: boolean
+        pojo:
+          type: boolean
+        short:
+          type: boolean
+        textual:
+          type: boolean
+        valueNode:
+          type: boolean
+    RtkSettingInfo:
+      type: object
+      properties:
+        basePassword:
+          type: string
+        baseUserId:
+          type: string
+        host:
+          type: string
+        mountpoint:
+          type: string
+        port:
+          type: integer
+          format: int32
+        roverPassword:
+          type: string
+        roverUserId:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

@@ -1,0 +1,90 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Agricultural API O Auth API
+  description: 農機API用OAuth2管理
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1AgriculturalApiOAuth
+  description: 農機API用OAuth2管理
+paths:
+  /v1/agricultural-api/oauth/scopes:
+    get:
+      tags:
+      - V1AgriculturalApiOAuth
+      summary: スコープ一覧取得
+      description: 農機API用OAuth2スコープの一覧を取得します
+      operationId: getScopes
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScopeInfo'
+  /v1/agricultural-api/oauth/client/validate:
+    get:
+      tags:
+      - V1AgriculturalApiOAuth
+      summary: クライアント検証
+      description: クライアントIDとリダイレクトURIの組み合わせを検証します
+      operationId: validateClient
+      parameters:
+      - name: clientId
+        in: query
+        description: クライアントID
+        required: true
+        schema:
+          type: string
+      - name: redirectUri
+        in: query
+        description: リダイレクトURI
+        required: true
+        schema:
+          type: string
+      - name: scope
+        in: query
+        description: 要求スコープ
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ClientValidationResult'
+components:
+  schemas:
+    ScopeInfo:
+      type: object
+      properties:
+        scope:
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+    ClientValidationResult:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        message:
+          type: string
+        allowedScopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

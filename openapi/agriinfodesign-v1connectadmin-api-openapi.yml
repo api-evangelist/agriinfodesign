@@ -1,0 +1,275 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Connect Admin API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1ConnectAdmin
+paths:
+  /v1/_connect/admin/task/csv:
+    post:
+      tags:
+      - V1ConnectAdmin
+      description: csvをエクスポート
+      operationId: exportTasksCsv
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportTaskCsvResponse'
+      summary: Export tasks csv
+      x-summary-source: derived
+  /v1/_connect/admin/task/{username}:
+    get:
+      tags:
+      - V1ConnectAdmin
+      description: 指定のusernameのTaskRecordItemのリストを返す
+      operationId: getTaskRecordItems
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FetchedResult'
+      summary: Get task record items
+      x-summary-source: derived
+components:
+  schemas:
+    FetchedResult:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        username:
+          type: string
+        createdAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        syncedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        documentId:
+          type: string
+        gnssSource:
+          type: integer
+          format: int32
+        operationType:
+          type: integer
+          format: int32
+        oldGeoInfoKey:
+          type: string
+        name:
+          type: string
+        caption:
+          type: string
+        fieldItemId:
+          type: string
+        fieldName:
+          type: string
+        fieldArea:
+          type: number
+        taskGroupId:
+          type: string
+        startedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        endedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        avgSpeed:
+          type: number
+        workWidthOnStarted:
+          type: number
+        workWidthOnEnded:
+          type: number
+        distance:
+          type: number
+        distanceOnStarted:
+          type: number
+        distanceOnEnded:
+          type: number
+        workedArea:
+          type: number
+        workedAreaOnStarted:
+          type: number
+        workedAreaOnEnded:
+          type: number
+        overlappedAreaOnStarted:
+          type: number
+        overlappedAreaOnEnded:
+          type: number
+        operationTypeAsEnum:
+          type: string
+          enum:
+          - Tilling
+          - Sowing
+          - Planting
+          - Fertilizing
+          - CropProtection
+          - Harvesting
+          - Other
+        gnssSourceAsEnum:
+          type: string
+          enum:
+          - Internal
+          - Usb
+          - Bluetooth
+          - Port
+          - DemoReplay
+          - DemoVirtual
+          - GPlus
+          - TcpClient
+          - AutoSteerGnssTest
+          - GMini
+          - GMiniR
+          - G2
+          - NtripClient
+    ExportTaskCsvResponse:
+      type: object
+      properties:
+        geoPoints:
+          type: array
+          description: 出力対象のGeoPointsデータ
+          items:
+            $ref: '#/components/schemas/TaskRecordItemGeoPoint'
+        status:
+          type: string
+          description: 出力対象のGeoPointsデータ
+          enum:
+          - COMPLETED
+          - INTERRUPTED
+    TaskRecordItemGeoPoint:
+      type: object
+      properties:
+        lat:
+          type: number
+        lon:
+          type: number
+        z:
+          type: number
+        invalid_lat:
+          type: number
+        invalid_lon:
+          type: number
+        invalid_alt:
+          type: number
+        is_working:
+          type: integer
+          format: int32
+        heading:
+          type: number
+        work_width:
+          type: number
+        height:
+          type: number
+        speed:
+          type: number
+        roll:
+          type: number
+        pitch:
+          type: number
+        slant:
+          type: number
+        guidance_error:
+          type: number
+        guidance_heading_error:
+          type: number
+        created_at:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        single_antenna_heading:
+          type: number
+        multi_antenna_heading:
+          type: number
+        accel_x:
+          type: number
+        accel_y:
+          type: number
+        accel_z:
+          type: number
+        gyro_x:
+          type: number
+        gyro_y:
+          type: number
+        gyro_z:
+          type: number
+        ref_line_exists:
+          type: integer
+          format: int32
+        gnss_num_of_sats:
+          type: integer
+          format: int32
+        auto_steer_mode:
+          type: number
+        auto_steer_command_value:
+          type: number
+        auto_steer_measured_value:
+          type: number
+        auto_steer_offset_integral:
+          type: number
+        auto_drive_index_on_path:
+          type: number
+        hxgn_encoder_position_feedback_enabled:
+          type: number
+        hxgn_control_status:
+          type: number
+        hxgn_encoder_raw_position:
+          type: number
+        hxgn_encoder_center_position:
+          type: number
+        hxgn_encoder_position_limit:
+          type: number
+        hxgn_encoder_position_min:
+          type: number
+        hxgn_encoder_position_max:
+          type: number
+        hxgn_encoder_command_position:
+          type: number
+        index:
+          type: integer
+          format: int32
+        SectionStatusList0:
+          type: number
+        SectionStatusList1:
+          type: number
+        SectionStatusList2:
+          type: number
+        SectionStatusList3:
+          type: number
+        direction:
+          type: integer
+          format: int32
+        gnss_status:
+          type: integer
+          format: int32
+      description: 出力対象のGeoPointsデータ
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

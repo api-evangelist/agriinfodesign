@@ -1,0 +1,47 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign Errors Duplication API
+  description: データ修復API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: ErrorsDuplication
+  description: データ修復API
+paths:
+  /v1/_errors/duplication/{username}:
+    post:
+      tags:
+      - ErrorsDuplication
+      description: 対象usernameの重複データを修復します
+      operationId: fixAllForUsername
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      summary: Fix all for username
+      x-summary-source: derived
+  /v1/_errors/duplication/:
+    post:
+      tags:
+      - ErrorsDuplication
+      description: 重複データを修復します
+      operationId: fixAll
+      responses:
+        '200':
+          description: OK
+      summary: Fix all
+      x-summary-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

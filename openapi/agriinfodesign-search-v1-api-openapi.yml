@@ -1,0 +1,190 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Search V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: search V1
+  description: V 1 Search Controller
+paths:
+  /v1/search/user/email:
+    get:
+      tags:
+      - search V1
+      summary: searchUserByEmail
+      description: Emailでユーザーを検索します。エンタープライズユーザーは検索されません。同一リージョンに限ります。
+      operationId: searchUserByEmailUsingGET
+      parameters:
+      - name: email
+        in: query
+        description: email
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+components:
+  schemas:
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
+    Purchase:
+      type: object
+      properties:
+        amountPaid:
+          type: integer
+          format: int64
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        collectionMethod:
+          type: string
+        currency:
+          type: string
+        expiredAt:
+          type: string
+          example: '2016-01-01T00:00:00.000Z'
+        invoiceId:
+          type: string
+        invoiceUrl:
+          type: string
+        orderId:
+          type: string
+        planId:
+          type: string
+        startedAt:
+          type: string
+          example: '2016-01-01T00:00:00.000Z'
+        state:
+          type: string
+          enum:
+          - Paid
+          - Trial
+          - NotPaid
+          - Canceled
+        subscriptionId:
+          type: string
+    UserInfo:
+      type: object
+      properties:
+        calclatedPlan:
+          type: string
+          description: 後方互換性を保つためだけにあります。値はセットされることがありません。常にnullです。計算済みプランはpurchaseInfo#planを利用してください。
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        customIconUrl:
+          type: string
+        email:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsStandard
+          - AsPlus
+          - AsProfessional
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        iconUrl:
+          type: string
+        impersonatingNickname:
+          type: string
+        impersonatingUsername:
+          type: string
+        isEnterprise:
+          type: boolean
+        isFsMigrated:
+          type: boolean
+        isPayer:
+          type: boolean
+        language:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+        purchaseInfo:
+          $ref: '#/components/schemas/PurchaseInfo'
+        region:
+          type: string
+        sendMeNews:
+          type: boolean
+        sharedMountPoint:
+          type: string
+        stripeId:
+          type: string
+        systemAdmin:
+          type: boolean
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+        trialAvailable:
+          type: boolean
+        username:
+          type: string
+        zoneinfo:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

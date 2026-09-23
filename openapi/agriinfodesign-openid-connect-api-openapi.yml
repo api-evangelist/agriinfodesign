@@ -1,0 +1,766 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign OpenID Connect API
+  description: OpenID Connect Discovery and endpoints
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: OpenID Connect
+  description: OpenID Connect Discovery and endpoints
+paths:
+  /v1/oidc/userinfo:
+    get:
+      tags:
+      - OpenID Connect
+      summary: OpenID Connect UserInfo
+      description: Returns user claims for the authenticated user
+      operationId: userInfo
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer access token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoResponse'
+      security:
+      - bearerAuth: []
+  /v1/oauth/authorize:
+    get:
+      tags:
+      - OpenID Connect
+      summary: OAuth2/OpenID Connect Authorization
+      description: OAuth2 Authorization Code Grant and OpenID Connect Authentication Request
+      operationId: authorize
+      parameters:
+      - name: request
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/AuthorizeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RedirectView'
+  /.well-known/openid_configuration:
+    get:
+      tags:
+      - OpenID Connect
+      summary: OpenID Connect Discovery
+      description: Returns OpenID Connect provider configuration metadata
+      operationId: openidConfiguration
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenIdConfigurationResponse'
+  /.well-known/jwks.json:
+    get:
+      tags:
+      - OpenID Connect
+      summary: JSON Web Key Set
+      description: Returns public keys used for JWT signature verification
+      operationId: jwks
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    BeanFactory:
+      type: object
+    ApplicationContext:
+      type: object
+      properties:
+        parent:
+          $ref: '#/components/schemas/ApplicationContext'
+        id:
+          type: string
+        displayName:
+          type: string
+        applicationName:
+          type: string
+        startupDate:
+          type: integer
+          format: int64
+        autowireCapableBeanFactory:
+          $ref: '#/components/schemas/AutowireCapableBeanFactory'
+        environment:
+          $ref: '#/components/schemas/Environment'
+        beanDefinitionCount:
+          type: integer
+          format: int32
+        beanDefinitionNames:
+          type: array
+          items:
+            type: string
+        parentBeanFactory:
+          $ref: '#/components/schemas/BeanFactory'
+        classLoader:
+          type: object
+          properties:
+            name:
+              type: string
+            registeredAsParallelCapable:
+              type: boolean
+            parent:
+              type: object
+              properties:
+                name:
+                  type: string
+                registeredAsParallelCapable:
+                  type: boolean
+                unnamedModule:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    classLoader:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        registeredAsParallelCapable:
+                          type: boolean
+                        definedPackages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              annotations:
+                                type: array
+                                items:
+                                  type: object
+                              declaredAnnotations:
+                                type: array
+                                items:
+                                  type: object
+                              sealed:
+                                type: boolean
+                              specificationTitle:
+                                type: string
+                              specificationVersion:
+                                type: string
+                              specificationVendor:
+                                type: string
+                              implementationTitle:
+                                type: string
+                              implementationVersion:
+                                type: string
+                              implementationVendor:
+                                type: string
+                        defaultAssertionStatus:
+                          type: boolean
+                          writeOnly: true
+                    descriptor:
+                      type: object
+                      properties:
+                        open:
+                          type: boolean
+                        automatic:
+                          type: boolean
+                    named:
+                      type: boolean
+                    annotations:
+                      type: array
+                      items:
+                        type: object
+                    declaredAnnotations:
+                      type: array
+                      items:
+                        type: object
+                    packages:
+                      uniqueItems: true
+                      type: array
+                      items:
+                        type: string
+                    layer:
+                      type: object
+                definedPackages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      annotations:
+                        type: array
+                        items:
+                          type: object
+                      declaredAnnotations:
+                        type: array
+                        items:
+                          type: object
+                      sealed:
+                        type: boolean
+                      specificationTitle:
+                        type: string
+                      specificationVersion:
+                        type: string
+                      specificationVendor:
+                        type: string
+                      implementationTitle:
+                        type: string
+                      implementationVersion:
+                        type: string
+                      implementationVendor:
+                        type: string
+                defaultAssertionStatus:
+                  type: boolean
+                  writeOnly: true
+            unnamedModule:
+              type: object
+              properties:
+                name:
+                  type: string
+                classLoader:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    registeredAsParallelCapable:
+                      type: boolean
+                    definedPackages:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          annotations:
+                            type: array
+                            items:
+                              type: object
+                          declaredAnnotations:
+                            type: array
+                            items:
+                              type: object
+                          sealed:
+                            type: boolean
+                          specificationTitle:
+                            type: string
+                          specificationVersion:
+                            type: string
+                          specificationVendor:
+                            type: string
+                          implementationTitle:
+                            type: string
+                          implementationVersion:
+                            type: string
+                          implementationVendor:
+                            type: string
+                    defaultAssertionStatus:
+                      type: boolean
+                      writeOnly: true
+                descriptor:
+                  type: object
+                  properties:
+                    open:
+                      type: boolean
+                    automatic:
+                      type: boolean
+                named:
+                  type: boolean
+                annotations:
+                  type: array
+                  items:
+                    type: object
+                declaredAnnotations:
+                  type: array
+                  items:
+                    type: object
+                packages:
+                  uniqueItems: true
+                  type: array
+                  items:
+                    type: string
+                layer:
+                  type: object
+            definedPackages:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                  declaredAnnotations:
+                    type: array
+                    items:
+                      type: object
+                  sealed:
+                    type: boolean
+                  specificationTitle:
+                    type: string
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationTitle:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+            defaultAssertionStatus:
+              type: boolean
+              writeOnly: true
+    UserInfoResponse:
+      type: object
+      properties:
+        sub:
+          type: string
+          description: Subject identifier
+        name:
+          type: string
+          description: User's full name
+        given_name:
+          type: string
+          description: Given name
+        family_name:
+          type: string
+          description: Family name
+        email:
+          type: string
+          description: Email address
+        email_verified:
+          type: boolean
+          description: Email verification status
+        username:
+          type: string
+          description: Username
+        groups:
+          type: array
+          description: User groups
+          items:
+            type: string
+            description: User groups
+    ServletRegistration:
+      type: object
+      properties:
+        runAsRole:
+          type: string
+        mappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    ServletContext:
+      type: object
+      properties:
+        sessionTimeout:
+          type: integer
+          format: int32
+        classLoader:
+          type: object
+          properties:
+            name:
+              type: string
+            registeredAsParallelCapable:
+              type: boolean
+            definedPackages:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                  declaredAnnotations:
+                    type: array
+                    items:
+                      type: object
+                  sealed:
+                    type: boolean
+                  specificationTitle:
+                    type: string
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationTitle:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+            defaultAssertionStatus:
+              type: boolean
+              writeOnly: true
+        majorVersion:
+          type: integer
+          format: int32
+        minorVersion:
+          type: integer
+          format: int32
+        attributeNames:
+          type: object
+        servletRegistrations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ServletRegistration'
+        initParameterNames:
+          type: object
+        sessionTrackingModes:
+          uniqueItems: true
+          type: array
+          writeOnly: true
+          items:
+            type: string
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        effectiveMajorVersion:
+          type: integer
+          format: int32
+        effectiveMinorVersion:
+          type: integer
+          format: int32
+        serverInfo:
+          type: string
+        servletContextName:
+          type: string
+        filterRegistrations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/FilterRegistration'
+        sessionCookieConfig:
+          $ref: '#/components/schemas/SessionCookieConfig'
+        defaultSessionTrackingModes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        effectiveSessionTrackingModes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        jspConfigDescriptor:
+          $ref: '#/components/schemas/JspConfigDescriptor'
+        virtualServerName:
+          type: string
+        requestCharacterEncoding:
+          type: string
+        responseCharacterEncoding:
+          type: string
+        contextPath:
+          type: string
+    JspPropertyGroupDescriptor:
+      type: object
+      properties:
+        defaultContentType:
+          type: string
+        elIgnored:
+          type: string
+        errorOnELNotFound:
+          type: string
+        pageEncoding:
+          type: string
+        scriptingInvalid:
+          type: string
+        isXml:
+          type: string
+        includePreludes:
+          type: array
+          items:
+            type: string
+        includeCodas:
+          type: array
+          items:
+            type: string
+        deferredSyntaxAllowedAsLiteral:
+          type: string
+        trimDirectiveWhitespaces:
+          type: string
+        errorOnUndeclaredNamespace:
+          type: string
+        buffer:
+          type: string
+        urlPatterns:
+          type: array
+          items:
+            type: string
+    Environment:
+      type: object
+      properties:
+        activeProfiles:
+          type: array
+          items:
+            type: string
+        defaultProfiles:
+          type: array
+          items:
+            type: string
+    AutowireCapableBeanFactory:
+      type: object
+    RedirectView:
+      type: object
+      properties:
+        applicationContext:
+          $ref: '#/components/schemas/ApplicationContext'
+        servletContext:
+          $ref: '#/components/schemas/ServletContext'
+        contentType:
+          type: string
+        requestContextAttribute:
+          type: string
+        staticAttributes:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+        exposePathVariables:
+          type: boolean
+        exposeContextBeansAsAttributes:
+          type: boolean
+          writeOnly: true
+        exposedContextBeanNames:
+          type: array
+          writeOnly: true
+          items:
+            type: string
+        beanName:
+          type: string
+        url:
+          type: string
+        contextRelative:
+          type: boolean
+          writeOnly: true
+        http10Compatible:
+          type: boolean
+          writeOnly: true
+        exposeModelAttributes:
+          type: boolean
+          writeOnly: true
+        encodingScheme:
+          type: string
+          writeOnly: true
+        statusCode:
+          $ref: '#/components/schemas/HttpStatusCode'
+        expandUriTemplateVariables:
+          type: boolean
+          writeOnly: true
+        propagateQueryParams:
+          type: boolean
+          writeOnly: true
+        hosts:
+          type: array
+          items:
+            type: string
+        redirectView:
+          type: boolean
+        propagateQueryProperties:
+          type: boolean
+        attributesMap:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+        attributesCSV:
+          type: string
+          writeOnly: true
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          writeOnly: true
+    FilterRegistration:
+      type: object
+      properties:
+        servletNameMappings:
+          type: array
+          items:
+            type: string
+        urlPatternMappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    HttpStatusCode:
+      type: object
+      properties:
+        is4xxClientError:
+          type: boolean
+        error:
+          type: boolean
+        is1xxInformational:
+          type: boolean
+        is2xxSuccessful:
+          type: boolean
+        is3xxRedirection:
+          type: boolean
+        is5xxServerError:
+          type: boolean
+    SessionCookieConfig:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        comment:
+          type: string
+          deprecated: true
+        maxAge:
+          type: integer
+          format: int32
+        secure:
+          type: boolean
+        httpOnly:
+          type: boolean
+        domain:
+          type: string
+    JspConfigDescriptor:
+      type: object
+      properties:
+        jspPropertyGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/JspPropertyGroupDescriptor'
+        taglibs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaglibDescriptor'
+    AuthorizeRequest:
+      required:
+      - clientId
+      - responseType
+      type: object
+      properties:
+        responseType:
+          type: string
+          description: Response type
+          example: code
+        clientId:
+          type: string
+          description: Client identifier
+        redirectUri:
+          type: string
+          description: Redirection URI
+        scope:
+          type: string
+          description: Scope of access request
+          example: openid profile email
+        state:
+          type: string
+          description: State parameter for CSRF protection
+        nonce:
+          type: string
+          description: Nonce for ID Token security (OpenID Connect)
+        codeChallenge:
+          type: string
+          description: Code challenge for PKCE
+        codeChallengeMethod:
+          type: string
+          description: Code challenge method for PKCE
+          example: S256
+    OpenIdConfigurationResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+        authorization_endpoint:
+          type: string
+        token_endpoint:
+          type: string
+        userinfo_endpoint:
+          type: string
+        jwks_uri:
+          type: string
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        subject_types_supported:
+          type: array
+          items:
+            type: string
+        id_token_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        scopes_supported:
+          type: array
+          items:
+            type: string
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        claims_supported:
+          type: array
+          items:
+            type: string
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+        claim_types_supported:
+          type: array
+          items:
+            type: string
+    TaglibDescriptor:
+      type: object
+      properties:
+        taglibURI:
+          type: string
+        taglibLocation:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

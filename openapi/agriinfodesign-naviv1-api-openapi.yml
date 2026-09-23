@@ -1,0 +1,342 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Navi V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: NaviV1
+  description: V 1 Navi Controller
+paths:
+  /v1/navi/settings/{deviceId}:
+    put:
+      tags:
+      - NaviV1
+      summary: 利用しないでください
+      description: このAPIは非推奨です。後方互換性のためだけに残されています。SaveStatusを利用してください
+      operationId: saveSettingsUsingPUT
+      parameters:
+      - name: deviceId
+        in: path
+        description: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      deprecated: true
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              type: object
+        description: agriBusNaviSettingsJson
+        required: true
+  /v1/navi/status/purchase/check:
+    post:
+      tags:
+      - NaviV1
+      summary: checkAndroidPurchases
+      description: Google課金情報がすでに存在するかチェックする
+      operationId: checkAndroidPurchasesUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/CheckAndroidPurchasesResponse'
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/AndroidPurchases'
+        description: androidPurchases
+        required: true
+  /v1/navi/status/purchase/{deviceId}:
+    post:
+      tags:
+      - NaviV1
+      summary: replaceAndroidPurchases
+      description: Google課金情報の保持者（username）を書き換える
+      operationId: replaceAndroidPurchasesUsingPOST
+      parameters:
+      - name: deviceId
+        in: path
+        description: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/AndroidPurchases'
+        description: androidPurchases
+        required: true
+    put:
+      tags:
+      - NaviV1
+      summary: saveAndroidPurchases
+      description: NAVI端末内のGoogle課金情報を保存する
+      operationId: saveAndroidPurchasesUsingPUT
+      parameters:
+      - name: deviceId
+        in: path
+        description: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/AndroidPurchases'
+        description: androidPurchases
+        required: true
+  /v1/navi/status/{deviceId}:
+    put:
+      tags:
+      - NaviV1
+      summary: saveStatus
+      description: (Firestore Settingsに移行後は利用しないでください) NAVIのステータス（AgriBusNaviSettings.jsonとGoogle課金情報）を保存する
+      operationId: saveStatusUsingPUT
+      parameters:
+      - name: deviceId
+        in: path
+        description: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      deprecated: true
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/AgriBusNaviStatusRequest'
+        description: agriBusNaviStatusRequest
+        required: true
+components:
+  schemas:
+    AndroidPurchases:
+      type: object
+      properties:
+        standardPlan:
+          $ref: '#/components/schemas/AndroidPurchase'
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
+    AndroidPurchase:
+      type: object
+      required:
+      - developerPayload
+      - orderId
+      - packageName
+      - productId
+      - purchaseState
+      - purchaseTime
+      - purchaseToken
+      properties:
+        developerPayload:
+          type: string
+        orderId:
+          type: string
+        packageName:
+          type: string
+        productId:
+          type: string
+        purchaseState:
+          type: integer
+          format: int32
+        purchaseTime:
+          type: integer
+          format: int64
+        purchaseToken:
+          type: string
+        purchased:
+          type: boolean
+        testPurchase:
+          type: boolean
+    UserInfo:
+      type: object
+      properties:
+        calclatedPlan:
+          type: string
+          description: 後方互換性を保つためだけにあります。値はセットされることがありません。常にnullです。計算済みプランはpurchaseInfo#planを利用してください。
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        customIconUrl:
+          type: string
+        email:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsStandard
+          - AsPlus
+          - AsProfessional
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        iconUrl:
+          type: string
+        impersonatingNickname:
+          type: string
+        impersonatingUsername:
+          type: string
+        isEnterprise:
+          type: boolean
+        isFsMigrated:
+          type: boolean
+        isPayer:
+          type: boolean
+        language:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+        purchaseInfo:
+          $ref: '#/components/schemas/PurchaseInfo'
+        region:
+          type: string
+        sendMeNews:
+          type: boolean
+        sharedMountPoint:
+          type: string
+        stripeId:
+          type: string
+        systemAdmin:
+          type: boolean
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+        trialAvailable:
+          type: boolean
+        username:
+          type: string
+        zoneinfo:
+          type: string
+    Purchase:
+      type: object
+      properties:
+        amountPaid:
+          type: integer
+          format: int64
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        collectionMethod:
+          type: string
+        currency:
+          type: string
+        expiredAt:
+          type: string
+          example: '2016-01-01T00:00:00.000Z'
+        invoiceId:
+          type: string
+        invoiceUrl:
+          type: string
+        orderId:
+          type: string
+        planId:
+          type: string
+        startedAt:
+          type: string
+          example: '2016-01-01T00:00:00.000Z'
+        state:
+          type: string
+          enum:
+          - Paid
+          - Trial
+          - NotPaid
+          - Canceled
+        subscriptionId:
+          type: string
+    CheckAndroidPurchasesResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
+    AgriBusNaviStatusRequest:
+      type: object
+      required:
+      - androidPurchases
+      - settings
+      properties:
+        androidPurchases:
+          $ref: '#/components/schemas/AndroidPurchases'
+        settings:
+          type: object
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

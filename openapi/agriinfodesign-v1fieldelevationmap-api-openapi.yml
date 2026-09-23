@@ -1,0 +1,193 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Field Elevation Map API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1FieldElevationMap
+paths:
+  /v1/field_items/{id}/elevation:
+    get:
+      tags:
+      - V1FieldElevationMap
+      description: FieldItemの高低差マップを取得
+      operationId: getElevationMapById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteFieldElevationMap'
+      summary: Get elevation map by id
+      x-summary-source: derived
+    post:
+      tags:
+      - V1FieldElevationMap
+      description: FieldItemの高低差マップを作成
+      operationId: createElevationMapById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateElevationMapRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteFieldElevationMap'
+      summary: Create elevation map by id
+      x-summary-source: derived
+components:
+  schemas:
+    RemoteFieldElevationMap:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+          - Creating
+          - Completed
+          - Failed
+        geoJson:
+          type: string
+          description: Mapに表示するGeoJSON
+        createdAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        meshSize:
+          type: number
+          format: double
+        gridColCount:
+          type: integer
+          format: int32
+        gridRowCount:
+          type: integer
+          format: int32
+        taskFetchLimit:
+          type: integer
+          format: int32
+        newestTaskDate:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        oldestTaskDate:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        taskPointCount:
+          type: integer
+          description: 計算に利用した作業履歴の地点情報数
+          format: int32
+        colorRanges:
+          $ref: '#/components/schemas/ColorRanges'
+        gnssStatusFilter:
+          type: string
+        interpolation:
+          type: string
+        vertexValuator:
+          type: string
+        zRangeMin:
+          type: number
+          description: 標高レンジ最小値
+          format: double
+        zRangeMax:
+          type: number
+          description: 標高レンジ最大値
+          format: double
+    CreateElevationMapRequest:
+      type: object
+      properties:
+        meshSize:
+          type: number
+          description: メッシュサイズ(m)
+          format: double
+        maxPointCount:
+          type: integer
+          description: 計算に用いる作業の最大ポイント数
+          format: int32
+        taskFetchLimit:
+          type: integer
+          description: フェッチする作業の最大数
+          format: int32
+        gnssStatusFilter:
+          type: string
+          description: GNSSステータスのフィルタリング
+          enum:
+          - VeryStrict,Strict,Loose,VeryLoose
+        interpolation:
+          type: string
+          description: 補完方法
+          enum:
+          - InverseDistanceWeighting,NaturalNeighbor,TriangularFacet,Gwr
+        zValueValuator:
+          type: string
+          description: z値取得評価方法
+          enum:
+          - Default,Smooth
+        zMin:
+          type: number
+          description: 最小値とするzの値
+          format: double
+        zMax:
+          type: number
+          description: 最大値とするzの値
+          format: double
+        oldestTaskDate:
+          type: string
+          description: 作業の開始日付（yyyy-MM-dd）
+          format: date
+        newestTaskDate:
+          type: string
+          description: 作業の終了日付（yyyy-MM-dd）
+          format: date
+        specifiedDateRange:
+          type: boolean
+    ColorRanges:
+      type: object
+      properties:
+        ranges:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColorRange'
+    ColorRange:
+      type: object
+      properties:
+        stage:
+          type: integer
+          format: int32
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
+        color:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,104 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Web Marker V2 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: WebMarkerV2
+  description: V 2 Web Marker Controller
+paths:
+  /v2/web_markers:
+    get:
+      tags:
+      - WebMarkerV2
+      summary: list
+      description: WebMarkerInfoを取得します。フォローしているユーザーのWebMarkerも加えたい場合は、Include=Subscribingにしてください
+      operationId: listUsingGET_1
+      parameters:
+      - name: include
+        in: query
+        description: include
+        required: false
+        schema:
+          type: string
+          enum:
+          - Subscribing
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/WebMarkersInfo'
+  /v2/web_markers/{username}/{deviceId}:
+    put:
+      tags:
+      - WebMarkerV2
+      summary: update
+      description: WebMarkerInfoを更新します
+      operationId: updateUsingPUT
+      parameters:
+      - name: username
+        in: path
+        description: username
+        required: true
+        schema:
+          type: string
+      - name: deviceId
+        in: path
+        description: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWebMarkerRequest'
+        description: request
+        required: true
+components:
+  schemas:
+    UpdateWebMarkerRequest:
+      type: object
+      properties:
+        trackColor:
+          type: string
+        trackName:
+          type: string
+    WebMarker:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        deviceId:
+          type: string
+        trackColor:
+          type: string
+        trackName:
+          type: string
+        updatedAt:
+          type: string
+        username:
+          type: string
+    WebMarkersInfo:
+      type: object
+      properties:
+        webMarkers:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebMarker'
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

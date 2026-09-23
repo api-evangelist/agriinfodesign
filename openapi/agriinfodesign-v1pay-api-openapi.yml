@@ -1,0 +1,140 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Pay API
+  description: 課金関連のAPI
+servers:
+- url: http://pay.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Pay
+  description: 課金関連のAPI
+paths:
+  /v1/pay/calculate/functionality:
+    post:
+      tags:
+      - V1Pay
+      description: usernameからFunctionalityを計算し、Authサーバに通知します。
+      operationId: calculateFunctionality
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculateFunctionalityRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+      summary: Calculate functionality
+      x-summary-source: derived
+  /v1/pay/purchases:
+    get:
+      tags:
+      - V1Pay
+      description: TokenからPurchaseInfoを取得します
+      operationId: getPurchaseInfoFromToken
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseInfo'
+      summary: Get purchase info from token
+      x-summary-source: derived
+  /v1/pay/purchases/{username}:
+    get:
+      tags:
+      - V1Pay
+      description: usernameからPurchaseInfoを取得します
+      operationId: getPurchaseInfoFromUsername
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseInfo'
+      summary: Get purchase info from username
+      x-summary-source: derived
+components:
+  schemas:
+    PurchaseInfo:
+      type: object
+      properties:
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        planStartedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        planExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        trial:
+          type: boolean
+        subscriptionId:
+          type: string
+        autoRenewing:
+          type: boolean
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+    Purchase:
+      type: object
+      properties:
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        startedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        expiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        planId:
+          type: string
+        orderId:
+          type: string
+        invoiceId:
+          type: string
+        state:
+          type: string
+          enum:
+          - Paid
+          - Trial
+          - NotPaid
+          - Canceled
+        amountPaid:
+          type: integer
+          format: int64
+        invoiceUrl:
+          type: string
+        currency:
+          type: string
+        autoRenewing:
+          type: boolean
+        collectionMethod:
+          type: string
+    CalculateFunctionalityRequest:
+      type: object
+      properties:
+        username:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

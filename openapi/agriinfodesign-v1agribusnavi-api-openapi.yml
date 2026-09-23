@@ -1,0 +1,117 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Agri Bus Navi API
+  description: AgriBus-NAVI専用のAPI
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1AgriBusNavi
+  description: AgriBus-NAVI専用のAPI
+paths:
+  /v1/agribus_navi/refline_items/around:
+    get:
+      tags:
+      - V1AgriBusNavi
+      description: 指定された地点を中心とした正円内に含まれる（Intersect）する基準線一覧を取得する
+      operationId: listRefLinesAround
+      parameters:
+      - name: lat
+        in: query
+        description: latitude
+        required: true
+        schema:
+          type: number
+          format: double
+      - name: lon
+        in: query
+        description: longitude
+        required: true
+        schema:
+          type: number
+          format: double
+      - name: radius
+        in: query
+        description: 半径。単位はメートル。デフォルトは3000(m)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 3000
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgriBusNaviRefLine'
+      summary: List ref lines around
+      x-summary-source: derived
+  /v1/agribus_navi/field_items/around:
+    get:
+      tags:
+      - V1AgriBusNavi
+      description: 指定された地点を中心とした正円内に含まれる（Intersect）する圃場一覧を取得する
+      operationId: listFieldsAround
+      parameters:
+      - name: lat
+        in: query
+        description: latitude
+        required: true
+        schema:
+          type: number
+          format: double
+      - name: lon
+        in: query
+        description: longitude
+        required: true
+        schema:
+          type: number
+          format: double
+      - name: radius
+        in: query
+        description: 半径。単位はメートル。デフォルトは3000(m)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 3000
+      - name: includeFollowee
+        in: query
+        description: フォローしているユーザーの圃場も含めるかどうか。デフォルトは「含める」。
+        required: false
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgriBusNaviField'
+      summary: List fields around
+      x-summary-source: derived
+components:
+  schemas:
+    AgriBusNaviField:
+      type: object
+      properties:
+        firestoreDocumentPath:
+          type: string
+    AgriBusNaviRefLine:
+      type: object
+      properties:
+        firestoreDocumentPath:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

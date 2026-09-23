@@ -1,0 +1,38 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Firebase API
+  description: Firebase関連API
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Firebase
+  description: Firebase関連API
+paths:
+  /v1/firebase/custom_token:
+    get:
+      tags:
+      - V1Firebase
+      summary: FirebaseよりCustomTokenを発行します
+      operationId: getCustomToken
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirebaseCustomTokenResponse'
+components:
+  schemas:
+    FirebaseCustomTokenResponse:
+      type: object
+      properties:
+        customToken:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

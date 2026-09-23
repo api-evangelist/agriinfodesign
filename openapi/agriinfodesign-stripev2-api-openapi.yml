@@ -1,0 +1,162 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Stripe V2 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: StripeV2
+  description: V 2 Stripe Controller
+paths:
+  /v2/stripe/customer/email:
+    put:
+      tags:
+      - StripeV2
+      summary: updateCustomerEmail
+      description: Customerのメールアドレス更新
+      operationId: updateCustomerEmailUsingPUT
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStripeCustomerEmailRequest'
+        description: request
+        required: true
+  /v2/stripe/customer/name:
+    put:
+      tags:
+      - StripeV2
+      summary: updateCustomerName
+      description: Customerの名前更新
+      operationId: updateCustomerNameUsingPUT
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStripeCustomerNameRequest'
+        description: request
+        required: true
+  /v2/stripe/subscription:
+    post:
+      tags:
+      - StripeV2
+      summary: subscribe
+      description: サブスクリプション開始
+      operationId: subscribeUsingPOST_1
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/StripeSubscribeRequest'
+        description: request
+        required: true
+  /v2/stripe/subscriptions/payment_method/{subscriptionId}/{paymentMethodType}:
+    put:
+      tags:
+      - StripeV2
+      summary: changePaymentMethodType
+      description: 支払い方法の変更
+      operationId: changePaymentMethodTypeUsingPUT
+      parameters:
+      - name: subscriptionId
+        in: path
+        description: subscriptionId
+        required: true
+        schema:
+          type: string
+      - name: paymentMethodType
+        in: path
+        description: paymentMethodType
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCardRequest'
+        description: addCardRequest
+        required: true
+  /v2/stripe/subscriptions/{subscriptionId}/{planId}:
+    put:
+      tags:
+      - StripeV2
+      summary: changePlan
+      description: プランのアップグレード/ダウングレード
+      operationId: changePlanUsingPUT
+      parameters:
+      - name: subscriptionId
+        in: path
+        description: subscriptionId
+        required: true
+        schema:
+          type: string
+      - name: planId
+        in: path
+        description: planId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    UpdateStripeCustomerNameRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    AddCardRequest:
+      type: object
+      required:
+      - stripeCardName
+      - stripeToken
+      properties:
+        stripeCardName:
+          type: string
+        stripeToken:
+          type: string
+    StripeSubscribeRequest:
+      type: object
+      required:
+      - addCardRequest
+      - couponCode
+      - paymentMethodTypes
+      - planId
+      properties:
+        addCardRequest:
+          $ref: '#/components/schemas/AddCardRequest'
+        couponCode:
+          type: string
+        paymentMethodTypes:
+          type: string
+        planId:
+          type: string
+    UpdateStripeCustomerEmailRequest:
+      type: object
+      properties:
+        email:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

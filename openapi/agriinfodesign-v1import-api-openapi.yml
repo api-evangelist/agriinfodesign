@@ -1,0 +1,50 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Import API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Import
+paths:
+  /v1/import/geo_json:
+    post:
+      tags:
+      - V1Import
+      description: KML/Shapefileを解析してGeoJSONとして返す（圃場）一覧
+      operationId: toGeoJson
+      parameters:
+      - name: encoding
+        in: query
+        required: false
+        schema:
+          type: string
+          default: UTF-8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+      summary: To geo json
+      x-summary-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

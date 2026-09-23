@@ -1,0 +1,94 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Device V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: DeviceV1
+  description: V 1 Device Controller
+paths:
+  /v1/devices:
+    get:
+      tags:
+      - DeviceV1
+      summary: list
+      description: DevicesInfoを取得します。デフォルトでは自分のみです。フォローしているユーザーのデバイスも加えたい場合は、Include=Subscribingにしてください
+      operationId: listUsingGET
+      parameters:
+      - name: include
+        in: query
+        description: include
+        required: false
+        schema:
+          type: string
+          enum:
+          - Subscribing
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/DevicesInfo'
+  /v1/devices/agribusnavi:
+    get:
+      tags:
+      - DeviceV1
+      summary: listOnlyAgriBusNavi
+      description: AgriBusNAVIに限定したDevicesInfoを取得します。デフォルトでは自分のみです。フォローしているユーザーのデバイスも加えたい場合は、Include=Subscribingにしてください
+      operationId: listOnlyAgriBusNaviUsingGET
+      parameters:
+      - name: include
+        in: query
+        description: include
+        required: false
+        schema:
+          type: string
+          enum:
+          - Subscribing
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/DevicesInfo'
+components:
+  schemas:
+    DevicesInfo:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+    Device:
+      type: object
+      properties:
+        appId:
+          type: string
+        createdAt:
+          type: string
+        id:
+          type: string
+        manufacturer:
+          type: string
+        model:
+          type: string
+        systemVersion:
+          type: string
+        updatedAt:
+          type: string
+        username:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

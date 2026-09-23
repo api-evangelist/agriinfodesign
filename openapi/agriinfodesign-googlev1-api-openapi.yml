@@ -1,0 +1,36 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Google V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: GoogleV1
+  description: V 1 Google Controller
+paths:
+  /v1/google/play/rtdn:
+    post:
+      tags:
+      - GoogleV1
+      summary: receiveNotification
+      operationId: receiveNotificationUsingPOST
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Model'
+        description: model
+components:
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

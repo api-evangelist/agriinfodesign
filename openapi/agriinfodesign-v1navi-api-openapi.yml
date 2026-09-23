@@ -1,0 +1,97 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Navi API
+  description: Navi関係のAPI
+servers:
+- url: http://pay.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Navi
+  description: Navi関係のAPI
+paths:
+  /v1/navi/status/purchase/{deviceId}:
+    put:
+      tags:
+      - V1Navi
+      description: NAVI端末内のGoogle課金情報を保存する
+      operationId: saveAndroidPurchases
+      parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AndroidPurchases'
+        required: true
+      responses:
+        '200':
+          description: OK
+      summary: Save android purchases
+      x-summary-source: derived
+  /v1/navi/status/purchase/check:
+    post:
+      tags:
+      - V1Navi
+      description: Google課金情報がすでに存在するかチェックする
+      operationId: checkAndroidPurchases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AndroidPurchases'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAndroidPurchasesResponse'
+      summary: Check android purchases
+      x-summary-source: derived
+components:
+  schemas:
+    CheckAndroidPurchasesResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
+    AndroidPurchase:
+      type: object
+      properties:
+        packageName:
+          type: string
+        orderId:
+          type: string
+        productId:
+          type: string
+        developerPayload:
+          type: string
+        purchaseTime:
+          type: integer
+          format: int64
+        purchaseState:
+          type: integer
+          format: int32
+        purchaseToken:
+          type: string
+        purchased:
+          type: boolean
+        testPurchase:
+          type: boolean
+    AndroidPurchases:
+      type: object
+      properties:
+        standardPlan:
+          $ref: '#/components/schemas/AndroidPurchase'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

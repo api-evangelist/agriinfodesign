@@ -1,0 +1,388 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Token V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: TokenV1
+  description: V 1 Token Controller
+paths:
+  /v1/token:
+    post:
+      tags:
+      - TokenV1
+      summary: 今後メンテナンスされません。利用しないでください
+      description: 今後メンテナンスされません。廃止予定です。古いNAVIのためにだけ残しています。V2TokenControllerのpublishTokenを使用してください。
+      operationId: publishTokenUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+      deprecated: true
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/PublishTokenRequest'
+        description: request
+        required: true
+  /v1/token/impersonate:
+    post:
+      tags:
+      - TokenV1
+      summary: 今後メンテナンスされません。利用しないでください
+      description: 今後メンテナンスされません。廃止予定です。V2TokenControllerのimpersonateを使用してください。
+      operationId: impersonateUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+      deprecated: true
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/ImpersonationRequest'
+        description: request
+        required: true
+    delete:
+      tags:
+      - TokenV1
+      summary: 今後メンテナンスされません。利用しないでください
+      description: 今後メンテナンスされません。廃止予定です。古いNAVIのためにだけ残しています。V2TokenControllerのdeleteImpersonationを使用してください。
+      operationId: deleteImpersonationUsingDELETE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+      deprecated: true
+  /v1/token/refresh:
+    post:
+      tags:
+      - TokenV1
+      summary: 利用しないでください
+      description: 廃止予定です。V2TokenControllerのrefreshTokenを使用してください。
+      operationId: refreshTokenUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+      deprecated: true
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+        description: request
+        required: true
+components:
+  schemas:
+    RefreshTokenRequest:
+      type: object
+      required:
+      - deviceId
+      - email
+      - refreshToken
+      properties:
+        deviceId:
+          type: string
+          description: 端末で取得できるデバイスのID
+        deviceManufacturer:
+          type: string
+          description: 端末製造メーカー
+        deviceModel:
+          type: string
+          description: 端末デバイス名
+        deviceSystemVersion:
+          type: string
+          description: 端末OSバージョン
+        email:
+          type: string
+          description: Eメール
+        refreshToken:
+          type: string
+          description: リフレッシュトークン
+        userMetaData:
+          type: object
+          description: ユーザーメタデータ情報
+          additionalProperties:
+            type: object
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
+    SubscriptionInfo:
+      type: object
+      properties:
+        subscriberAccounts:
+          type: array
+          description: 購読されているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingAccounts:
+          type: array
+          description: 購読しているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingGroups:
+          type: array
+          description: 購読しているグループ
+          items:
+            $ref: '#/components/schemas/Subscription'
+    ImpersonationRequest:
+      type: object
+      properties:
+        targetUserEmail:
+          type: string
+    PublishTokenRequest:
+      type: object
+      required:
+      - appId
+      - deviceId
+      - email
+      - password
+      - secretHash
+      properties:
+        appId:
+          type: string
+          description: AgriBus Platformに登録済みのアプリケーションID
+        deviceId:
+          type: string
+          description: 端末で取得できるデバイスのID
+        deviceManufacturer:
+          type: string
+          description: 端末製造メーカー
+        deviceModel:
+          type: string
+          description: 端末デバイス名
+        deviceSystemVersion:
+          type: string
+          description: 端末OSバージョン
+        email:
+          type: string
+          description: Eメール
+        password:
+          type: string
+          description: ユーザーのパスワード
+        secretHash:
+          type: string
+          description: アプリケーションシークレットを元にしたハッシュ
+        userMetaData:
+          type: object
+          description: ユーザーメタデータ情報
+          additionalProperties:
+            type: object
+    UserInfo:
+      type: object
+      properties:
+        calclatedPlan:
+          type: string
+          description: 後方互換性を保つためだけにあります。値はセットされることがありません。常にnullです。計算済みプランはpurchaseInfo#planを利用してください。
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        customIconUrl:
+          type: string
+        email:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsStandard
+          - AsPlus
+          - AsProfessional
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        iconUrl:
+          type: string
+        impersonatingNickname:
+          type: string
+        impersonatingUsername:
+          type: string
+        isEnterprise:
+          type: boolean
+        isFsMigrated:
+          type: boolean
+        isPayer:
+          type: boolean
+        language:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+        purchaseInfo:
+          $ref: '#/components/schemas/PurchaseInfo'
+        region:
+          type: string
+        sendMeNews:
+          type: boolean
+        sharedMountPoint:
+          type: string
+        stripeId:
+          type: string
+        systemAdmin:
+          type: boolean
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+        trialAvailable:
+          type: boolean
+        username:
+          type: string
+        zoneinfo:
+          type: string
+    Purchase:
+      type: object
+      properties:
+        amountPaid:
+          type: integer
+          format: int64
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        collectionMethod:
+          type: string
+        currency:
+          type: string
+        expiredAt:
+          type: string
+          example: '2016-01-01T00:00:00.000Z'
+        invoiceId:
+          type: string
+        invoiceUrl:
+          type: string
+        orderId:
+          type: string
+        planId:
+          type: string
+        startedAt:
+          type: string
+          example: '2016-01-01T00:00:00.000Z'
+        state:
+          type: string
+          enum:
+          - Paid
+          - Trial
+          - NotPaid
+          - Canceled
+        subscriptionId:
+          type: string
+    Subscription:
+      type: object
+      required:
+      - type
+      - uuid
+      properties:
+        email:
+          type: string
+        enterprise:
+          type: boolean
+        groupUsernames:
+          type: array
+          items:
+            type: string
+        iconUrl:
+          type: string
+        name:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        nickname:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        organizationName:
+          type: string
+        region:
+          type: string
+        type:
+          type: string
+          enum:
+          - Account
+          - Group
+        uuid:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        accessTokenExpiredAt:
+          type: string
+        refreshToken:
+          type: string
+        refreshTokenExpiredAt:
+          type: string
+        subscriptionInfo:
+          $ref: '#/components/schemas/SubscriptionInfo'
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

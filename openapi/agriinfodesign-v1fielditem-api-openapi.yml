@@ -1,0 +1,487 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Field Item API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1FieldItem
+paths:
+  /v1/field_items/{id}/polygon:
+    put:
+      tags:
+      - V1FieldItem
+      description: FieldItemのPolygonデータを更新
+      operationId: updateFieldItemPolygon
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFieldPolygonRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirestoreUpdateResponse'
+      summary: Update field item polygon
+      x-summary-source: derived
+  /v1/field_items/{id}/meta:
+    put:
+      tags:
+      - V1FieldItem
+      description: FirestoreのFieldItemのMetaデータを更新
+      operationId: updateFieldItemMetaData
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMetaDataRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirestoreUpdateResponse'
+      summary: Update field item meta data
+      x-summary-source: derived
+  /v1/field_items:
+    get:
+      tags:
+      - V1FieldItem
+      description: フォローしているユーザーを含む全てのFieldItem（圃場）一覧
+      operationId: listAllFieldItems_1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RemoteFieldItem'
+      summary: List all field items 1
+      x-summary-source: derived
+    post:
+      tags:
+      - V1FieldItem
+      description: GeoJSONで記述されたFieldをインポートする
+      operationId: importFields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirestoreImportResponse'
+      summary: Import fields
+      x-summary-source: derived
+  /v1/field_items/sync/metadata:
+    post:
+      tags:
+      - V1FieldItem
+      description: Metaデータ、Polygon編集のsync検知
+      operationId: waitSyncAsUpdateFieldItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncUpdateGeoItemRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncUpdateFieldItemResponse'
+      summary: Wait sync as update field item
+      x-summary-source: derived
+  /v1/field_items/{id}/tasks/count:
+    get:
+      tags:
+      - V1FieldItem
+      description: FieldItemに紐づいているTaskRecordItemの数
+      operationId: countTasksInField
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountTaskInFieldResponse'
+      summary: Count tasks in field
+      x-summary-source: derived
+  /v1/field_items/page:
+    get:
+      tags:
+      - V1FieldItem
+      description: フォローしているユーザーを含むFieldItem（圃場）一覧をページ形式で取得
+      operationId: listFieldItemsForPage
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: sortKey
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: sortDirection
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagingResponseRemoteFieldItem'
+      summary: List field items for page
+      x-summary-source: derived
+  /v1/field_items/centroid:
+    get:
+      tags:
+      - V1FieldItem
+      description: そのユーザーがもつ圃場全ての重心座標
+      operationId: centroid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Point'
+      summary: Centroid
+      x-summary-source: derived
+  /v1/field_items/:
+    get:
+      tags:
+      - V1FieldItem
+      description: フォローしているユーザーを含む全てのFieldItem（圃場）一覧
+      operationId: listAllFieldItems
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RemoteFieldItem'
+      summary: List all field items
+      x-summary-source: derived
+  /v1/field_items/{id}:
+    delete:
+      tags:
+      - V1FieldItem
+      description: FieldItemを削除。Firestoreから物理削除する。
+      operationId: deleteFieldItem
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirestoreDeleteResponse'
+      summary: Delete field item
+      x-summary-source: derived
+components:
+  schemas:
+    Point:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            $ref: '#/components/schemas/LngLatAlt'
+    FirestoreUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    Polygon:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/LngLatAlt'
+    UpdateMetaDataRequest:
+      required:
+      - metaDataUpdatedAt
+      type: object
+      properties:
+        metaDataUpdatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        name:
+          type: string
+        caption:
+          type: string
+        metaDatas:
+          type: object
+          additionalProperties:
+            type: string
+    FirestoreImportResponse:
+      type: object
+      properties:
+        importResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirestoreImportResult'
+    PaginationInfo:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: 現在何ページ目にいるか
+          format: int32
+        numberOfElements:
+          type: integer
+          description: いくつの要素があるか
+          format: int32
+        size:
+          type: integer
+          description: いくつの要素をページで持つか
+          format: int32
+        totalElements:
+          type: integer
+          description: 全要素数
+          format: int64
+        totalPages:
+          type: integer
+          description: 総ページ数
+          format: int32
+      description: ページネーション情報
+    FirestoreDeleteResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    SyncUpdateGeoItemRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: updateしたFirestoreのId
+        syncedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+    GeoJsonObject:
+      required:
+      - type
+      type: object
+      properties:
+        crs:
+          $ref: '#/components/schemas/Crs'
+        bbox:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+    SyncUpdateFieldItemResponse:
+      type: object
+      properties:
+        isCompleted:
+          type: boolean
+        syncDateTime:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        remoteFieldItem:
+          $ref: '#/components/schemas/RemoteFieldItem'
+    UpdateFieldPolygonRequest:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    ImportRequest:
+      type: object
+      properties:
+        features:
+          type: array
+          description: 取り込みたいGeoJson Featureリスト（FeatureCollectionではありません）
+          items:
+            $ref: '#/components/schemas/Feature'
+        propertyAsName:
+          type: string
+          description: 名称として利用する属性名
+    PagingResponseRemoteFieldItem:
+      type: object
+      properties:
+        contents:
+          type: array
+          description: データのリスト
+          items:
+            $ref: '#/components/schemas/RemoteFieldItem'
+        paginationInfo:
+          $ref: '#/components/schemas/PaginationInfo'
+    LngLatAlt:
+      type: object
+      properties:
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+        altitude:
+          type: number
+          format: double
+        additionalElements:
+          type: array
+          items:
+            type: number
+            format: double
+    RemoteFieldItem:
+      type: object
+      properties:
+        username:
+          type: string
+        sessionId:
+          type: string
+        createdDateTime:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        lastModifiedDateTime:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        name:
+          type: string
+        caption:
+          type: string
+        geoInfoKey:
+          type: string
+        pk:
+          type: integer
+          format: int64
+        id:
+          type: string
+        documentId:
+          type: string
+        geoDocumentId:
+          type: string
+        syncedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        deleted:
+          type: boolean
+        area:
+          type: number
+        length:
+          type: number
+        geoJson:
+          type: string
+        centroid:
+          $ref: '#/components/schemas/Point'
+        bounds:
+          $ref: '#/components/schemas/Polygon'
+        geohash:
+          type: string
+    CountTaskInFieldResponse:
+      type: object
+      properties:
+        taskCount:
+          type: integer
+          format: int32
+    FirestoreImportResult:
+      type: object
+      properties:
+        id:
+          type: string
+        success:
+          type: boolean
+    Crs:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - name
+          - link
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+    Feature:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          properties:
+            type: object
+            additionalProperties:
+              type: string
+              format: '2016-01-01T00:00:00.000Z'
+          geometry:
+            $ref: '#/components/schemas/GeoJsonObject'
+          id:
+            type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

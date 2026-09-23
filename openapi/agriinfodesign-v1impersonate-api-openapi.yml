@@ -1,0 +1,59 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Impersonate API
+  description: Connect管理者権限ユーザー専用のなりすましユーザートークン発行API
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Impersonate
+  description: Connect管理者権限ユーザー専用のなりすましユーザートークン発行API
+paths:
+  /v1/impersonate:
+    post:
+      tags:
+      - V1Impersonate
+      summary: SwitchUserしたトークンを発行します。このAPI実行にはUserがsystemAdminである必要があります
+      operationId: impersonate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImpersonationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type:
+          - string
+          - 'null'
+        accessTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        refreshTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+    ImpersonationRequest:
+      type: object
+      properties:
+        targetUserEmail:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

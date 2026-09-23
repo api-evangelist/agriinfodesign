@@ -1,0 +1,40 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager System V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: System V1
+  description: V 1 System Controller
+paths:
+  /v1/system/info:
+    get:
+      tags:
+      - System V1
+      summary: getInfo
+      operationId: getInfoUsingGET_1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SystemInfo'
+components:
+  schemas:
+    SystemInfo:
+      type: object
+      properties:
+        jwtPublicKey:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

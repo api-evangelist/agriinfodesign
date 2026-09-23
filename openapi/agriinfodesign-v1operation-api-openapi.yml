@@ -1,0 +1,44 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Operation API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Operation
+paths:
+  /v1/operations/available/types:
+    get:
+      tags:
+      - V1Operation
+      description: 利用できるOperationType一覧
+      operationId: listAvailableTypes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RemoteOperationType'
+      summary: List available types
+      x-summary-source: derived
+components:
+  schemas:
+    LocalizedValues:
+      type: object
+    RemoteOperationType:
+      type: object
+      properties:
+        value:
+          type: string
+        localizedNames:
+          $ref: '#/components/schemas/LocalizedValues'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

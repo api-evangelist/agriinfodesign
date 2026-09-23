@@ -1,4 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Stripe API
+  description: Stripe関係のAPI
 servers:
 - url: http://pay.agribus-connect.net
   description: Generated server url
@@ -7,14 +10,6 @@ security:
 tags:
 - name: V1Stripe
   description: Stripe関係のAPI
-- name: V1Pay
-  description: 課金関連のAPI
-- name: V1MarketMonitor
-  description: マーケット情報 (AgriBus-DWH) 連携API
-- name: V1Google
-  description: Google関係のAPI
-- name: V1Navi
-  description: Navi関係のAPI
 paths:
   /v1/stripe/subscriptions/{subscriptionId}/{planId}:
     put:
@@ -34,8 +29,10 @@ paths:
         schema:
           type: string
       responses:
-        "200":
+        '200':
           description: OK
+      summary: Change plan
+      x-summary-source: derived
   /v1/stripe/subscriptions/payment_method/{subscriptionId}/{paymentMethodType}:
     put:
       tags:
@@ -60,8 +57,10 @@ paths:
               $ref: '#/components/schemas/AddCardRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: OK
+      summary: Change payment method type
+      x-summary-source: derived
   /v1/stripe/customer/name:
     put:
       tags:
@@ -75,8 +74,10 @@ paths:
               $ref: '#/components/schemas/UpdateStripeCustomerNameRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: OK
+      summary: Update customer name
+      x-summary-source: derived
   /v1/stripe/customer/email:
     put:
       tags:
@@ -90,8 +91,10 @@ paths:
               $ref: '#/components/schemas/UpdateStripeCustomerEmailRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: OK
+      summary: Update customer email
+      x-summary-source: derived
   /v1/stripe/card/{cardId}:
     put:
       tags:
@@ -105,8 +108,10 @@ paths:
         schema:
           type: string
       responses:
-        "200":
+        '200':
           description: OK
+      summary: Select card
+      x-summary-source: derived
     delete:
       tags:
       - V1Stripe
@@ -119,29 +124,10 @@ paths:
         schema:
           type: string
       responses:
-        "200":
+        '200':
           description: OK
-  /v1/navi/status/purchase/{deviceId}:
-    put:
-      tags:
-      - V1Navi
-      description: NAVI端末内のGoogle課金情報を保存する
-      operationId: saveAndroidPurchases
-      parameters:
-      - name: deviceId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AndroidPurchases'
-        required: true
-      responses:
-        "200":
-          description: OK
+      summary: Delete card
+      x-summary-source: derived
   /v1/stripe/subscriptions/{subscriptionId}:
     post:
       tags:
@@ -155,8 +141,10 @@ paths:
         schema:
           type: string
       responses:
-        "200":
+        '200':
           description: OK
+      summary: Unsubscribe
+      x-summary-source: derived
   /v1/stripe/subscription:
     post:
       tags:
@@ -170,8 +158,10 @@ paths:
               $ref: '#/components/schemas/StripeSubscribeRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: OK
+      summary: Subscribe
+      x-summary-source: derived
   /v1/stripe/card:
     post:
       tags:
@@ -185,64 +175,14 @@ paths:
               $ref: '#/components/schemas/AddCardRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeInfo'
-  /v1/pay/calculate/functionality:
-    post:
-      tags:
-      - V1Pay
-      description: usernameからFunctionalityを計算し、Authサーバに通知します。
-      operationId: calculateFunctionality
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CalculateFunctionalityRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-  /v1/navi/status/purchase/check:
-    post:
-      tags:
-      - V1Navi
-      description: Google課金情報がすでに存在するかチェックする
-      operationId: checkAndroidPurchases
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AndroidPurchases'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CheckAndroidPurchasesResponse'
-  /v1/google/play/rtdn:
-    post:
-      tags:
-      - V1Google
-      description: Googleの課金情報自動同期
-      operationId: receiveNotification
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              additionalProperties:
-                type: string
-                format: 2016-01-01T00:00:00.000Z
-        required: true
-      responses:
-        "200":
-          description: OK
+      summary: Add card
+      x-summary-source: derived
   /v1/stripe/plans:
     get:
       tags:
@@ -250,7 +190,7 @@ paths:
       description: 支払いプランのリストを取得します
       operationId: listBillingPlans
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -258,6 +198,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/StripePlan'
+      summary: List billing plans
+      x-summary-source: derived
   /v1/stripe/invoices:
     get:
       tags:
@@ -265,9 +207,11 @@ paths:
       description: 請求情報を取得します
       operationId: getInvoices
       responses:
-        "200":
+        '200':
           description: OK
       deprecated: true
+      summary: Get invoices
+      x-summary-source: derived
   /v1/stripe/invoices/upcoming:
     get:
       tags:
@@ -275,13 +219,15 @@ paths:
       description: 現在期間の請求情報を取得します
       operationId: getInvoicesUpcoming
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeInvoice'
       deprecated: true
+      summary: Get invoices upcoming
+      x-summary-source: derived
   /v1/stripe/info:
     get:
       tags:
@@ -289,12 +235,14 @@ paths:
       description: Userに紐づいたStripe情報を取得します
       operationId: getInfo
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeInfo'
+      summary: Get info
+      x-summary-source: derived
   /v1/stripe/coupons:
     get:
       tags:
@@ -302,7 +250,7 @@ paths:
       description: クーポン一覧を取得します
       operationId: listCoupons
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -310,67 +258,71 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Coupon'
-  /v1/pay/purchases:
-    get:
-      tags:
-      - V1Pay
-      description: TokenからPurchaseInfoを取得します
-      operationId: getPurchaseInfoFromToken
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PurchaseInfo'
-  /v1/pay/purchases/{username}:
-    get:
-      tags:
-      - V1Pay
-      description: usernameからPurchaseInfoを取得します
-      operationId: getPurchaseInfoFromUsername
-      parameters:
-      - name: username
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PurchaseInfo'
-  /v1/market-monitor/feed-access-token:
-    get:
-      tags:
-      - V1MarketMonitor
-      description: ニュースフィード (feed-api) 閲覧用の短命トークンを発行します。無料会員にも発行し、表示範囲は plan claim
-        で feed-api 側が制御します。
-      operationId: getFeedAccessToken
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MarketMonitorAccessTokenResponse'
-  /v1/market-monitor/access-token:
-    get:
-      tags:
-      - V1MarketMonitor
-      description: 有料プラン会員に soybean/wheat-monitor 閲覧用の短命トークンを発行します。無料プランは403。
-      operationId: getMarketMonitorAccessToken
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MarketMonitorAccessTokenResponse'
+      summary: List coupons
+      x-summary-source: derived
 components:
   schemas:
+    JsonNull:
+      type: object
+      properties:
+        asString:
+          type: string
+        asInt:
+          type: integer
+          format: int32
+        asDouble:
+          type: number
+          format: double
+        asLong:
+          type: integer
+          format: int64
+        asBoolean:
+          type: boolean
+        asJsonObject:
+          $ref: '#/components/schemas/JsonObject'
+        jsonObject:
+          type: boolean
+        jsonPrimitive:
+          type: boolean
+        jsonArray:
+          type: boolean
+        jsonNull:
+          type: boolean
+        asJsonArray:
+          $ref: '#/components/schemas/JsonArray'
+        asJsonPrimitive:
+          $ref: '#/components/schemas/JsonPrimitive'
+        asJsonNull:
+          $ref: '#/components/schemas/JsonNull'
+        asNumber:
+          type: number
+        asFloat:
+          type: number
+          format: float
+        asByte:
+          type: string
+          format: byte
+        asCharacter:
+          type: string
+          deprecated: true
+        asBigDecimal:
+          type: number
+        asBigInteger:
+          type: integer
+        asShort:
+          type: integer
+          format: int32
+    AppliesTo:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: string
+        lastResponse:
+          $ref: '#/components/schemas/StripeResponse'
+        rawJsonObject:
+          $ref: '#/components/schemas/JsonObject'
     AddCardRequest:
       required:
       - stripeCardName
@@ -380,98 +332,6 @@ components:
         stripeToken:
           type: string
         stripeCardName:
-          type: string
-    UpdateStripeCustomerNameRequest:
-      type: object
-      properties:
-        name:
-          type: string
-    UpdateStripeCustomerEmailRequest:
-      type: object
-      properties:
-        email:
-          type: string
-    AndroidPurchase:
-      type: object
-      properties:
-        packageName:
-          type: string
-        orderId:
-          type: string
-        productId:
-          type: string
-        developerPayload:
-          type: string
-        purchaseTime:
-          type: integer
-          format: int64
-        purchaseState:
-          type: integer
-          format: int32
-        purchaseToken:
-          type: string
-        purchased:
-          type: boolean
-        testPurchase:
-          type: boolean
-    AndroidPurchases:
-      type: object
-      properties:
-        standardPlan:
-          $ref: '#/components/schemas/AndroidPurchase'
-    StripeSubscribeRequest:
-      required:
-      - addCardRequest
-      - couponCode
-      - paymentMethodTypes
-      - planId
-      type: object
-      properties:
-        addCardRequest:
-          $ref: '#/components/schemas/AddCardRequest'
-        planId:
-          type: string
-        couponCode:
-          type: string
-        paymentMethodTypes:
-          type: string
-    Purchase:
-      type: object
-      properties:
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        startedAt:
-          type: string
-          format: 2016-01-01T00:00:00.000Z
-        expiredAt:
-          type: string
-          format: 2016-01-01T00:00:00.000Z
-        planId:
-          type: string
-        orderId:
-          type: string
-        invoiceId:
-          type: string
-        state:
-          type: string
-          enum:
-          - Paid
-          - Trial
-          - NotPaid
-          - Canceled
-        amountPaid:
-          type: integer
-          format: int64
-        invoiceUrl:
-          type: string
-        currency:
-          type: string
-        autoRenewing:
-          type: boolean
-        collectionMethod:
           type: string
     StripeCard:
       type: object
@@ -492,37 +352,16 @@ components:
         expYear:
           type: integer
           format: int32
-    StripeInfo:
+    CurrencyOption:
       type: object
       properties:
-        publishableKey:
-          type: string
-        currency:
-          type: string
-        customerId:
-          type: string
-        cards:
-          type: array
-          items:
-            $ref: '#/components/schemas/StripeCard'
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-        name:
-          type: string
-        email:
-          type: string
-    CalculateFunctionalityRequest:
-      type: object
-      properties:
-        username:
-          type: string
-    CheckAndroidPurchasesResponse:
-      type: object
-      properties:
-        exists:
-          type: boolean
+        amountOff:
+          type: integer
+          format: int64
+        lastResponse:
+          $ref: '#/components/schemas/StripeResponse'
+        rawJsonObject:
+          $ref: '#/components/schemas/JsonObject'
     StripePlan:
       type: object
       properties:
@@ -568,48 +407,87 @@ components:
           format: int64
         createdAt:
           type: string
-          format: 2016-01-01T00:00:00.000Z
+          format: '2016-01-01T00:00:00.000Z'
         updatedAt:
           type: string
-          format: 2016-01-01T00:00:00.000Z
-    StripeInvoice:
+          format: '2016-01-01T00:00:00.000Z'
+    StripeInfo:
       type: object
       properties:
-        id:
-          type: string
-        amountPaid:
-          type: integer
-          format: int64
-        amountDue:
-          type: integer
-          format: int64
-        amountRemaining:
-          type: integer
-          format: int64
-        hostedInvoiceUrl:
+        publishableKey:
           type: string
         currency:
           type: string
-        periodStart:
-          type: integer
-          format: int64
-        periodEnd:
-          type: integer
-          format: int64
-        maxQuantity:
-          type: integer
-          format: int64
-    AppliesTo:
-      type: object
-      properties:
-        products:
+        customerId:
+          type: string
+        cards:
           type: array
           items:
-            type: string
-        lastResponse:
-          $ref: '#/components/schemas/StripeResponse'
-        rawJsonObject:
+            $ref: '#/components/schemas/StripeCard'
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        name:
+          type: string
+        email:
+          type: string
+    StripeResponse:
+      type: object
+    StripeResponseGetter:
+      type: object
+    JsonArray:
+      type: object
+      properties:
+        asString:
+          type: string
+        empty:
+          type: boolean
+        asInt:
+          type: integer
+          format: int32
+        asDouble:
+          type: number
+          format: double
+        asLong:
+          type: integer
+          format: int64
+        asBoolean:
+          type: boolean
+        asNumber:
+          type: number
+        asFloat:
+          type: number
+          format: float
+        asByte:
+          type: string
+          format: byte
+        asCharacter:
+          type: string
+          deprecated: true
+        asBigDecimal:
+          type: number
+        asBigInteger:
+          type: integer
+        asShort:
+          type: integer
+          format: int32
+        asJsonObject:
           $ref: '#/components/schemas/JsonObject'
+        jsonObject:
+          type: boolean
+        jsonPrimitive:
+          type: boolean
+        jsonArray:
+          type: boolean
+        jsonNull:
+          type: boolean
+        asJsonArray:
+          $ref: '#/components/schemas/JsonArray'
+        asJsonPrimitive:
+          $ref: '#/components/schemas/JsonPrimitive'
+        asJsonNull:
+          $ref: '#/components/schemas/JsonNull'
     Coupon:
       type: object
       properties:
@@ -665,118 +543,54 @@ components:
           $ref: '#/components/schemas/StripeResponse'
         rawJsonObject:
           $ref: '#/components/schemas/JsonObject'
-    CurrencyOption:
+    UpdateStripeCustomerNameRequest:
       type: object
       properties:
-        amountOff:
-          type: integer
-          format: int64
-        lastResponse:
-          $ref: '#/components/schemas/StripeResponse'
-        rawJsonObject:
-          $ref: '#/components/schemas/JsonObject'
-    JsonArray:
+        name:
+          type: string
+    StripeInvoice:
       type: object
       properties:
-        asString:
+        id:
           type: string
-        empty:
-          type: boolean
-        asInt:
-          type: integer
-          format: int32
-        asDouble:
-          type: number
-          format: double
-        asLong:
+        amountPaid:
           type: integer
           format: int64
-        asBoolean:
-          type: boolean
-        asNumber:
-          type: number
-        asFloat:
-          type: number
-          format: float
-        asByte:
-          type: string
-          format: byte
-        asCharacter:
-          type: string
-          deprecated: true
-        asBigDecimal:
-          type: number
-        asBigInteger:
+        amountDue:
           type: integer
-        asShort:
+          format: int64
+        amountRemaining:
           type: integer
-          format: int32
-        asJsonObject:
-          $ref: '#/components/schemas/JsonObject'
-        jsonObject:
-          type: boolean
-        jsonPrimitive:
-          type: boolean
-        jsonArray:
-          type: boolean
-        jsonNull:
-          type: boolean
-        asJsonArray:
-          $ref: '#/components/schemas/JsonArray'
-        asJsonPrimitive:
-          $ref: '#/components/schemas/JsonPrimitive'
-        asJsonNull:
-          $ref: '#/components/schemas/JsonNull'
-    JsonNull:
+          format: int64
+        hostedInvoiceUrl:
+          type: string
+        currency:
+          type: string
+        periodStart:
+          type: integer
+          format: int64
+        periodEnd:
+          type: integer
+          format: int64
+        maxQuantity:
+          type: integer
+          format: int64
+    StripeSubscribeRequest:
+      required:
+      - addCardRequest
+      - couponCode
+      - paymentMethodTypes
+      - planId
       type: object
       properties:
-        asString:
+        addCardRequest:
+          $ref: '#/components/schemas/AddCardRequest'
+        planId:
           type: string
-        asInt:
-          type: integer
-          format: int32
-        asDouble:
-          type: number
-          format: double
-        asLong:
-          type: integer
-          format: int64
-        asBoolean:
-          type: boolean
-        asJsonObject:
-          $ref: '#/components/schemas/JsonObject'
-        jsonObject:
-          type: boolean
-        jsonPrimitive:
-          type: boolean
-        jsonArray:
-          type: boolean
-        jsonNull:
-          type: boolean
-        asJsonArray:
-          $ref: '#/components/schemas/JsonArray'
-        asJsonPrimitive:
-          $ref: '#/components/schemas/JsonPrimitive'
-        asJsonNull:
-          $ref: '#/components/schemas/JsonNull'
-        asNumber:
-          type: number
-        asFloat:
-          type: number
-          format: float
-        asByte:
+        couponCode:
           type: string
-          format: byte
-        asCharacter:
+        paymentMethodTypes:
           type: string
-          deprecated: true
-        asBigDecimal:
-          type: number
-        asBigInteger:
-          type: integer
-        asShort:
-          type: integer
-          format: int32
     JsonObject:
       type: object
       properties:
@@ -829,6 +643,44 @@ components:
         asShort:
           type: integer
           format: int32
+    Purchase:
+      type: object
+      properties:
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        startedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        expiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        planId:
+          type: string
+        orderId:
+          type: string
+        invoiceId:
+          type: string
+        state:
+          type: string
+          enum:
+          - Paid
+          - Trial
+          - NotPaid
+          - Canceled
+        amountPaid:
+          type: integer
+          format: int64
+        invoiceUrl:
+          type: string
+        currency:
+          type: string
+        autoRenewing:
+          type: boolean
+        collectionMethod:
+          type: string
     JsonPrimitive:
       type: object
       properties:
@@ -885,42 +737,11 @@ components:
           $ref: '#/components/schemas/JsonPrimitive'
         asJsonNull:
           $ref: '#/components/schemas/JsonNull'
-    StripeResponse:
-      type: object
-    StripeResponseGetter:
-      type: object
-    PurchaseInfo:
+    UpdateStripeCustomerEmailRequest:
       type: object
       properties:
-        billingVendor:
+        email:
           type: string
-          enum:
-          - Google
-          - Stripe
-        planStartedAt:
-          type: string
-          format: 2016-01-01T00:00:00.000Z
-        planExpiredAt:
-          type: string
-          format: 2016-01-01T00:00:00.000Z
-        trial:
-          type: boolean
-        subscriptionId:
-          type: string
-        autoRenewing:
-          type: boolean
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-    MarketMonitorAccessTokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        expiresIn:
-          type: integer
-          format: int64
   securitySchemes:
     bearerAuth:
       type: http

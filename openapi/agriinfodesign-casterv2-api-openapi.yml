@@ -1,0 +1,81 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Caster V2 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: CasterV2
+  description: V 2 Caster Controller
+paths:
+  /v2/caster/client:
+    post:
+      tags:
+      - CasterV2
+      summary: 利用しないでください
+      description: YouCORSにNtripクライアントを作成する
+      operationId: createClientUsingPOST_1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/CreateClientResponse'
+  /v2/caster/client/{clientName}:
+    post:
+      tags:
+      - CasterV2
+      summary: 利用しないでください
+      description: ClientNameを指定して、YouCORSにNtripクライアントを作成する
+      operationId: createClientByNameUsingPOST_1
+      parameters:
+      - name: clientName
+        in: path
+        description: clientName
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/CreateClientResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClientRequest'
+        description: request
+        required: true
+components:
+  schemas:
+    CreateClientResponse:
+      type: object
+      properties:
+        clientStatus:
+          type: string
+          enum:
+          - Succeeded
+          - Failure
+          - AlreadyExists
+          - None
+    CreateClientRequest:
+      type: object
+      required:
+      - password
+      properties:
+        password:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header

@@ -1,0 +1,85 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 User Icon API
+  description: ユーザーアイコンAPI
+servers:
+- url: http://auth.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1UserIcon
+  description: ユーザーアイコンAPI
+paths:
+  /v1/user/icon:
+    put:
+      tags:
+      - V1UserIcon
+      summary: アイコンを設定する
+      operationId: updateIcon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIconRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+  /v1/user/icon/custom:
+    post:
+      tags:
+      - V1UserIcon
+      summary: アイコン画像をアップロードする
+      operationId: uploadIconImage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - img
+              type: object
+              properties:
+                img:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadIconImageResult'
+components:
+  schemas:
+    UpdateIconRequest:
+      type: object
+      properties:
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        preset:
+          type: string
+          enum:
+          - Preset1
+          - Preset2
+          - Preset3
+          - Preset4
+          - Preset5
+          - Preset6
+        base64EncordedImage:
+          type: string
+          description: Base64エンコードされた画像
+    UploadIconImageResult:
+      type: object
+      properties:
+        url:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

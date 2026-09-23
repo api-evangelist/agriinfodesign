@@ -1,0 +1,186 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Agricultural Machinery API
+  description: 農機オープンAPI v2.0.0
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1AgriculturalMachinery
+  description: 農機オープンAPI v2.0.0
+paths:
+  /v1/agricultural-machinery/devices:
+    get:
+      tags:
+      - V1AgriculturalMachinery
+      summary: デバイス一覧取得
+      description: 認証ユーザーに紐づくデバイス一覧を取得します
+      operationId: getDevices
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DeviceListResponse'
+  /v1/agricultural-machinery/devices/{device_id}/locations:
+    get:
+      tags:
+      - V1AgriculturalMachinery
+      summary: 位置情報取得
+      description: 指定されたデバイスの位置情報履歴を取得します
+      operationId: getLocationsByDeviceId
+      parameters:
+      - name: device_id
+        in: path
+        description: デバイスID（UUID形式）
+        required: true
+        schema:
+          type: string
+      - name: since
+        in: query
+        description: 開始日時（ISO8601形式）
+        required: false
+        schema:
+          type: string
+      - name: until
+        in: query
+        description: 終了日時（ISO8601形式）
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: 取得件数上限
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: sort
+        in: query
+        description: ソート順（asc/desc）
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FeatureCollection'
+components:
+  schemas:
+    GeoJsonObject:
+      required:
+      - type
+      type: object
+      properties:
+        crs:
+          $ref: '#/components/schemas/Crs'
+        bbox:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+    Crs:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - name
+          - link
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+    DeviceInfo:
+      type: object
+      properties:
+        device_id:
+          type: string
+          description: デバイスID（UUID形式）
+          example: 550e8400-e29b-41d4-a716-446655440000
+        device_name:
+          type: string
+          description: デバイス名
+          example: Connect Agricultural Device
+        manufacturer:
+          type: string
+          description: 製造元
+          example: Agri Info Design
+        model:
+          type: string
+          description: モデル名
+          example: Connect-1
+        serial_number:
+          type: string
+          description: シリアル番号
+          example: CONN-2024-001
+        firmware_version:
+          type: string
+          description: ファームウェアバージョン
+          example: 1.0.0
+      description: 農機デバイス情報
+    DeviceListResponse:
+      type: object
+      properties:
+        devices:
+          type: array
+          description: デバイス情報リスト
+          items:
+            $ref: '#/components/schemas/DeviceInfo'
+        total_count:
+          type: integer
+          description: 総デバイス数
+          format: int32
+          example: 1
+        page:
+          type: integer
+          description: 現在のページ番号
+          format: int32
+          example: 1
+        per_page:
+          type: integer
+          description: 1ページあたりの件数
+          format: int32
+          example: 10
+      description: デバイス一覧レスポンス
+    Feature:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          properties:
+            type: object
+            additionalProperties:
+              type: string
+              format: '2016-01-01T00:00:00.000Z'
+          geometry:
+            $ref: '#/components/schemas/GeoJsonObject'
+          id:
+            type: string
+    FeatureCollection:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          features:
+            type: array
+            items:
+              $ref: '#/components/schemas/Feature'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

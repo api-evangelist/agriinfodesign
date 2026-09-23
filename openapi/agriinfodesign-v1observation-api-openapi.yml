@@ -1,0 +1,251 @@
+openapi: 3.2.0
+info:
+  title: Agriinfodesign V1 Observation API
+servers:
+- url: http://datastore.agribus-connect.net
+  description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: V1Observation
+paths:
+  /v1/observations/pf/{id}:
+    put:
+      tags:
+      - V1Observation
+      description: PF観測リストを保存します
+      operationId: updatePfObservation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveSoilMoistureObservationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteSoilMoistureObservation'
+      summary: Update pf observation
+      x-summary-source: derived
+    delete:
+      tags:
+      - V1Observation
+      description: PF観測ポイントリストを削除します
+      operationId: deletePfObservation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+      summary: Delete pf observation
+      x-summary-source: derived
+  /v1/observations/at/{id}:
+    put:
+      tags:
+      - V1Observation
+      description: AT観測を保存します
+      operationId: updateAtObservation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveAccumulatedTemperatureObservationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteAccumulatedTemperatureObservation'
+      summary: Update at observation
+      x-summary-source: derived
+    delete:
+      tags:
+      - V1Observation
+      description: AT観測ポイントリストを削除します
+      operationId: deleteAtObservation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+      summary: Delete at observation
+      x-summary-source: derived
+  /v1/observations/pf:
+    get:
+      tags:
+      - V1Observation
+      description: PF観測リストを取得します
+      operationId: listPfObservations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RemoteSoilMoistureObservation'
+      summary: List pf observations
+      x-summary-source: derived
+    post:
+      tags:
+      - V1Observation
+      description: PF観測を作成します
+      operationId: createPfObservation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveSoilMoistureObservationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteSoilMoistureObservation'
+      summary: Create pf observation
+      x-summary-source: derived
+  /v1/observations/at:
+    get:
+      tags:
+      - V1Observation
+      description: AT観測リストを取得します
+      operationId: listAtObservations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RemoteAccumulatedTemperatureObservation'
+      summary: List at observations
+      x-summary-source: derived
+    post:
+      tags:
+      - V1Observation
+      description: AT観測を作成します
+      operationId: createAtObservation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveAccumulatedTemperatureObservationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteAccumulatedTemperatureObservation'
+      summary: Create at observation
+      x-summary-source: derived
+components:
+  schemas:
+    RemoteAccumulatedTemperatureObservation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        placeType:
+          type: string
+        fireFieldId:
+          type: string
+        geohash:
+          type: string
+        lowerLimitTemperature:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+        baseHour:
+          type: integer
+          format: int32
+        zoneId:
+          type: string
+    RemoteSoilMoistureObservation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        placeType:
+          type: string
+        fireFieldId:
+          type: string
+        geohash:
+          type: string
+        drainage:
+          type: string
+        soil:
+          type: string
+    SaveSoilMoistureObservationRequest:
+      type: object
+      properties:
+        fireFieldId:
+          type: string
+        placeType:
+          type: string
+        drainage:
+          type: string
+        soil:
+          type: string
+    SaveAccumulatedTemperatureObservationRequest:
+      type: object
+      properties:
+        fireFieldId:
+          type: string
+        placeType:
+          type: string
+        lowerLimitTemperature:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+        zoneId:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

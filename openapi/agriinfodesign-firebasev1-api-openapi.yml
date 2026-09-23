@@ -1,0 +1,41 @@
+openapi: 3.2.0
+info:
+  description: AgriBus-Web Manager API
+  version: 0.0.1
+  title: AgriBus-Web Manager Firebase V1 API
+  termsOfService: http://agri-info-design.com/
+  license:
+    name: Some License
+    url: http://agri-info-design.com/
+servers:
+- url: https://manager.agribus-connect.net/
+tags:
+- name: FirebaseV1
+  description: V 1 Firebase Controller
+paths:
+  /v1/firebase/custom_token:
+    get:
+      tags:
+      - FirebaseV1
+      summary: getCustomToken
+      description: FirebaseよりCustomTokenを発行します
+      operationId: getCustomTokenUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/FirebaseCustomTokenResponse'
+components:
+  schemas:
+    FirebaseCustomTokenResponse:
+      type: object
+      properties:
+        customToken:
+          type: string
+  securitySchemes:
+    mykey:
+      type: apiKey
+      name: mykey
+      in: header
