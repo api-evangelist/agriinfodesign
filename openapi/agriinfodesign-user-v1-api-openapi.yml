@@ -236,31 +236,37 @@ paths:
         required: true
 components:
   schemas:
-    ChangePasswordRequest:
+    SignUpRequest:
       type: object
       required:
-      - currentPassword
-      - newPassword
+      - email
+      - password
       properties:
-        currentPassword:
+        email:
           type: string
-          description: 現在のパスワード
-        newPassword:
+          description: Eメール
+        language:
           type: string
-          description: 新しいパスワード
-    ConfirmRequest:
-      type: object
-      required:
-      - confirmationCode
-      - secureToken
-      - username
-      properties:
-        confirmationCode:
+          description: 表示言語・en/ja
+        metaData:
+          type: object
+          description: ユーザーメタデータ
+          additionalProperties:
+            type: object
+        nickname:
           type: string
-        secureToken:
+          description: ニックネーム
+        password:
           type: string
-        username:
+        region:
           type: string
+          description: リージョン（your-region.agribus-connect.net を利用して調べてください）
+        sendMeNews:
+          type: boolean
+          description: メルマガ受信
+        zoneinfo:
+          type: string
+          description: タイムゾーン
     PurchaseInfo:
       type: object
       properties:
@@ -298,21 +304,50 @@ components:
           type: string
         trial:
           type: boolean
-    EditUserRequest:
+    UploadIconImageResult:
       type: object
       properties:
-        language:
+        url:
           type: string
-          description: 言語
-        nickname:
+    ConfirmRequest:
+      type: object
+      required:
+      - confirmationCode
+      - secureToken
+      - username
+      properties:
+        confirmationCode:
           type: string
-          description: ニックネーム
-        sendMeNews:
-          type: boolean
-          description: メルマガ受信
-        systemOfUnits:
+        secureToken:
           type: string
-          description: 単位
+        username:
+          type: string
+    ChangePasswordRequest:
+      type: object
+      required:
+      - currentPassword
+      - newPassword
+      properties:
+        currentPassword:
+          type: string
+          description: 現在のパスワード
+        newPassword:
+          type: string
+          description: 新しいパスワード
+    InquiryRequest:
+      type: object
+      required:
+      - content
+      - type
+      properties:
+        content:
+          type: string
+          description: 問い合わせの内容
+        type:
+          type: string
+          description: 問い合わせの種類
+          enum:
+          - QUIT
     CreatePasswordRequest:
       type: object
       required:
@@ -321,42 +356,35 @@ components:
         newPassword:
           type: string
           description: 新しいパスワード
-    UploadIconImageResult:
-      type: object
-      properties:
-        url:
-          type: string
-    SignUpRequest:
+    InquiryResponse:
       type: object
       required:
-      - email
-      - password
+      - number
       properties:
-        email:
+        number:
           type: string
-          description: Eメール
-        language:
+          description: お問い合わせ番号
+    UpdateIconRequest:
+      type: object
+      properties:
+        base64EncordedImage:
           type: string
-          description: 表示言語・en/ja
-        metaData:
-          type: object
-          description: ユーザーメタデータ
-          additionalProperties:
-            type: object
-        nickname:
+          description: Base64エンコードされた画像
+        icon:
           type: string
-          description: ニックネーム
-        password:
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        preset:
           type: string
-        region:
-          type: string
-          description: リージョン（your-region.agribus-connect.net を利用して調べてください）
-        sendMeNews:
-          type: boolean
-          description: メルマガ受信
-        zoneinfo:
-          type: string
-          description: タイムゾーン
+          enum:
+          - Preset1
+          - Preset2
+          - Preset3
+          - Preset4
+          - Preset5
+          - Preset6
     UserInfo:
       type: object
       properties:
@@ -475,49 +503,21 @@ components:
         email:
           type: string
           description: Eメール
-    UpdateIconRequest:
+    EditUserRequest:
       type: object
       properties:
-        base64EncordedImage:
+        language:
           type: string
-          description: Base64エンコードされた画像
-        icon:
+          description: 言語
+        nickname:
           type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        preset:
+          description: ニックネーム
+        sendMeNews:
+          type: boolean
+          description: メルマガ受信
+        systemOfUnits:
           type: string
-          enum:
-          - Preset1
-          - Preset2
-          - Preset3
-          - Preset4
-          - Preset5
-          - Preset6
-    InquiryRequest:
-      type: object
-      required:
-      - content
-      - type
-      properties:
-        content:
-          type: string
-          description: 問い合わせの内容
-        type:
-          type: string
-          description: 問い合わせの種類
-          enum:
-          - QUIT
-    InquiryResponse:
-      type: object
-      required:
-      - number
-      properties:
-        number:
-          type: string
-          description: お問い合わせ番号
+          description: 単位
   securitySchemes:
     mykey:
       type: apiKey

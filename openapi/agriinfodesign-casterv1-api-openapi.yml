@@ -114,6 +114,19 @@ paths:
         required: true
 components:
   schemas:
+    CleanupTargetsResponse:
+      type: object
+      properties:
+        cleanupPossible:
+          type: boolean
+        clientNames:
+          type: array
+          items:
+            type: string
+        mountpointNames:
+          type: array
+          items:
+            type: string
     SetUpYouCorsRequest:
       type: object
     SetUpYouCorsResponse:
@@ -141,19 +154,6 @@ components:
           enum:
           - Execution
           - NonExecution
-    CleanupTargetsResponse:
-      type: object
-      properties:
-        cleanupPossible:
-          type: boolean
-        clientNames:
-          type: array
-          items:
-            type: string
-        mountpointNames:
-          type: array
-          items:
-            type: string
   securitySchemes:
     mykey:
       type: apiKey

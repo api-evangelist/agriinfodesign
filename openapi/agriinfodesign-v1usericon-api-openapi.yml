@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 User Icon API
+  title: Agriinfodesign V1User Icon API
   description: ユーザーアイコンAPI
 servers:
 - url: http://auth.agribus-connect.net
@@ -52,6 +52,11 @@ paths:
                 $ref: '#/components/schemas/UploadIconImageResult'
 components:
   schemas:
+    UploadIconImageResult:
+      type: object
+      properties:
+        url:
+          type: string
     UpdateIconRequest:
       type: object
       properties:
@@ -73,11 +78,6 @@ components:
         base64EncordedImage:
           type: string
           description: Base64エンコードされた画像
-    UploadIconImageResult:
-      type: object
-      properties:
-        url:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

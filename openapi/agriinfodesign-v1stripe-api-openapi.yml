@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Stripe API
+  title: Agriinfodesign V1Stripe API
   description: Stripe関係のAPI
 servers:
 - url: http://pay.agribus-connect.net
@@ -262,67 +262,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    JsonNull:
-      type: object
-      properties:
-        asString:
-          type: string
-        asInt:
-          type: integer
-          format: int32
-        asDouble:
-          type: number
-          format: double
-        asLong:
-          type: integer
-          format: int64
-        asBoolean:
-          type: boolean
-        asJsonObject:
-          $ref: '#/components/schemas/JsonObject'
-        jsonObject:
-          type: boolean
-        jsonPrimitive:
-          type: boolean
-        jsonArray:
-          type: boolean
-        jsonNull:
-          type: boolean
-        asJsonArray:
-          $ref: '#/components/schemas/JsonArray'
-        asJsonPrimitive:
-          $ref: '#/components/schemas/JsonPrimitive'
-        asJsonNull:
-          $ref: '#/components/schemas/JsonNull'
-        asNumber:
-          type: number
-        asFloat:
-          type: number
-          format: float
-        asByte:
-          type: string
-          format: byte
-        asCharacter:
-          type: string
-          deprecated: true
-        asBigDecimal:
-          type: number
-        asBigInteger:
-          type: integer
-        asShort:
-          type: integer
-          format: int32
-    AppliesTo:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            type: string
-        lastResponse:
-          $ref: '#/components/schemas/StripeResponse'
-        rawJsonObject:
-          $ref: '#/components/schemas/JsonObject'
     AddCardRequest:
       required:
       - stripeCardName
@@ -333,109 +272,33 @@ components:
           type: string
         stripeCardName:
           type: string
-    StripeCard:
-      type: object
-      properties:
-        defaultCard:
-          type: boolean
-        id:
-          type: string
-        brand:
-          type: string
-        name:
-          type: string
-        last4:
-          type: string
-        expMonth:
-          type: integer
-          format: int32
-        expYear:
-          type: integer
-          format: int32
-    CurrencyOption:
-      type: object
-      properties:
-        amountOff:
-          type: integer
-          format: int64
-        lastResponse:
-          $ref: '#/components/schemas/StripeResponse'
-        rawJsonObject:
-          $ref: '#/components/schemas/JsonObject'
-    StripePlan:
+    StripeInvoice:
       type: object
       properties:
         id:
           type: string
-        plan:
-          type: string
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        productId:
-          type: string
-        active:
-          type: boolean
-        amount:
-          type: number
-        currency:
-          type: string
-          enum:
-          - jpy
-          - usd
-        interval:
-          type: string
-          enum:
-          - day
-          - week
-          - month
-          - year
-        intervalCount:
+        amountPaid:
           type: integer
           format: int64
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        nickname:
-          type: string
-        trialPeriodDays:
+        amountDue:
           type: integer
           format: int64
-        createdAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        updatedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-    StripeInfo:
-      type: object
-      properties:
-        publishableKey:
+        amountRemaining:
+          type: integer
+          format: int64
+        hostedInvoiceUrl:
           type: string
         currency:
           type: string
-        customerId:
-          type: string
-        cards:
-          type: array
-          items:
-            $ref: '#/components/schemas/StripeCard'
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-        name:
-          type: string
-        email:
-          type: string
-    StripeResponse:
-      type: object
-    StripeResponseGetter:
-      type: object
+        periodStart:
+          type: integer
+          format: int64
+        periodEnd:
+          type: integer
+          format: int64
+        maxQuantity:
+          type: integer
+          format: int64
     JsonArray:
       type: object
       properties:
@@ -543,144 +406,6 @@ components:
           $ref: '#/components/schemas/StripeResponse'
         rawJsonObject:
           $ref: '#/components/schemas/JsonObject'
-    UpdateStripeCustomerNameRequest:
-      type: object
-      properties:
-        name:
-          type: string
-    StripeInvoice:
-      type: object
-      properties:
-        id:
-          type: string
-        amountPaid:
-          type: integer
-          format: int64
-        amountDue:
-          type: integer
-          format: int64
-        amountRemaining:
-          type: integer
-          format: int64
-        hostedInvoiceUrl:
-          type: string
-        currency:
-          type: string
-        periodStart:
-          type: integer
-          format: int64
-        periodEnd:
-          type: integer
-          format: int64
-        maxQuantity:
-          type: integer
-          format: int64
-    StripeSubscribeRequest:
-      required:
-      - addCardRequest
-      - couponCode
-      - paymentMethodTypes
-      - planId
-      type: object
-      properties:
-        addCardRequest:
-          $ref: '#/components/schemas/AddCardRequest'
-        planId:
-          type: string
-        couponCode:
-          type: string
-        paymentMethodTypes:
-          type: string
-    JsonObject:
-      type: object
-      properties:
-        empty:
-          type: boolean
-        asString:
-          type: string
-        asInt:
-          type: integer
-          format: int32
-        asDouble:
-          type: number
-          format: double
-        asLong:
-          type: integer
-          format: int64
-        asBoolean:
-          type: boolean
-        asJsonObject:
-          $ref: '#/components/schemas/JsonObject'
-        jsonObject:
-          type: boolean
-        jsonPrimitive:
-          type: boolean
-        jsonArray:
-          type: boolean
-        jsonNull:
-          type: boolean
-        asJsonArray:
-          $ref: '#/components/schemas/JsonArray'
-        asJsonPrimitive:
-          $ref: '#/components/schemas/JsonPrimitive'
-        asJsonNull:
-          $ref: '#/components/schemas/JsonNull'
-        asNumber:
-          type: number
-        asFloat:
-          type: number
-          format: float
-        asByte:
-          type: string
-          format: byte
-        asCharacter:
-          type: string
-          deprecated: true
-        asBigDecimal:
-          type: number
-        asBigInteger:
-          type: integer
-        asShort:
-          type: integer
-          format: int32
-    Purchase:
-      type: object
-      properties:
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        startedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        expiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        planId:
-          type: string
-        orderId:
-          type: string
-        invoiceId:
-          type: string
-        state:
-          type: string
-          enum:
-          - Paid
-          - Trial
-          - NotPaid
-          - Canceled
-        amountPaid:
-          type: integer
-          format: int64
-        invoiceUrl:
-          type: string
-        currency:
-          type: string
-        autoRenewing:
-          type: boolean
-        collectionMethod:
-          type: string
     JsonPrimitive:
       type: object
       properties:
@@ -737,11 +462,286 @@ components:
           $ref: '#/components/schemas/JsonPrimitive'
         asJsonNull:
           $ref: '#/components/schemas/JsonNull'
+    CurrencyOption:
+      type: object
+      properties:
+        amountOff:
+          type: integer
+          format: int64
+        lastResponse:
+          $ref: '#/components/schemas/StripeResponse'
+        rawJsonObject:
+          $ref: '#/components/schemas/JsonObject'
+    StripeCard:
+      type: object
+      properties:
+        defaultCard:
+          type: boolean
+        id:
+          type: string
+        brand:
+          type: string
+        name:
+          type: string
+        last4:
+          type: string
+        expMonth:
+          type: integer
+          format: int32
+        expYear:
+          type: integer
+          format: int32
+    StripeResponse:
+      type: object
+    StripeResponseGetter:
+      type: object
+    JsonObject:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        asString:
+          type: string
+        asInt:
+          type: integer
+          format: int32
+        asDouble:
+          type: number
+          format: double
+        asLong:
+          type: integer
+          format: int64
+        asBoolean:
+          type: boolean
+        asJsonObject:
+          $ref: '#/components/schemas/JsonObject'
+        jsonObject:
+          type: boolean
+        jsonPrimitive:
+          type: boolean
+        jsonArray:
+          type: boolean
+        jsonNull:
+          type: boolean
+        asJsonArray:
+          $ref: '#/components/schemas/JsonArray'
+        asJsonPrimitive:
+          $ref: '#/components/schemas/JsonPrimitive'
+        asJsonNull:
+          $ref: '#/components/schemas/JsonNull'
+        asNumber:
+          type: number
+        asFloat:
+          type: number
+          format: float
+        asByte:
+          type: string
+          format: byte
+        asCharacter:
+          type: string
+          deprecated: true
+        asBigDecimal:
+          type: number
+        asBigInteger:
+          type: integer
+        asShort:
+          type: integer
+          format: int32
+    StripeInfo:
+      type: object
+      properties:
+        publishableKey:
+          type: string
+        currency:
+          type: string
+        customerId:
+          type: string
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/StripeCard'
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        name:
+          type: string
+        email:
+          type: string
+    Purchase:
+      type: object
+      properties:
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        startedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        expiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        planId:
+          type: string
+        orderId:
+          type: string
+        invoiceId:
+          type: string
+        state:
+          type: string
+          enum:
+          - Paid
+          - Trial
+          - NotPaid
+          - Canceled
+        amountPaid:
+          type: integer
+          format: int64
+        invoiceUrl:
+          type: string
+        currency:
+          type: string
+        autoRenewing:
+          type: boolean
+        collectionMethod:
+          type: string
+    AppliesTo:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: string
+        lastResponse:
+          $ref: '#/components/schemas/StripeResponse'
+        rawJsonObject:
+          $ref: '#/components/schemas/JsonObject'
+    StripePlan:
+      type: object
+      properties:
+        id:
+          type: string
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        productId:
+          type: string
+        active:
+          type: boolean
+        amount:
+          type: number
+        currency:
+          type: string
+          enum:
+          - jpy
+          - usd
+        interval:
+          type: string
+          enum:
+          - day
+          - week
+          - month
+          - year
+        intervalCount:
+          type: integer
+          format: int64
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        nickname:
+          type: string
+        trialPeriodDays:
+          type: integer
+          format: int64
+        createdAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
     UpdateStripeCustomerEmailRequest:
       type: object
       properties:
         email:
           type: string
+    StripeSubscribeRequest:
+      required:
+      - addCardRequest
+      - couponCode
+      - paymentMethodTypes
+      - planId
+      type: object
+      properties:
+        addCardRequest:
+          $ref: '#/components/schemas/AddCardRequest'
+        planId:
+          type: string
+        couponCode:
+          type: string
+        paymentMethodTypes:
+          type: string
+    UpdateStripeCustomerNameRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    JsonNull:
+      type: object
+      properties:
+        asString:
+          type: string
+        asInt:
+          type: integer
+          format: int32
+        asDouble:
+          type: number
+          format: double
+        asLong:
+          type: integer
+          format: int64
+        asBoolean:
+          type: boolean
+        asJsonObject:
+          $ref: '#/components/schemas/JsonObject'
+        jsonObject:
+          type: boolean
+        jsonPrimitive:
+          type: boolean
+        jsonArray:
+          type: boolean
+        jsonNull:
+          type: boolean
+        asJsonArray:
+          $ref: '#/components/schemas/JsonArray'
+        asJsonPrimitive:
+          $ref: '#/components/schemas/JsonPrimitive'
+        asJsonNull:
+          $ref: '#/components/schemas/JsonNull'
+        asNumber:
+          type: number
+        asFloat:
+          type: number
+          format: float
+        asByte:
+          type: string
+          format: byte
+        asCharacter:
+          type: string
+          deprecated: true
+        asBigDecimal:
+          type: number
+        asBigInteger:
+          type: integer
+        asShort:
+          type: integer
+          format: int32
   securitySchemes:
     bearerAuth:
       type: http

@@ -23,7 +23,6 @@ tags:
   - Agriculture
   - AgTech
   - Precision Agriculture
-  - Precision Farming
   - GNSS
   - GPS
   - RTK
@@ -49,6 +48,7 @@ tags_raw:
   - japan
   - telematics
   - company
+  - Precision Farming
 apis:
 - aid: agriinfodesign:agriinfodesign-agriculturalapioauth-api
   name: Agri Info Design Agricultural API O Auth API

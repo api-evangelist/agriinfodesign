@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Partner API
+  title: Agriinfodesign V1Partner API
 servers:
 - url: http://datastore.agribus-connect.net
   description: Generated server url
@@ -48,21 +48,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    BoundingBox:
-      type: object
-      properties:
-        north:
-          type: number
-          format: double
-        south:
-          type: number
-          format: double
-        east:
-          type: number
-          format: double
-        west:
-          type: number
-          format: double
     SpaceAgriPutRequest:
       type: object
       properties:
@@ -116,6 +101,21 @@ components:
           type: string
         baseUrl:
           type: string
+    BoundingBox:
+      type: object
+      properties:
+        north:
+          type: number
+          format: double
+        south:
+          type: number
+          format: double
+        east:
+          type: number
+          format: double
+        west:
+          type: number
+          format: double
   securitySchemes:
     bearerAuth:
       type: http

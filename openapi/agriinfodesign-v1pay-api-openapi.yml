@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Pay API
+  title: Agriinfodesign V1Pay API
   description: 課金関連のAPI
 servers:
 - url: http://pay.agribus-connect.net
@@ -90,6 +90,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Purchase'
+    CalculateFunctionalityRequest:
+      type: object
+      properties:
+        username:
+          type: string
     Purchase:
       type: object
       properties:
@@ -127,11 +132,6 @@ components:
         autoRenewing:
           type: boolean
         collectionMethod:
-          type: string
-    CalculateFunctionalityRequest:
-      type: object
-      properties:
-        username:
           type: string
   securitySchemes:
     bearerAuth:

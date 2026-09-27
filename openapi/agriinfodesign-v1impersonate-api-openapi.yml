@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Impersonate API
+  title: Agriinfodesign V1Impersonate API
   description: Connect管理者権限ユーザー専用のなりすましユーザートークン発行API
 servers:
 - url: http://auth.agribus-connect.net

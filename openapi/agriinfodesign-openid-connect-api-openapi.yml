@@ -84,8 +84,159 @@ paths:
                 type: object
 components:
   schemas:
-    BeanFactory:
+    AuthorizeRequest:
+      required:
+      - clientId
+      - responseType
       type: object
+      properties:
+        responseType:
+          type: string
+          description: Response type
+          example: code
+        clientId:
+          type: string
+          description: Client identifier
+        redirectUri:
+          type: string
+          description: Redirection URI
+        scope:
+          type: string
+          description: Scope of access request
+          example: openid profile email
+        state:
+          type: string
+          description: State parameter for CSRF protection
+        nonce:
+          type: string
+          description: Nonce for ID Token security (OpenID Connect)
+        codeChallenge:
+          type: string
+          description: Code challenge for PKCE
+        codeChallengeMethod:
+          type: string
+          description: Code challenge method for PKCE
+          example: S256
+    SessionCookieConfig:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        comment:
+          type: string
+          deprecated: true
+        maxAge:
+          type: integer
+          format: int32
+        secure:
+          type: boolean
+        httpOnly:
+          type: boolean
+        domain:
+          type: string
+    FilterRegistration:
+      type: object
+      properties:
+        servletNameMappings:
+          type: array
+          items:
+            type: string
+        urlPatternMappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    TaglibDescriptor:
+      type: object
+      properties:
+        taglibURI:
+          type: string
+        taglibLocation:
+          type: string
+    RedirectView:
+      type: object
+      properties:
+        applicationContext:
+          $ref: '#/components/schemas/ApplicationContext'
+        servletContext:
+          $ref: '#/components/schemas/ServletContext'
+        contentType:
+          type: string
+        requestContextAttribute:
+          type: string
+        staticAttributes:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+        exposePathVariables:
+          type: boolean
+        exposeContextBeansAsAttributes:
+          type: boolean
+          writeOnly: true
+        exposedContextBeanNames:
+          type: array
+          writeOnly: true
+          items:
+            type: string
+        beanName:
+          type: string
+        url:
+          type: string
+        contextRelative:
+          type: boolean
+          writeOnly: true
+        http10Compatible:
+          type: boolean
+          writeOnly: true
+        exposeModelAttributes:
+          type: boolean
+          writeOnly: true
+        encodingScheme:
+          type: string
+          writeOnly: true
+        statusCode:
+          $ref: '#/components/schemas/HttpStatusCode'
+        expandUriTemplateVariables:
+          type: boolean
+          writeOnly: true
+        propagateQueryParams:
+          type: boolean
+          writeOnly: true
+        hosts:
+          type: array
+          items:
+            type: string
+        redirectView:
+          type: boolean
+        propagateQueryProperties:
+          type: boolean
+        attributesMap:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+        attributesCSV:
+          type: string
+          writeOnly: true
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          writeOnly: true
     ApplicationContext:
       type: object
       properties:
@@ -327,6 +478,62 @@ components:
             defaultAssertionStatus:
               type: boolean
               writeOnly: true
+    ServletRegistration:
+      type: object
+      properties:
+        runAsRole:
+          type: string
+        mappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    JspPropertyGroupDescriptor:
+      type: object
+      properties:
+        defaultContentType:
+          type: string
+        elIgnored:
+          type: string
+        errorOnELNotFound:
+          type: string
+        pageEncoding:
+          type: string
+        scriptingInvalid:
+          type: string
+        isXml:
+          type: string
+        includePreludes:
+          type: array
+          items:
+            type: string
+        includeCodas:
+          type: array
+          items:
+            type: string
+        deferredSyntaxAllowedAsLiteral:
+          type: string
+        trimDirectiveWhitespaces:
+          type: string
+        errorOnUndeclaredNamespace:
+          type: string
+        buffer:
+          type: string
+        urlPatterns:
+          type: array
+          items:
+            type: string
+    BeanFactory:
+      type: object
+    AutowireCapableBeanFactory:
+      type: object
     UserInfoResponse:
       type: object
       properties:
@@ -357,22 +564,31 @@ components:
           items:
             type: string
             description: User groups
-    ServletRegistration:
+    HttpStatusCode:
       type: object
       properties:
-        runAsRole:
-          type: string
-        mappings:
+        is4xxClientError:
+          type: boolean
+        error:
+          type: boolean
+        is1xxInformational:
+          type: boolean
+        is2xxSuccessful:
+          type: boolean
+        is3xxRedirection:
+          type: boolean
+        is5xxServerError:
+          type: boolean
+    Environment:
+      type: object
+      properties:
+        activeProfiles:
           type: array
           items:
             type: string
-        name:
-          type: string
-        className:
-          type: string
-        initParameters:
-          type: object
-          additionalProperties:
+        defaultProfiles:
+          type: array
+          items:
             type: string
     ServletContext:
       type: object
@@ -487,182 +703,6 @@ components:
           type: string
         contextPath:
           type: string
-    JspPropertyGroupDescriptor:
-      type: object
-      properties:
-        defaultContentType:
-          type: string
-        elIgnored:
-          type: string
-        errorOnELNotFound:
-          type: string
-        pageEncoding:
-          type: string
-        scriptingInvalid:
-          type: string
-        isXml:
-          type: string
-        includePreludes:
-          type: array
-          items:
-            type: string
-        includeCodas:
-          type: array
-          items:
-            type: string
-        deferredSyntaxAllowedAsLiteral:
-          type: string
-        trimDirectiveWhitespaces:
-          type: string
-        errorOnUndeclaredNamespace:
-          type: string
-        buffer:
-          type: string
-        urlPatterns:
-          type: array
-          items:
-            type: string
-    Environment:
-      type: object
-      properties:
-        activeProfiles:
-          type: array
-          items:
-            type: string
-        defaultProfiles:
-          type: array
-          items:
-            type: string
-    AutowireCapableBeanFactory:
-      type: object
-    RedirectView:
-      type: object
-      properties:
-        applicationContext:
-          $ref: '#/components/schemas/ApplicationContext'
-        servletContext:
-          $ref: '#/components/schemas/ServletContext'
-        contentType:
-          type: string
-        requestContextAttribute:
-          type: string
-        staticAttributes:
-          type: object
-          additionalProperties:
-            type: string
-            format: '2016-01-01T00:00:00.000Z'
-        exposePathVariables:
-          type: boolean
-        exposeContextBeansAsAttributes:
-          type: boolean
-          writeOnly: true
-        exposedContextBeanNames:
-          type: array
-          writeOnly: true
-          items:
-            type: string
-        beanName:
-          type: string
-        url:
-          type: string
-        contextRelative:
-          type: boolean
-          writeOnly: true
-        http10Compatible:
-          type: boolean
-          writeOnly: true
-        exposeModelAttributes:
-          type: boolean
-          writeOnly: true
-        encodingScheme:
-          type: string
-          writeOnly: true
-        statusCode:
-          $ref: '#/components/schemas/HttpStatusCode'
-        expandUriTemplateVariables:
-          type: boolean
-          writeOnly: true
-        propagateQueryParams:
-          type: boolean
-          writeOnly: true
-        hosts:
-          type: array
-          items:
-            type: string
-        redirectView:
-          type: boolean
-        propagateQueryProperties:
-          type: boolean
-        attributesMap:
-          type: object
-          additionalProperties:
-            type: string
-            format: '2016-01-01T00:00:00.000Z'
-        attributesCSV:
-          type: string
-          writeOnly: true
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-          writeOnly: true
-    FilterRegistration:
-      type: object
-      properties:
-        servletNameMappings:
-          type: array
-          items:
-            type: string
-        urlPatternMappings:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-        className:
-          type: string
-        initParameters:
-          type: object
-          additionalProperties:
-            type: string
-    HttpStatusCode:
-      type: object
-      properties:
-        is4xxClientError:
-          type: boolean
-        error:
-          type: boolean
-        is1xxInformational:
-          type: boolean
-        is2xxSuccessful:
-          type: boolean
-        is3xxRedirection:
-          type: boolean
-        is5xxServerError:
-          type: boolean
-    SessionCookieConfig:
-      type: object
-      properties:
-        name:
-          type: string
-        path:
-          type: string
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-        comment:
-          type: string
-          deprecated: true
-        maxAge:
-          type: integer
-          format: int32
-        secure:
-          type: boolean
-        httpOnly:
-          type: boolean
-        domain:
-          type: string
     JspConfigDescriptor:
       type: object
       properties:
@@ -674,39 +714,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TaglibDescriptor'
-    AuthorizeRequest:
-      required:
-      - clientId
-      - responseType
-      type: object
-      properties:
-        responseType:
-          type: string
-          description: Response type
-          example: code
-        clientId:
-          type: string
-          description: Client identifier
-        redirectUri:
-          type: string
-          description: Redirection URI
-        scope:
-          type: string
-          description: Scope of access request
-          example: openid profile email
-        state:
-          type: string
-          description: State parameter for CSRF protection
-        nonce:
-          type: string
-          description: Nonce for ID Token security (OpenID Connect)
-        codeChallenge:
-          type: string
-          description: Code challenge for PKCE
-        codeChallengeMethod:
-          type: string
-          description: Code challenge method for PKCE
-          example: S256
     OpenIdConfigurationResponse:
       type: object
       properties:
@@ -752,13 +759,6 @@ components:
           type: array
           items:
             type: string
-    TaglibDescriptor:
-      type: object
-      properties:
-        taglibURI:
-          type: string
-        taglibLocation:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

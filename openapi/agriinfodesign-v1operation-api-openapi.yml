@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Operation API
+  title: Agriinfodesign V1Operation API
 servers:
 - url: http://datastore.agribus-connect.net
   description: Generated server url
@@ -28,8 +28,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    LocalizedValues:
-      type: object
     RemoteOperationType:
       type: object
       properties:
@@ -37,6 +35,8 @@ components:
           type: string
         localizedNames:
           $ref: '#/components/schemas/LocalizedValues'
+    LocalizedValues:
+      type: object
   securitySchemes:
     bearerAuth:
       type: http

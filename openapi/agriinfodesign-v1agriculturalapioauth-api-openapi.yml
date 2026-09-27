@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Agricultural API O Auth API
+  title: Agriinfodesign V1Agricultural API O Auth API
   description: 農機API用OAuth2管理
 servers:
 - url: http://auth.agribus-connect.net

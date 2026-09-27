@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Field Elevation Map API
+  title: Agriinfodesign V1Field Elevation Map API
 servers:
 - url: http://datastore.agribus-connect.net
   description: Generated server url
@@ -58,6 +58,68 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ColorRange:
+      type: object
+      properties:
+        stage:
+          type: integer
+          format: int32
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
+        color:
+          type: string
+    CreateElevationMapRequest:
+      type: object
+      properties:
+        meshSize:
+          type: number
+          description: メッシュサイズ(m)
+          format: double
+        maxPointCount:
+          type: integer
+          description: 計算に用いる作業の最大ポイント数
+          format: int32
+        taskFetchLimit:
+          type: integer
+          description: フェッチする作業の最大数
+          format: int32
+        gnssStatusFilter:
+          type: string
+          description: GNSSステータスのフィルタリング
+          enum:
+          - VeryStrict,Strict,Loose,VeryLoose
+        interpolation:
+          type: string
+          description: 補完方法
+          enum:
+          - InverseDistanceWeighting,NaturalNeighbor,TriangularFacet,Gwr
+        zValueValuator:
+          type: string
+          description: z値取得評価方法
+          enum:
+          - Default,Smooth
+        zMin:
+          type: number
+          description: 最小値とするzの値
+          format: double
+        zMax:
+          type: number
+          description: 最大値とするzの値
+          format: double
+        oldestTaskDate:
+          type: string
+          description: 作業の開始日付（yyyy-MM-dd）
+          format: date
+        newestTaskDate:
+          type: string
+          description: 作業の終了日付（yyyy-MM-dd）
+          format: date
+        specifiedDateRange:
+          type: boolean
     RemoteFieldElevationMap:
       type: object
       properties:
@@ -117,54 +179,6 @@ components:
           type: number
           description: 標高レンジ最大値
           format: double
-    CreateElevationMapRequest:
-      type: object
-      properties:
-        meshSize:
-          type: number
-          description: メッシュサイズ(m)
-          format: double
-        maxPointCount:
-          type: integer
-          description: 計算に用いる作業の最大ポイント数
-          format: int32
-        taskFetchLimit:
-          type: integer
-          description: フェッチする作業の最大数
-          format: int32
-        gnssStatusFilter:
-          type: string
-          description: GNSSステータスのフィルタリング
-          enum:
-          - VeryStrict,Strict,Loose,VeryLoose
-        interpolation:
-          type: string
-          description: 補完方法
-          enum:
-          - InverseDistanceWeighting,NaturalNeighbor,TriangularFacet,Gwr
-        zValueValuator:
-          type: string
-          description: z値取得評価方法
-          enum:
-          - Default,Smooth
-        zMin:
-          type: number
-          description: 最小値とするzの値
-          format: double
-        zMax:
-          type: number
-          description: 最大値とするzの値
-          format: double
-        oldestTaskDate:
-          type: string
-          description: 作業の開始日付（yyyy-MM-dd）
-          format: date
-        newestTaskDate:
-          type: string
-          description: 作業の終了日付（yyyy-MM-dd）
-          format: date
-        specifiedDateRange:
-          type: boolean
     ColorRanges:
       type: object
       properties:
@@ -172,20 +186,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ColorRange'
-    ColorRange:
-      type: object
-      properties:
-        stage:
-          type: integer
-          format: int32
-        min:
-          type: number
-          format: double
-        max:
-          type: number
-          format: double
-        color:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

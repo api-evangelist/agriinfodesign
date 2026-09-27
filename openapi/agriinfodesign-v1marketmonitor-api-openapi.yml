@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Market Monitor API
+  title: Agriinfodesign V1Market Monitor API
   description: マーケット情報 (AgriBus-DWH) 連携API
 servers:
 - url: http://pay.agribus-connect.net

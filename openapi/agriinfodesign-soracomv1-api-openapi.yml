@@ -57,11 +57,6 @@ paths:
         required: true
 components:
   schemas:
-    SoracomSubscriberInfo:
-      type: object
-      properties:
-        subscriber:
-          $ref: '#/components/schemas/Subscriber'
     ActivateSimRequest:
       type: object
       required:
@@ -82,6 +77,37 @@ components:
           type: string
         simName:
           type: string
+    ActivateSimResponse:
+      type: object
+      required:
+      - activationStatus
+      - imeiLockStatus
+      - setGroupIdResult
+      - setNameResult
+      properties:
+        activationStatus:
+          type: string
+          enum:
+          - AlreadyActivated
+          - Activated
+          - Deactivated
+          - Failure
+        imeiLockStatus:
+          type: string
+          enum:
+          - Locked
+          - Unlocked
+          - Failure
+        setGroupIdResult:
+          type: string
+          enum:
+          - Success
+          - Failure
+        setNameResult:
+          type: string
+          enum:
+          - Success
+          - Failure
     SessionStatus:
       type: object
       properties:
@@ -103,6 +129,11 @@ components:
         ueIpAddress:
           type: string
         vpgId:
+          type: string
+    ImeiLock:
+      type: object
+      properties:
+        imei:
           type: string
     Subscriber:
       type: object
@@ -153,42 +184,11 @@ components:
             type: string
         terminationEnabled:
           type: boolean
-    ActivateSimResponse:
-      type: object
-      required:
-      - activationStatus
-      - imeiLockStatus
-      - setGroupIdResult
-      - setNameResult
-      properties:
-        activationStatus:
-          type: string
-          enum:
-          - AlreadyActivated
-          - Activated
-          - Deactivated
-          - Failure
-        imeiLockStatus:
-          type: string
-          enum:
-          - Locked
-          - Unlocked
-          - Failure
-        setGroupIdResult:
-          type: string
-          enum:
-          - Success
-          - Failure
-        setNameResult:
-          type: string
-          enum:
-          - Success
-          - Failure
-    ImeiLock:
+    SoracomSubscriberInfo:
       type: object
       properties:
-        imei:
-          type: string
+        subscriber:
+          $ref: '#/components/schemas/Subscriber'
   securitySchemes:
     mykey:
       type: apiKey

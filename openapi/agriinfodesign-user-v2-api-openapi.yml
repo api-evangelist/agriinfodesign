@@ -155,11 +155,6 @@ components:
         zoneinfo:
           type: string
           description: タイムゾーン
-    UserGroupInfo:
-      type: object
-      properties:
-        name:
-          type: string
     PurchaseInfo:
       type: object
       properties:
@@ -197,21 +192,6 @@ components:
           type: string
         trial:
           type: boolean
-    EditUserRequest:
-      type: object
-      properties:
-        language:
-          type: string
-          description: 言語
-        nickname:
-          type: string
-          description: ニックネーム
-        sendMeNews:
-          type: boolean
-          description: メルマガ受信
-        systemOfUnits:
-          type: string
-          description: 単位
     UserInfo:
       type: object
       properties:
@@ -322,6 +302,21 @@ components:
           - Canceled
         subscriptionId:
           type: string
+    EditUserRequest:
+      type: object
+      properties:
+        language:
+          type: string
+          description: 言語
+        nickname:
+          type: string
+          description: ニックネーム
+        sendMeNews:
+          type: boolean
+          description: メルマガ受信
+        systemOfUnits:
+          type: string
+          description: 単位
     UserGroupsInfo:
       type: object
       properties:
@@ -350,6 +345,11 @@ components:
         sendMeNews:
           type: boolean
         username:
+          type: string
+    UserGroupInfo:
+      type: object
+      properties:
+        name:
           type: string
   securitySchemes:
     mykey:

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Planting API
+  title: Agriinfodesign V1Planting API
 servers:
 - url: http://datastore.agribus-connect.net
   description: Generated server url
@@ -110,26 +110,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    EditPlantingRequest:
-      type: object
-      properties:
-        fieldIds:
-          type: array
-          items:
-            type: string
-        masterCropId:
-          type: integer
-          format: int32
-        cropName:
-          type: string
-        varietyName:
-          type: string
-        colorHex:
-          type: string
-        startDate:
-          type: string
-        endDate:
-          type: string
     RemotePlanting:
       type: object
       properties:
@@ -164,6 +144,26 @@ components:
         fieldArea:
           type: number
           format: double
+    EditPlantingRequest:
+      type: object
+      properties:
+        fieldIds:
+          type: array
+          items:
+            type: string
+        masterCropId:
+          type: integer
+          format: int32
+        cropName:
+          type: string
+        varietyName:
+          type: string
+        colorHex:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

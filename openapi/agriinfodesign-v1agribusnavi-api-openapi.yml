@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Agri Bus Navi API
+  title: Agriinfodesign V1Agri Bus Navi API
   description: AgriBus-NAVI専用のAPI
 servers:
 - url: http://datastore.agribus-connect.net
@@ -100,12 +100,12 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AgriBusNaviField:
+    AgriBusNaviRefLine:
       type: object
       properties:
         firestoreDocumentPath:
           type: string
-    AgriBusNaviRefLine:
+    AgriBusNaviField:
       type: object
       properties:
         firestoreDocumentPath:

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Connect Admin API
+  title: Agriinfodesign V1Connect Admin API
 servers:
 - url: http://datastore.agribus-connect.net
   description: Generated server url
@@ -57,98 +57,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    FetchedResult:
-      type: object
-      properties:
-        sessionId:
-          type: string
-        username:
-          type: string
-        createdAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        updatedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        syncedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        documentId:
-          type: string
-        gnssSource:
-          type: integer
-          format: int32
-        operationType:
-          type: integer
-          format: int32
-        oldGeoInfoKey:
-          type: string
-        name:
-          type: string
-        caption:
-          type: string
-        fieldItemId:
-          type: string
-        fieldName:
-          type: string
-        fieldArea:
-          type: number
-        taskGroupId:
-          type: string
-        startedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        endedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        avgSpeed:
-          type: number
-        workWidthOnStarted:
-          type: number
-        workWidthOnEnded:
-          type: number
-        distance:
-          type: number
-        distanceOnStarted:
-          type: number
-        distanceOnEnded:
-          type: number
-        workedArea:
-          type: number
-        workedAreaOnStarted:
-          type: number
-        workedAreaOnEnded:
-          type: number
-        overlappedAreaOnStarted:
-          type: number
-        overlappedAreaOnEnded:
-          type: number
-        operationTypeAsEnum:
-          type: string
-          enum:
-          - Tilling
-          - Sowing
-          - Planting
-          - Fertilizing
-          - CropProtection
-          - Harvesting
-          - Other
-        gnssSourceAsEnum:
-          type: string
-          enum:
-          - Internal
-          - Usb
-          - Bluetooth
-          - Port
-          - DemoReplay
-          - DemoVirtual
-          - GPlus
-          - TcpClient
-          - AutoSteerGnssTest
-          - GMini
-          - GMiniR
-          - G2
-          - NtripClient
     ExportTaskCsvResponse:
       type: object
       properties:
@@ -268,6 +176,98 @@ components:
           type: integer
           format: int32
       description: 出力対象のGeoPointsデータ
+    FetchedResult:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        username:
+          type: string
+        createdAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        syncedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        documentId:
+          type: string
+        gnssSource:
+          type: integer
+          format: int32
+        operationType:
+          type: integer
+          format: int32
+        oldGeoInfoKey:
+          type: string
+        name:
+          type: string
+        caption:
+          type: string
+        fieldItemId:
+          type: string
+        fieldName:
+          type: string
+        fieldArea:
+          type: number
+        taskGroupId:
+          type: string
+        startedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        endedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        avgSpeed:
+          type: number
+        workWidthOnStarted:
+          type: number
+        workWidthOnEnded:
+          type: number
+        distance:
+          type: number
+        distanceOnStarted:
+          type: number
+        distanceOnEnded:
+          type: number
+        workedArea:
+          type: number
+        workedAreaOnStarted:
+          type: number
+        workedAreaOnEnded:
+          type: number
+        overlappedAreaOnStarted:
+          type: number
+        overlappedAreaOnEnded:
+          type: number
+        operationTypeAsEnum:
+          type: string
+          enum:
+          - Tilling
+          - Sowing
+          - Planting
+          - Fertilizing
+          - CropProtection
+          - Harvesting
+          - Other
+        gnssSourceAsEnum:
+          type: string
+          enum:
+          - Internal
+          - Usb
+          - Bluetooth
+          - Port
+          - DemoReplay
+          - DemoVirtual
+          - GPlus
+          - TcpClient
+          - AutoSteerGnssTest
+          - GMini
+          - GMiniR
+          - G2
+          - NtripClient
   securitySchemes:
     bearerAuth:
       type: http

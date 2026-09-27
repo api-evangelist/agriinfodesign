@@ -36,6 +36,76 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 components:
   schemas:
+    UserInfo:
+      type: object
+      properties:
+        calclatedPlan:
+          type: string
+          description: 後方互換性を保つためだけにあります。値はセットされることがありません。常にnullです。計算済みプランはpurchaseInfo#planを利用してください。
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        customIconUrl:
+          type: string
+        email:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsStandard
+          - AsPlus
+          - AsProfessional
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        iconUrl:
+          type: string
+        impersonatingNickname:
+          type: string
+        impersonatingUsername:
+          type: string
+        isEnterprise:
+          type: boolean
+        isFsMigrated:
+          type: boolean
+        isPayer:
+          type: boolean
+        language:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+        purchaseInfo:
+          $ref: '#/components/schemas/PurchaseInfo'
+        region:
+          type: string
+        sendMeNews:
+          type: boolean
+        sharedMountPoint:
+          type: string
+        stripeId:
+          type: string
+        systemAdmin:
+          type: boolean
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+        trialAvailable:
+          type: boolean
+        username:
+          type: string
+        zoneinfo:
+          type: string
     PurchaseInfo:
       type: object
       properties:
@@ -112,76 +182,6 @@ components:
           - NotPaid
           - Canceled
         subscriptionId:
-          type: string
-    UserInfo:
-      type: object
-      properties:
-        calclatedPlan:
-          type: string
-          description: 後方互換性を保つためだけにあります。値はセットされることがありません。常にnullです。計算済みプランはpurchaseInfo#planを利用してください。
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        customIconUrl:
-          type: string
-        email:
-          type: string
-        functionality:
-          type: string
-          enum:
-          - AsFree
-          - AsStandard
-          - AsPlus
-          - AsProfessional
-        icon:
-          type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        iconUrl:
-          type: string
-        impersonatingNickname:
-          type: string
-        impersonatingUsername:
-          type: string
-        isEnterprise:
-          type: boolean
-        isFsMigrated:
-          type: boolean
-        isPayer:
-          type: boolean
-        language:
-          type: string
-        name:
-          type: string
-        nickname:
-          type: string
-        purchaseInfo:
-          $ref: '#/components/schemas/PurchaseInfo'
-        region:
-          type: string
-        sendMeNews:
-          type: boolean
-        sharedMountPoint:
-          type: string
-        stripeId:
-          type: string
-        systemAdmin:
-          type: boolean
-        systemOfUnits:
-          type: string
-          enum:
-          - Metric
-          - Imperial
-        trialAvailable:
-          type: boolean
-        username:
-          type: string
-        zoneinfo:
           type: string
   securitySchemes:
     mykey:

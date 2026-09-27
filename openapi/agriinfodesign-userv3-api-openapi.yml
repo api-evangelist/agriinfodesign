@@ -102,6 +102,54 @@ components:
         zoneinfo:
           type: string
           description: タイムゾーン
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        accessTokenExpiredAt:
+          type: string
+        refreshToken:
+          type: string
+        refreshTokenExpiredAt:
+          type: string
+        subscriptionInfo:
+          $ref: '#/components/schemas/SubscriptionInfo'
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+    Subscription:
+      type: object
+      required:
+      - type
+      - uuid
+      properties:
+        email:
+          type: string
+        enterprise:
+          type: boolean
+        groupUsernames:
+          type: array
+          items:
+            type: string
+        iconUrl:
+          type: string
+        name:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        nickname:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        organizationName:
+          type: string
+        region:
+          type: string
+        type:
+          type: string
+          enum:
+          - Account
+          - Group
+        uuid:
+          type: string
     PurchaseInfo:
       type: object
       properties:
@@ -139,24 +187,6 @@ components:
           type: string
         trial:
           type: boolean
-    SubscriptionInfo:
-      type: object
-      properties:
-        subscriberAccounts:
-          type: array
-          description: 購読されているアカウント
-          items:
-            $ref: '#/components/schemas/Subscription'
-        subscribingAccounts:
-          type: array
-          description: 購読しているアカウント
-          items:
-            $ref: '#/components/schemas/Subscription'
-        subscribingGroups:
-          type: array
-          description: 購読しているグループ
-          items:
-            $ref: '#/components/schemas/Subscription'
     UpdateSystemOfUnitsRequest:
       type: object
       properties:
@@ -276,54 +306,24 @@ components:
           - Canceled
         subscriptionId:
           type: string
-    Subscription:
+    SubscriptionInfo:
       type: object
-      required:
-      - type
-      - uuid
       properties:
-        email:
-          type: string
-        enterprise:
-          type: boolean
-        groupUsernames:
+        subscriberAccounts:
           type: array
+          description: 購読されているアカウント
           items:
-            type: string
-        iconUrl:
-          type: string
-        name:
-          type: string
-          description: nameとnicknameは同じものが常に入ります
-        nickname:
-          type: string
-          description: nameとnicknameは同じものが常に入ります
-        organizationName:
-          type: string
-        region:
-          type: string
-        type:
-          type: string
-          enum:
-          - Account
-          - Group
-        uuid:
-          type: string
-    TokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        accessTokenExpiredAt:
-          type: string
-        refreshToken:
-          type: string
-        refreshTokenExpiredAt:
-          type: string
-        subscriptionInfo:
-          $ref: '#/components/schemas/SubscriptionInfo'
-        userInfo:
-          $ref: '#/components/schemas/UserInfo'
+            $ref: '#/components/schemas/Subscription'
+        subscribingAccounts:
+          type: array
+          description: 購読しているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingGroups:
+          type: array
+          description: 購読しているグループ
+          items:
+            $ref: '#/components/schemas/Subscription'
   securitySchemes:
     mykey:
       type: apiKey

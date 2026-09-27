@@ -280,6 +280,11 @@ components:
           type: string
         zoneinfo:
           type: string
+    CheckAndroidPurchasesResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
     Purchase:
       type: object
       properties:
@@ -320,11 +325,6 @@ components:
           - Canceled
         subscriptionId:
           type: string
-    CheckAndroidPurchasesResponse:
-      type: object
-      properties:
-        exists:
-          type: boolean
     AgriBusNaviStatusRequest:
       type: object
       required:

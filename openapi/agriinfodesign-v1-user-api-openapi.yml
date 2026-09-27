@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 User API
+  title: Agriinfodesign V1User API
   description: ユーザー情報API
 servers:
 - url: http://auth.agribus-connect.net
@@ -91,11 +91,22 @@ paths:
                 $ref: '#/components/schemas/UserGroupsInfo'
 components:
   schemas:
-    UserGroupInfo:
+    UpdateUserRequest:
       type: object
       properties:
-        name:
+        nickname:
           type: string
+        sendMeNews:
+          type: boolean
+        language:
+          type: string
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+          - JpUnitsOfArea
+          - ThUnitsOfArea
     UserPicture:
       type: object
       properties:
@@ -107,6 +118,18 @@ components:
           - Custom|null
         url:
           type: string
+    ChangePasswordRequest:
+      required:
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          description: 現在のパスワード
+        newPassword:
+          type: string
+          description: 新しいパスワード
     UserInfo:
       type: object
       properties:
@@ -169,22 +192,6 @@ components:
           description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
         oauthUser:
           type: boolean
-    UpdateUserRequest:
-      type: object
-      properties:
-        nickname:
-          type: string
-        sendMeNews:
-          type: boolean
-        language:
-          type: string
-        systemOfUnits:
-          type: string
-          enum:
-          - Metric
-          - Imperial
-          - JpUnitsOfArea
-          - ThUnitsOfArea
     UserGroupsInfo:
       type: object
       properties:
@@ -200,18 +207,11 @@ components:
         email:
           type: string
           description: Eメール
-    ChangePasswordRequest:
-      required:
-      - currentPassword
-      - newPassword
+    UserGroupInfo:
       type: object
       properties:
-        currentPassword:
+        name:
           type: string
-          description: 現在のパスワード
-        newPassword:
-          type: string
-          description: 新しいパスワード
   securitySchemes:
     bearerAuth:
       type: http

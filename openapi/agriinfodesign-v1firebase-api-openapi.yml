@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Firebase API
+  title: Agriinfodesign V1Firebase API
   description: Firebase関連API
 servers:
 - url: http://auth.agribus-connect.net

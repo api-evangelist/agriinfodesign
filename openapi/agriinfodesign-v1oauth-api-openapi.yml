@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 O Auth API
+  title: Agriinfodesign V1O Auth API
   description: OAuth関連API
 servers:
 - url: http://auth.agribus-connect.net
@@ -52,25 +52,21 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 components:
   schemas:
-    OAuthCreateNewPasswordRequest:
-      required:
-      - newPassword
+    TokenResponse:
       type: object
       properties:
-        newPassword:
+        accessToken:
           type: string
-          description: 新しいパスワード
-    UserPicture:
-      type: object
-      properties:
-        icon:
+        refreshToken:
+          type:
+          - string
+          - 'null'
+        accessTokenExpiredAt:
           type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        url:
+          format: '2016-01-01T00:00:00.000Z'
+        refreshTokenExpiredAt:
           type: string
+          format: '2016-01-01T00:00:00.000Z'
     OAuthLoginRequest:
       type: object
       properties:
@@ -88,6 +84,17 @@ components:
         nickname:
           type: string
           description: Cognitoのnickname。ただしGoogleOAuthでサインアップした場合は、Googleから渡された氏名
+    UserPicture:
+      type: object
+      properties:
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        url:
+          type: string
     UserInfo:
       type: object
       properties:
@@ -150,21 +157,14 @@ components:
           description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
         oauthUser:
           type: boolean
-    TokenResponse:
+    OAuthCreateNewPasswordRequest:
+      required:
+      - newPassword
       type: object
       properties:
-        accessToken:
+        newPassword:
           type: string
-        refreshToken:
-          type:
-          - string
-          - 'null'
-        accessTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        refreshTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
+          description: 新しいパスワード
   securitySchemes:
     bearerAuth:
       type: http

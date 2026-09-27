@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Field Item API
+  title: Agriinfodesign V1Field Item API
 servers:
 - url: http://datastore.agribus-connect.net
   description: Generated server url
@@ -237,136 +237,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Point:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          coordinates:
-            $ref: '#/components/schemas/LngLatAlt'
-    FirestoreUpdateResponse:
+    FirestoreImportResult:
       type: object
       properties:
         id:
           type: string
-    Polygon:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                $ref: '#/components/schemas/LngLatAlt'
-    UpdateMetaDataRequest:
-      required:
-      - metaDataUpdatedAt
-      type: object
-      properties:
-        metaDataUpdatedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        name:
-          type: string
-        caption:
-          type: string
-        metaDatas:
-          type: object
-          additionalProperties:
-            type: string
-    FirestoreImportResponse:
-      type: object
-      properties:
-        importResults:
-          type: array
-          items:
-            $ref: '#/components/schemas/FirestoreImportResult'
-    PaginationInfo:
-      type: object
-      properties:
-        number:
-          type: integer
-          description: 現在何ページ目にいるか
-          format: int32
-        numberOfElements:
-          type: integer
-          description: いくつの要素があるか
-          format: int32
-        size:
-          type: integer
-          description: いくつの要素をページで持つか
-          format: int32
-        totalElements:
-          type: integer
-          description: 全要素数
-          format: int64
-        totalPages:
-          type: integer
-          description: 総ページ数
-          format: int32
-      description: ページネーション情報
-    FirestoreDeleteResponse:
-      type: object
-      properties:
-        id:
-          type: string
-    SyncUpdateGeoItemRequest:
-      type: object
-      properties:
-        id:
-          type: string
-          description: updateしたFirestoreのId
-        syncedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-    GeoJsonObject:
-      required:
-      - type
-      type: object
-      properties:
-        crs:
-          $ref: '#/components/schemas/Crs'
-        bbox:
-          type: array
-          items:
-            type: number
-            format: double
-        type:
-          type: string
-      discriminator:
-        propertyName: type
-    SyncUpdateFieldItemResponse:
-      type: object
-      properties:
-        isCompleted:
+        success:
           type: boolean
-        syncDateTime:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        remoteFieldItem:
-          $ref: '#/components/schemas/RemoteFieldItem'
-    UpdateFieldPolygonRequest:
-      type: object
-      properties:
-        features:
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature'
-    ImportRequest:
-      type: object
-      properties:
-        features:
-          type: array
-          description: 取り込みたいGeoJson Featureリスト（FeatureCollectionではありません）
-          items:
-            $ref: '#/components/schemas/Feature'
-        propertyAsName:
-          type: string
-          description: 名称として利用する属性名
     PagingResponseRemoteFieldItem:
       type: object
       properties:
@@ -377,23 +254,30 @@ components:
             $ref: '#/components/schemas/RemoteFieldItem'
         paginationInfo:
           $ref: '#/components/schemas/PaginationInfo'
-    LngLatAlt:
+    FirestoreUpdateResponse:
       type: object
       properties:
-        longitude:
-          type: number
-          format: double
-        latitude:
-          type: number
-          format: double
-        altitude:
-          type: number
-          format: double
-        additionalElements:
-          type: array
-          items:
-            type: number
-            format: double
+        id:
+          type: string
+    SyncUpdateFieldItemResponse:
+      type: object
+      properties:
+        isCompleted:
+          type: boolean
+        syncDateTime:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        remoteFieldItem:
+          $ref: '#/components/schemas/RemoteFieldItem'
+    SyncUpdateGeoItemRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: updateしたFirestoreのId
+        syncedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
     RemoteFieldItem:
       type: object
       properties:
@@ -439,19 +323,83 @@ components:
           $ref: '#/components/schemas/Polygon'
         geohash:
           type: string
+    Point:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            $ref: '#/components/schemas/LngLatAlt'
+    UpdateFieldPolygonRequest:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    PaginationInfo:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: 現在何ページ目にいるか
+          format: int32
+        numberOfElements:
+          type: integer
+          description: いくつの要素があるか
+          format: int32
+        size:
+          type: integer
+          description: いくつの要素をページで持つか
+          format: int32
+        totalElements:
+          type: integer
+          description: 全要素数
+          format: int64
+        totalPages:
+          type: integer
+          description: 総ページ数
+          format: int32
+      description: ページネーション情報
+    FirestoreDeleteResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    UpdateMetaDataRequest:
+      required:
+      - metaDataUpdatedAt
+      type: object
+      properties:
+        metaDataUpdatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        name:
+          type: string
+        caption:
+          type: string
+        metaDatas:
+          type: object
+          additionalProperties:
+            type: string
+    ImportRequest:
+      type: object
+      properties:
+        features:
+          type: array
+          description: 取り込みたいGeoJson Featureリスト（FeatureCollectionではありません）
+          items:
+            $ref: '#/components/schemas/Feature'
+        propertyAsName:
+          type: string
+          description: 名称として利用する属性名
     CountTaskInFieldResponse:
       type: object
       properties:
         taskCount:
           type: integer
           format: int32
-    FirestoreImportResult:
-      type: object
-      properties:
-        id:
-          type: string
-        success:
-          type: boolean
     Crs:
       type: object
       properties:
@@ -465,6 +413,41 @@ components:
           additionalProperties:
             type: string
             format: '2016-01-01T00:00:00.000Z'
+    Polygon:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/LngLatAlt'
+    GeoJsonObject:
+      required:
+      - type
+      type: object
+      properties:
+        crs:
+          $ref: '#/components/schemas/Crs'
+        bbox:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+    FirestoreImportResponse:
+      type: object
+      properties:
+        importResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirestoreImportResult'
     Feature:
       type: object
       allOf:
@@ -480,6 +463,23 @@ components:
             $ref: '#/components/schemas/GeoJsonObject'
           id:
             type: string
+    LngLatAlt:
+      type: object
+      properties:
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+        altitude:
+          type: number
+          format: double
+        additionalElements:
+          type: array
+          items:
+            type: number
+            format: double
   securitySchemes:
     bearerAuth:
       type: http

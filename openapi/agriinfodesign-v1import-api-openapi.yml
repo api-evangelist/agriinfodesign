@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Import API
+  title: Agriinfodesign V1Import API
 servers:
 - url: http://datastore.agribus-connect.net
   description: Generated server url

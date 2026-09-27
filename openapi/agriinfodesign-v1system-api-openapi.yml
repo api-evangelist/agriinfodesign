@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 System API
+  title: Agriinfodesign V1System API
   description: システム情報API
 servers:
 - url: http://auth.agribus-connect.net
@@ -53,6 +53,23 @@ paths:
           description: OK
 components:
   schemas:
+    UpdateUserFromPayRequest:
+      type: object
+      properties:
+        stripeId:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsPlus
+          - AsProfessional
+          - Custom
+          - AsStandard
+        trialAvailable:
+          type: boolean
+        continuousSince:
+          type: string
     UserInfo:
       type: object
       properties:
@@ -125,23 +142,6 @@ components:
           - Gravatar|null
           - Custom|null
         url:
-          type: string
-    UpdateUserFromPayRequest:
-      type: object
-      properties:
-        stripeId:
-          type: string
-        functionality:
-          type: string
-          enum:
-          - AsFree
-          - AsPlus
-          - AsProfessional
-          - Custom
-          - AsStandard
-        trialAvailable:
-          type: boolean
-        continuousSince:
           type: string
   securitySchemes:
     bearerAuth:

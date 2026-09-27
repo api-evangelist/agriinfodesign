@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Agricultural Machinery API
+  title: Agriinfodesign V1Agricultural Machinery API
   description: 農機オープンAPI v2.0.0
 servers:
 - url: http://datastore.agribus-connect.net
@@ -73,35 +73,6 @@ paths:
                 $ref: '#/components/schemas/FeatureCollection'
 components:
   schemas:
-    GeoJsonObject:
-      required:
-      - type
-      type: object
-      properties:
-        crs:
-          $ref: '#/components/schemas/Crs'
-        bbox:
-          type: array
-          items:
-            type: number
-            format: double
-        type:
-          type: string
-      discriminator:
-        propertyName: type
-    Crs:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - name
-          - link
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-            format: '2016-01-01T00:00:00.000Z'
     DeviceInfo:
       type: object
       properties:
@@ -130,6 +101,31 @@ components:
           description: ファームウェアバージョン
           example: 1.0.0
       description: 農機デバイス情報
+    FeatureCollection:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          features:
+            type: array
+            items:
+              $ref: '#/components/schemas/Feature'
+    Feature:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          properties:
+            type: object
+            additionalProperties:
+              type: string
+              format: '2016-01-01T00:00:00.000Z'
+          geometry:
+            $ref: '#/components/schemas/GeoJsonObject'
+          id:
+            type: string
     DeviceListResponse:
       type: object
       properties:
@@ -154,31 +150,35 @@ components:
           format: int32
           example: 10
       description: デバイス一覧レスポンス
-    Feature:
+    Crs:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - name
+          - link
         properties:
-          properties:
-            type: object
-            additionalProperties:
-              type: string
-              format: '2016-01-01T00:00:00.000Z'
-          geometry:
-            $ref: '#/components/schemas/GeoJsonObject'
-          id:
+          type: object
+          additionalProperties:
             type: string
-    FeatureCollection:
+            format: '2016-01-01T00:00:00.000Z'
+    GeoJsonObject:
+      required:
+      - type
       type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          features:
-            type: array
-            items:
-              $ref: '#/components/schemas/Feature'
+      properties:
+        crs:
+          $ref: '#/components/schemas/Crs'
+        bbox:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      discriminator:
+        propertyName: type
   securitySchemes:
     bearerAuth:
       type: http

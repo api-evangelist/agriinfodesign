@@ -53,6 +53,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    FeatureCollection:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          features:
+            type: array
+            items:
+              $ref: '#/components/schemas/Feature'
+    Feature:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          properties:
+            type: object
+            additionalProperties:
+              type: string
+              format: '2016-01-01T00:00:00.000Z'
+          geometry:
+            $ref: '#/components/schemas/GeoJsonObject'
+          id:
+            type: string
     Crs:
       type: object
       properties:
@@ -82,31 +107,6 @@ components:
           type: string
       discriminator:
         propertyName: type
-    FeatureCollection:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          features:
-            type: array
-            items:
-              $ref: '#/components/schemas/Feature'
-    Feature:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          properties:
-            type: object
-            additionalProperties:
-              type: string
-              format: '2016-01-01T00:00:00.000Z'
-          geometry:
-            $ref: '#/components/schemas/GeoJsonObject'
-          id:
-            type: string
   securitySchemes:
     bearerAuth:
       type: http

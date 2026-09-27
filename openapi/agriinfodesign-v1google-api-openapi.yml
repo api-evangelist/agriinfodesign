@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Google API
+  title: Agriinfodesign V1Google API
   description: Google関係のAPI
 servers:
 - url: http://pay.agribus-connect.net

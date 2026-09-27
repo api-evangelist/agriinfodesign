@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Sign Up API
+  title: Agriinfodesign V1Sign Up API
   description: サインアップAPI
 servers:
 - url: http://auth.agribus-connect.net
@@ -32,21 +32,6 @@ paths:
                 $ref: '#/components/schemas/TokenResponse'
 components:
   schemas:
-    TokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type:
-          - string
-          - 'null'
-        accessTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        refreshTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
     SimpleSignUpAndSignInRequest:
       required:
       - email
@@ -66,6 +51,21 @@ components:
         zoneinfo:
           type: string
           description: タイムゾーン
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type:
+          - string
+          - 'null'
+        accessTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        refreshTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
   securitySchemes:
     bearerAuth:
       type: http

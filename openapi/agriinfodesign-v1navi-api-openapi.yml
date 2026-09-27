@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Navi API
+  title: Agriinfodesign V1Navi API
   description: Navi関係のAPI
 servers:
 - url: http://pay.agribus-connect.net
@@ -62,6 +62,11 @@ components:
       properties:
         exists:
           type: boolean
+    AndroidPurchases:
+      type: object
+      properties:
+        standardPlan:
+          $ref: '#/components/schemas/AndroidPurchase'
     AndroidPurchase:
       type: object
       properties:
@@ -85,11 +90,6 @@ components:
           type: boolean
         testPurchase:
           type: boolean
-    AndroidPurchases:
-      type: object
-      properties:
-        standardPlan:
-          $ref: '#/components/schemas/AndroidPurchase'
   securitySchemes:
     bearerAuth:
       type: http

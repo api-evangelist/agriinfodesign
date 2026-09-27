@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   description: AgriBus-Web Manager API
   version: 0.0.1
-  title: AgriBus-Web Manager V1 Migration Test API
+  title: AgriBus-Web Manager V1Migration Test API
   termsOfService: http://agri-info-design.com/
   license:
     name: Some License
@@ -142,11 +142,6 @@ components:
           type: string
         zoneinfo:
           type: string
-    BillingMetaInfo:
-      type: object
-      properties:
-        doubleBilling:
-          type: boolean
     Picture:
       type: object
       properties:
@@ -158,6 +153,11 @@ components:
           - Custom|null
         url:
           type: string
+    BillingMetaInfo:
+      type: object
+      properties:
+        doubleBilling:
+          type: boolean
   securitySchemes:
     mykey:
       type: apiKey

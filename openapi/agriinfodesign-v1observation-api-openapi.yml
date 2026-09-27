@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Agriinfodesign V1 Observation API
+  title: Agriinfodesign V1Observation API
 servers:
 - url: http://datastore.agribus-connect.net
   description: Generated server url
@@ -175,6 +175,32 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    SaveSoilMoistureObservationRequest:
+      type: object
+      properties:
+        fireFieldId:
+          type: string
+        placeType:
+          type: string
+        drainage:
+          type: string
+        soil:
+          type: string
+    SaveAccumulatedTemperatureObservationRequest:
+      type: object
+      properties:
+        fireFieldId:
+          type: string
+        placeType:
+          type: string
+        lowerLimitTemperature:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+        zoneId:
+          type: string
     RemoteAccumulatedTemperatureObservation:
       type: object
       properties:
@@ -217,32 +243,6 @@ components:
         drainage:
           type: string
         soil:
-          type: string
-    SaveSoilMoistureObservationRequest:
-      type: object
-      properties:
-        fireFieldId:
-          type: string
-        placeType:
-          type: string
-        drainage:
-          type: string
-        soil:
-          type: string
-    SaveAccumulatedTemperatureObservationRequest:
-      type: object
-      properties:
-        fireFieldId:
-          type: string
-        placeType:
-          type: string
-        lowerLimitTemperature:
-          type: number
-        startDate:
-          type: string
-        endDate:
-          type: string
-        zoneId:
           type: string
   securitySchemes:
     bearerAuth:
