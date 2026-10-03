@@ -73,6 +73,68 @@ paths:
                 $ref: '#/components/schemas/FeatureCollection'
 components:
   schemas:
+    Feature:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          properties:
+            type: object
+            additionalProperties:
+              type: string
+              format: '2016-01-01T00:00:00.000Z'
+          geometry:
+            $ref: '#/components/schemas/GeoJsonObject'
+          id:
+            type: string
+    Crs:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - name
+          - link
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+    DeviceListResponse:
+      type: object
+      properties:
+        devices:
+          type: array
+          description: デバイス情報リスト
+          items:
+            $ref: '#/components/schemas/DeviceInfo'
+        total_count:
+          type: integer
+          description: 総デバイス数
+          format: int32
+          example: 1
+        page:
+          type: integer
+          description: 現在のページ番号
+          format: int32
+          example: 1
+        per_page:
+          type: integer
+          description: 1ページあたりの件数
+          format: int32
+          example: 10
+      description: デバイス一覧レスポンス
+    FeatureCollection:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          features:
+            type: array
+            items:
+              $ref: '#/components/schemas/Feature'
     DeviceInfo:
       type: object
       properties:
@@ -101,68 +163,6 @@ components:
           description: ファームウェアバージョン
           example: 1.0.0
       description: 農機デバイス情報
-    FeatureCollection:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          features:
-            type: array
-            items:
-              $ref: '#/components/schemas/Feature'
-    Feature:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          properties:
-            type: object
-            additionalProperties:
-              type: string
-              format: '2016-01-01T00:00:00.000Z'
-          geometry:
-            $ref: '#/components/schemas/GeoJsonObject'
-          id:
-            type: string
-    DeviceListResponse:
-      type: object
-      properties:
-        devices:
-          type: array
-          description: デバイス情報リスト
-          items:
-            $ref: '#/components/schemas/DeviceInfo'
-        total_count:
-          type: integer
-          description: 総デバイス数
-          format: int32
-          example: 1
-        page:
-          type: integer
-          description: 現在のページ番号
-          format: int32
-          example: 1
-        per_page:
-          type: integer
-          description: 1ページあたりの件数
-          format: int32
-          example: 10
-      description: デバイス一覧レスポンス
-    Crs:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - name
-          - link
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-            format: '2016-01-01T00:00:00.000Z'
     GeoJsonObject:
       required:
       - type

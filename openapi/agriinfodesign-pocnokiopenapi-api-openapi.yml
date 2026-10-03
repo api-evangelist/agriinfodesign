@@ -53,16 +53,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    FeatureCollection:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          features:
-            type: array
-            items:
-              $ref: '#/components/schemas/Feature'
     Feature:
       type: object
       allOf:
@@ -91,6 +81,16 @@ components:
           additionalProperties:
             type: string
             format: '2016-01-01T00:00:00.000Z'
+    FeatureCollection:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          features:
+            type: array
+            items:
+              $ref: '#/components/schemas/Feature'
     GeoJsonObject:
       required:
       - type

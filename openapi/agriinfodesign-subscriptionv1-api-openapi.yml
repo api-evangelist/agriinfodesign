@@ -145,12 +145,6 @@ paths:
                 $ref: '#/components/schemas/DeleteSubscriptionResponse'
 components:
   schemas:
-    UnsubscribeResponse:
-      type: object
-    DeleteSubscriptionResponse:
-      type: object
-    UpdateSubscriptionResponse:
-      type: object
     Subscription:
       type: object
       required:
@@ -213,7 +207,13 @@ components:
           type: string
         toUsername:
           type: string
+    UpdateSubscriptionResponse:
+      type: object
+    DeleteSubscriptionResponse:
+      type: object
     CreateSubscriptionResponse:
+      type: object
+    UnsubscribeResponse:
       type: object
     SubscriptionInfo:
       type: object

@@ -58,20 +58,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ColorRange:
-      type: object
-      properties:
-        stage:
-          type: integer
-          format: int32
-        min:
-          type: number
-          format: double
-        max:
-          type: number
-          format: double
-        color:
-          type: string
     CreateElevationMapRequest:
       type: object
       properties:
@@ -120,6 +106,27 @@ components:
           format: date
         specifiedDateRange:
           type: boolean
+    ColorRange:
+      type: object
+      properties:
+        stage:
+          type: integer
+          format: int32
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
+        color:
+          type: string
+    ColorRanges:
+      type: object
+      properties:
+        ranges:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColorRange'
     RemoteFieldElevationMap:
       type: object
       properties:
@@ -179,13 +186,6 @@ components:
           type: number
           description: 標高レンジ最大値
           format: double
-    ColorRanges:
-      type: object
-      properties:
-        ranges:
-          type: array
-          items:
-            $ref: '#/components/schemas/ColorRange'
   securitySchemes:
     bearerAuth:
       type: http

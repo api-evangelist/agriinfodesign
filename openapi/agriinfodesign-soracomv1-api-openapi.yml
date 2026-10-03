@@ -57,26 +57,33 @@ paths:
         required: true
 components:
   schemas:
-    ActivateSimRequest:
+    SessionStatus:
       type: object
-      required:
-      - imei
-      - imsi
-      - simGroupId
-      - simName
       properties:
-        agriBusProductId:
+        dnsServers:
+          type: array
+          items:
+            type: string
+        gatewayPrivateIpAddress:
           type: string
-        agriBusProductSerialNumber:
+        gatewayPublicIpAddress:
           type: string
         imei:
           type: string
-        imsi:
+        lastUpdatedAt:
+          type: integer
+          format: int64
+        online:
+          type: boolean
+        ueIpAddress:
           type: string
-        simGroupId:
+        vpgId:
           type: string
-        simName:
-          type: string
+    SoracomSubscriberInfo:
+      type: object
+      properties:
+        subscriber:
+          $ref: '#/components/schemas/Subscriber'
     ActivateSimResponse:
       type: object
       required:
@@ -108,32 +115,30 @@ components:
           enum:
           - Success
           - Failure
-    SessionStatus:
-      type: object
-      properties:
-        dnsServers:
-          type: array
-          items:
-            type: string
-        gatewayPrivateIpAddress:
-          type: string
-        gatewayPublicIpAddress:
-          type: string
-        imei:
-          type: string
-        lastUpdatedAt:
-          type: integer
-          format: int64
-        online:
-          type: boolean
-        ueIpAddress:
-          type: string
-        vpgId:
-          type: string
     ImeiLock:
       type: object
       properties:
         imei:
+          type: string
+    ActivateSimRequest:
+      type: object
+      required:
+      - imei
+      - imsi
+      - simGroupId
+      - simName
+      properties:
+        agriBusProductId:
+          type: string
+        agriBusProductSerialNumber:
+          type: string
+        imei:
+          type: string
+        imsi:
+          type: string
+        simGroupId:
+          type: string
+        simName:
           type: string
     Subscriber:
       type: object
@@ -184,11 +189,6 @@ components:
             type: string
         terminationEnabled:
           type: boolean
-    SoracomSubscriberInfo:
-      type: object
-      properties:
-        subscriber:
-          $ref: '#/components/schemas/Subscriber'
   securitySchemes:
     mykey:
       type: apiKey

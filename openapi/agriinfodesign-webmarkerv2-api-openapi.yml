@@ -75,6 +75,13 @@ components:
           type: string
         trackName:
           type: string
+    WebMarkersInfo:
+      type: object
+      properties:
+        webMarkers:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebMarker'
     WebMarker:
       type: object
       properties:
@@ -90,13 +97,6 @@ components:
           type: string
         username:
           type: string
-    WebMarkersInfo:
-      type: object
-      properties:
-        webMarkers:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebMarker'
   securitySchemes:
     mykey:
       type: apiKey

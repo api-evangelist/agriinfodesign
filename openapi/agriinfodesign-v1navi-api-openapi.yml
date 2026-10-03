@@ -62,11 +62,6 @@ components:
       properties:
         exists:
           type: boolean
-    AndroidPurchases:
-      type: object
-      properties:
-        standardPlan:
-          $ref: '#/components/schemas/AndroidPurchase'
     AndroidPurchase:
       type: object
       properties:
@@ -90,6 +85,11 @@ components:
           type: boolean
         testPurchase:
           type: boolean
+    AndroidPurchases:
+      type: object
+      properties:
+        standardPlan:
+          $ref: '#/components/schemas/AndroidPurchase'
   securitySchemes:
     bearerAuth:
       type: http

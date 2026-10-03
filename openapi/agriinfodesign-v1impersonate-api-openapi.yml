@@ -32,6 +32,11 @@ paths:
                 $ref: '#/components/schemas/TokenResponse'
 components:
   schemas:
+    ImpersonationRequest:
+      type: object
+      properties:
+        targetUserEmail:
+          type: string
     TokenResponse:
       type: object
       properties:
@@ -47,11 +52,6 @@ components:
         refreshTokenExpiredAt:
           type: string
           format: '2016-01-01T00:00:00.000Z'
-    ImpersonationRequest:
-      type: object
-      properties:
-        targetUserEmail:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

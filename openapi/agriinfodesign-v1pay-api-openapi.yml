@@ -66,35 +66,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PurchaseInfo:
-      type: object
-      properties:
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        planStartedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        planExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        trial:
-          type: boolean
-        subscriptionId:
-          type: string
-        autoRenewing:
-          type: boolean
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-    CalculateFunctionalityRequest:
-      type: object
-      properties:
-        username:
-          type: string
     Purchase:
       type: object
       properties:
@@ -132,6 +103,35 @@ components:
         autoRenewing:
           type: boolean
         collectionMethod:
+          type: string
+    PurchaseInfo:
+      type: object
+      properties:
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        planStartedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        planExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        trial:
+          type: boolean
+        subscriptionId:
+          type: string
+        autoRenewing:
+          type: boolean
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+    CalculateFunctionalityRequest:
+      type: object
+      properties:
+        username:
           type: string
   securitySchemes:
     bearerAuth:

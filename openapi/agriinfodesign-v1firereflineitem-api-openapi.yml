@@ -220,48 +220,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SseEmitter:
-      type: object
-      properties:
-        timeout:
-          type: integer
-          format: int64
-    MultiPolygon:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                type: array
-                items:
-                  $ref: '#/components/schemas/LngLatAlt'
-    FirestoreImportResult:
-      type: object
-      properties:
-        id:
-          type: string
-        success:
-          type: boolean
-    SyncUpdateRefLineItemResponse:
-      type: object
-      properties:
-        isCompleted:
-          type: boolean
-        syncDateTime:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        remoteRefLineItem:
-          $ref: '#/components/schemas/RemoteRefLineItem'
-    FirestoreUpdateResponse:
-      type: object
-      properties:
-        id:
-          type: string
     RemoteRefLineItem:
       type: object
       properties:
@@ -307,26 +265,7 @@ components:
           type: number
         fieldName:
           type: string
-    SyncUpdateGeoItemRequest:
-      type: object
-      properties:
-        id:
-          type: string
-          description: updateしたFirestoreのId
-        syncedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-    GeometryCollection:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          geometries:
-            type: array
-            items:
-              $ref: '#/components/schemas/GeoJsonObject'
-    MultiLineString:
+    MultiPolygon:
       type: object
       allOf:
       - $ref: '#/components/schemas/GeoJsonObject'
@@ -337,25 +276,9 @@ components:
             items:
               type: array
               items:
-                $ref: '#/components/schemas/LngLatAlt'
-    PagingResponseRemoteRefLineItem:
-      type: object
-      properties:
-        contents:
-          type: array
-          description: データのリスト
-          items:
-            $ref: '#/components/schemas/RemoteRefLineItem'
-        paginationInfo:
-          $ref: '#/components/schemas/PaginationInfo'
-    Point:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          coordinates:
-            $ref: '#/components/schemas/LngLatAlt'
+                type: array
+                items:
+                  $ref: '#/components/schemas/LngLatAlt'
     PaginationInfo:
       type: object
       properties:
@@ -390,16 +313,47 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/LngLatAlt'
-    LineString:
+    FeatureCollection:
       type: object
       allOf:
       - $ref: '#/components/schemas/GeoJsonObject'
       - type: object
         properties:
-          coordinates:
+          features:
             type: array
             items:
-              $ref: '#/components/schemas/LngLatAlt'
+              $ref: '#/components/schemas/Feature'
+    SyncUpdateRefLineItemResponse:
+      type: object
+      properties:
+        isCompleted:
+          type: boolean
+        syncDateTime:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        remoteRefLineItem:
+          $ref: '#/components/schemas/RemoteRefLineItem'
+    GeoJsonObject:
+      required:
+      - type
+      type: object
+      properties:
+        crs:
+          $ref: '#/components/schemas/Crs'
+        bbox:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+    FirestoreUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
     FirestoreDeleteResponse:
       type: object
       properties:
@@ -421,41 +375,7 @@ components:
           type: object
           additionalProperties:
             type: string
-    ImportRequest:
-      type: object
-      properties:
-        features:
-          type: array
-          description: 取り込みたいGeoJson Featureリスト（FeatureCollectionではありません）
-          items:
-            $ref: '#/components/schemas/Feature'
-        propertyAsName:
-          type: string
-          description: 名称として利用する属性名
-    FeatureCollection:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          features:
-            type: array
-            items:
-              $ref: '#/components/schemas/Feature'
-    Crs:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - name
-          - link
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-            format: '2016-01-01T00:00:00.000Z'
-    Polygon:
+    MultiLineString:
       type: object
       allOf:
       - $ref: '#/components/schemas/GeoJsonObject'
@@ -467,22 +387,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/LngLatAlt'
-    GeoJsonObject:
-      required:
-      - type
-      type: object
-      properties:
-        crs:
-          $ref: '#/components/schemas/Crs'
-        bbox:
-          type: array
-          items:
-            type: number
-            format: double
-        type:
-          type: string
-      discriminator:
-        propertyName: type
     FirestoreImportResponse:
       type: object
       properties:
@@ -490,6 +394,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FirestoreImportResult'
+    PagingResponseRemoteRefLineItem:
+      type: object
+      properties:
+        contents:
+          type: array
+          description: データのリスト
+          items:
+            $ref: '#/components/schemas/RemoteRefLineItem'
+        paginationInfo:
+          $ref: '#/components/schemas/PaginationInfo'
     Feature:
       type: object
       allOf:
@@ -505,6 +419,74 @@ components:
             $ref: '#/components/schemas/GeoJsonObject'
           id:
             type: string
+    Crs:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - name
+          - link
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+    Point:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            $ref: '#/components/schemas/LngLatAlt'
+    GeometryCollection:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          geometries:
+            type: array
+            items:
+              $ref: '#/components/schemas/GeoJsonObject'
+    LineString:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              $ref: '#/components/schemas/LngLatAlt'
+    Polygon:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/LngLatAlt'
+    SyncUpdateGeoItemRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: updateしたFirestoreのId
+        syncedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+    SseEmitter:
+      type: object
+      properties:
+        timeout:
+          type: integer
+          format: int64
     LngLatAlt:
       type: object
       properties:
@@ -522,6 +504,24 @@ components:
           items:
             type: number
             format: double
+    FirestoreImportResult:
+      type: object
+      properties:
+        id:
+          type: string
+        success:
+          type: boolean
+    ImportRequest:
+      type: object
+      properties:
+        features:
+          type: array
+          description: 取り込みたいGeoJson Featureリスト（FeatureCollectionではありません）
+          items:
+            $ref: '#/components/schemas/Feature'
+        propertyAsName:
+          type: string
+          description: 名称として利用する属性名
   securitySchemes:
     bearerAuth:
       type: http

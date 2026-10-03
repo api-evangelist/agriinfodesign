@@ -133,28 +133,58 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 components:
   schemas:
-    SimpleSignUpRequest:
+    Purchase:
       type: object
-      required:
-      - email
       properties:
-        email:
+        amountPaid:
+          type: integer
+          format: int64
+        autoRenewing:
+          type: boolean
+        billingVendor:
           type: string
-          description: Eメール
-        language:
+          enum:
+          - Google
+          - Stripe
+        collectionMethod:
           type: string
-          description: 表示言語・en/ja
-        metaData:
-          type: object
-          description: ユーザーメタデータ
-          additionalProperties:
-            type: object
-        region:
+        currency:
           type: string
-          description: リージョン（your-region.agribus-connect.net を利用して調べてください）
-        zoneinfo:
+        expiredAt:
           type: string
-          description: タイムゾーン
+          example: '2016-01-01T00:00:00.000Z'
+        invoiceId:
+          type: string
+        invoiceUrl:
+          type: string
+        orderId:
+          type: string
+        planId:
+          type: string
+        startedAt:
+          type: string
+          example: '2016-01-01T00:00:00.000Z'
+        state:
+          type: string
+          enum:
+          - Paid
+          - Trial
+          - NotPaid
+          - Canceled
+        subscriptionId:
+          type: string
+    UserGroupsInfo:
+      type: object
+      properties:
+        userGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroupInfo'
+    UserGroupInfo:
+      type: object
+      properties:
+        name:
+          type: string
     PurchaseInfo:
       type: object
       properties:
@@ -192,6 +222,28 @@ components:
           type: string
         trial:
           type: boolean
+    SimpleSignUpConfirmRequest:
+      type: object
+      required:
+      - confirmationCode
+      - newPassword
+      - nickName
+      - secureToken
+      - sendMeNews
+      - username
+      properties:
+        confirmationCode:
+          type: string
+        newPassword:
+          type: string
+        nickName:
+          type: string
+        secureToken:
+          type: string
+        sendMeNews:
+          type: boolean
+        username:
+          type: string
     UserInfo:
       type: object
       properties:
@@ -262,46 +314,28 @@ components:
           type: string
         zoneinfo:
           type: string
-    Purchase:
+    SimpleSignUpRequest:
       type: object
+      required:
+      - email
       properties:
-        amountPaid:
-          type: integer
-          format: int64
-        autoRenewing:
-          type: boolean
-        billingVendor:
+        email:
           type: string
-          enum:
-          - Google
-          - Stripe
-        collectionMethod:
+          description: Eメール
+        language:
           type: string
-        currency:
+          description: 表示言語・en/ja
+        metaData:
+          type: object
+          description: ユーザーメタデータ
+          additionalProperties:
+            type: object
+        region:
           type: string
-        expiredAt:
+          description: リージョン（your-region.agribus-connect.net を利用して調べてください）
+        zoneinfo:
           type: string
-          example: '2016-01-01T00:00:00.000Z'
-        invoiceId:
-          type: string
-        invoiceUrl:
-          type: string
-        orderId:
-          type: string
-        planId:
-          type: string
-        startedAt:
-          type: string
-          example: '2016-01-01T00:00:00.000Z'
-        state:
-          type: string
-          enum:
-          - Paid
-          - Trial
-          - NotPaid
-          - Canceled
-        subscriptionId:
-          type: string
+          description: タイムゾーン
     EditUserRequest:
       type: object
       properties:
@@ -317,40 +351,6 @@ components:
         systemOfUnits:
           type: string
           description: 単位
-    UserGroupsInfo:
-      type: object
-      properties:
-        userGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserGroupInfo'
-    SimpleSignUpConfirmRequest:
-      type: object
-      required:
-      - confirmationCode
-      - newPassword
-      - nickName
-      - secureToken
-      - sendMeNews
-      - username
-      properties:
-        confirmationCode:
-          type: string
-        newPassword:
-          type: string
-        nickName:
-          type: string
-        secureToken:
-          type: string
-        sendMeNews:
-          type: boolean
-        username:
-          type: string
-    UserGroupInfo:
-      type: object
-      properties:
-        name:
-          type: string
   securitySchemes:
     mykey:
       type: apiKey

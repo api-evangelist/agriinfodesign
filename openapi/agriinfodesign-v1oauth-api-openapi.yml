@@ -52,21 +52,6 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 components:
   schemas:
-    TokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type:
-          - string
-          - 'null'
-        accessTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        refreshTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
     OAuthLoginRequest:
       type: object
       properties:
@@ -84,6 +69,21 @@ components:
         nickname:
           type: string
           description: Cognitoのnickname。ただしGoogleOAuthでサインアップした場合は、Googleから渡された氏名
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type:
+          - string
+          - 'null'
+        accessTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        refreshTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
     UserPicture:
       type: object
       properties:
@@ -95,6 +95,14 @@ components:
           - Custom|null
         url:
           type: string
+    OAuthCreateNewPasswordRequest:
+      required:
+      - newPassword
+      type: object
+      properties:
+        newPassword:
+          type: string
+          description: 新しいパスワード
     UserInfo:
       type: object
       properties:
@@ -157,14 +165,6 @@ components:
           description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
         oauthUser:
           type: boolean
-    OAuthCreateNewPasswordRequest:
-      required:
-      - newPassword
-      type: object
-      properties:
-        newPassword:
-          type: string
-          description: 新しいパスワード
   securitySchemes:
     bearerAuth:
       type: http

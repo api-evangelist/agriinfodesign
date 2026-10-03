@@ -43,6 +43,24 @@ paths:
                 $ref: '#/components/schemas/RtkSettingInfo'
 components:
   schemas:
+    RtkSettingInfo:
+      type: object
+      properties:
+        basePassword:
+          type: string
+        baseUserId:
+          type: string
+        host:
+          type: string
+        mountpoint:
+          type: string
+        port:
+          type: integer
+          format: int32
+        roverPassword:
+          type: string
+        roverUserId:
+          type: string
     JsonNode:
       type: object
       properties:
@@ -98,24 +116,6 @@ components:
           type: boolean
         valueNode:
           type: boolean
-    RtkSettingInfo:
-      type: object
-      properties:
-        basePassword:
-          type: string
-        baseUserId:
-          type: string
-        host:
-          type: string
-        mountpoint:
-          type: string
-        port:
-          type: integer
-          format: int32
-        roverPassword:
-          type: string
-        roverUserId:
-          type: string
   securitySchemes:
     mykey:
       type: apiKey

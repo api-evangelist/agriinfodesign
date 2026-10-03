@@ -84,159 +84,121 @@ paths:
                 type: object
 components:
   schemas:
-    AuthorizeRequest:
-      required:
-      - clientId
-      - responseType
+    AutowireCapableBeanFactory:
+      type: object
+    ServletContext:
       type: object
       properties:
-        responseType:
-          type: string
-          description: Response type
-          example: code
-        clientId:
-          type: string
-          description: Client identifier
-        redirectUri:
-          type: string
-          description: Redirection URI
-        scope:
-          type: string
-          description: Scope of access request
-          example: openid profile email
-        state:
-          type: string
-          description: State parameter for CSRF protection
-        nonce:
-          type: string
-          description: Nonce for ID Token security (OpenID Connect)
-        codeChallenge:
-          type: string
-          description: Code challenge for PKCE
-        codeChallengeMethod:
-          type: string
-          description: Code challenge method for PKCE
-          example: S256
-    SessionCookieConfig:
-      type: object
-      properties:
-        name:
-          type: string
-        path:
-          type: string
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-        comment:
-          type: string
-          deprecated: true
-        maxAge:
+        sessionTimeout:
           type: integer
           format: int32
-        secure:
-          type: boolean
-        httpOnly:
-          type: boolean
-        domain:
+        classLoader:
+          type: object
+          properties:
+            name:
+              type: string
+            registeredAsParallelCapable:
+              type: boolean
+            definedPackages:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                  declaredAnnotations:
+                    type: array
+                    items:
+                      type: object
+                  sealed:
+                    type: boolean
+                  specificationTitle:
+                    type: string
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationTitle:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+            defaultAssertionStatus:
+              type: boolean
+              writeOnly: true
+        majorVersion:
+          type: integer
+          format: int32
+        minorVersion:
+          type: integer
+          format: int32
+        attributeNames:
+          type: object
+        servletRegistrations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ServletRegistration'
+        initParameterNames:
+          type: object
+        sessionTrackingModes:
+          uniqueItems: true
+          type: array
+          writeOnly: true
+          items:
+            type: string
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        effectiveMajorVersion:
+          type: integer
+          format: int32
+        effectiveMinorVersion:
+          type: integer
+          format: int32
+        serverInfo:
           type: string
-    FilterRegistration:
-      type: object
-      properties:
-        servletNameMappings:
+        servletContextName:
+          type: string
+        filterRegistrations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/FilterRegistration'
+        sessionCookieConfig:
+          $ref: '#/components/schemas/SessionCookieConfig'
+        defaultSessionTrackingModes:
+          uniqueItems: true
           type: array
           items:
             type: string
-        urlPatternMappings:
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        effectiveSessionTrackingModes:
+          uniqueItems: true
           type: array
           items:
             type: string
-        name:
+            enum:
+            - COOKIE
+            - URL
+            - SSL
+        jspConfigDescriptor:
+          $ref: '#/components/schemas/JspConfigDescriptor'
+        virtualServerName:
           type: string
-        className:
+        requestCharacterEncoding:
           type: string
-        initParameters:
-          type: object
-          additionalProperties:
-            type: string
-    TaglibDescriptor:
-      type: object
-      properties:
-        taglibURI:
+        responseCharacterEncoding:
           type: string
-        taglibLocation:
+        contextPath:
           type: string
-    RedirectView:
-      type: object
-      properties:
-        applicationContext:
-          $ref: '#/components/schemas/ApplicationContext'
-        servletContext:
-          $ref: '#/components/schemas/ServletContext'
-        contentType:
-          type: string
-        requestContextAttribute:
-          type: string
-        staticAttributes:
-          type: object
-          additionalProperties:
-            type: string
-            format: '2016-01-01T00:00:00.000Z'
-        exposePathVariables:
-          type: boolean
-        exposeContextBeansAsAttributes:
-          type: boolean
-          writeOnly: true
-        exposedContextBeanNames:
-          type: array
-          writeOnly: true
-          items:
-            type: string
-        beanName:
-          type: string
-        url:
-          type: string
-        contextRelative:
-          type: boolean
-          writeOnly: true
-        http10Compatible:
-          type: boolean
-          writeOnly: true
-        exposeModelAttributes:
-          type: boolean
-          writeOnly: true
-        encodingScheme:
-          type: string
-          writeOnly: true
-        statusCode:
-          $ref: '#/components/schemas/HttpStatusCode'
-        expandUriTemplateVariables:
-          type: boolean
-          writeOnly: true
-        propagateQueryParams:
-          type: boolean
-          writeOnly: true
-        hosts:
-          type: array
-          items:
-            type: string
-        redirectView:
-          type: boolean
-        propagateQueryProperties:
-          type: boolean
-        attributesMap:
-          type: object
-          additionalProperties:
-            type: string
-            format: '2016-01-01T00:00:00.000Z'
-        attributesCSV:
-          type: string
-          writeOnly: true
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-          writeOnly: true
     ApplicationContext:
       type: object
       properties:
@@ -495,75 +457,19 @@ components:
           type: object
           additionalProperties:
             type: string
-    JspPropertyGroupDescriptor:
-      type: object
-      properties:
-        defaultContentType:
-          type: string
-        elIgnored:
-          type: string
-        errorOnELNotFound:
-          type: string
-        pageEncoding:
-          type: string
-        scriptingInvalid:
-          type: string
-        isXml:
-          type: string
-        includePreludes:
-          type: array
-          items:
-            type: string
-        includeCodas:
-          type: array
-          items:
-            type: string
-        deferredSyntaxAllowedAsLiteral:
-          type: string
-        trimDirectiveWhitespaces:
-          type: string
-        errorOnUndeclaredNamespace:
-          type: string
-        buffer:
-          type: string
-        urlPatterns:
-          type: array
-          items:
-            type: string
     BeanFactory:
       type: object
-    AutowireCapableBeanFactory:
-      type: object
-    UserInfoResponse:
+    Environment:
       type: object
       properties:
-        sub:
-          type: string
-          description: Subject identifier
-        name:
-          type: string
-          description: User's full name
-        given_name:
-          type: string
-          description: Given name
-        family_name:
-          type: string
-          description: Family name
-        email:
-          type: string
-          description: Email address
-        email_verified:
-          type: boolean
-          description: Email verification status
-        username:
-          type: string
-          description: Username
-        groups:
+        activeProfiles:
           type: array
-          description: User groups
           items:
             type: string
-            description: User groups
+        defaultProfiles:
+          type: array
+          items:
+            type: string
     HttpStatusCode:
       type: object
       properties:
@@ -579,141 +485,6 @@ components:
           type: boolean
         is5xxServerError:
           type: boolean
-    Environment:
-      type: object
-      properties:
-        activeProfiles:
-          type: array
-          items:
-            type: string
-        defaultProfiles:
-          type: array
-          items:
-            type: string
-    ServletContext:
-      type: object
-      properties:
-        sessionTimeout:
-          type: integer
-          format: int32
-        classLoader:
-          type: object
-          properties:
-            name:
-              type: string
-            registeredAsParallelCapable:
-              type: boolean
-            definedPackages:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  annotations:
-                    type: array
-                    items:
-                      type: object
-                  declaredAnnotations:
-                    type: array
-                    items:
-                      type: object
-                  sealed:
-                    type: boolean
-                  specificationTitle:
-                    type: string
-                  specificationVersion:
-                    type: string
-                  specificationVendor:
-                    type: string
-                  implementationTitle:
-                    type: string
-                  implementationVersion:
-                    type: string
-                  implementationVendor:
-                    type: string
-            defaultAssertionStatus:
-              type: boolean
-              writeOnly: true
-        majorVersion:
-          type: integer
-          format: int32
-        minorVersion:
-          type: integer
-          format: int32
-        attributeNames:
-          type: object
-        servletRegistrations:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ServletRegistration'
-        initParameterNames:
-          type: object
-        sessionTrackingModes:
-          uniqueItems: true
-          type: array
-          writeOnly: true
-          items:
-            type: string
-            enum:
-            - COOKIE
-            - URL
-            - SSL
-        effectiveMajorVersion:
-          type: integer
-          format: int32
-        effectiveMinorVersion:
-          type: integer
-          format: int32
-        serverInfo:
-          type: string
-        servletContextName:
-          type: string
-        filterRegistrations:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/FilterRegistration'
-        sessionCookieConfig:
-          $ref: '#/components/schemas/SessionCookieConfig'
-        defaultSessionTrackingModes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-            enum:
-            - COOKIE
-            - URL
-            - SSL
-        effectiveSessionTrackingModes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-            enum:
-            - COOKIE
-            - URL
-            - SSL
-        jspConfigDescriptor:
-          $ref: '#/components/schemas/JspConfigDescriptor'
-        virtualServerName:
-          type: string
-        requestCharacterEncoding:
-          type: string
-        responseCharacterEncoding:
-          type: string
-        contextPath:
-          type: string
-    JspConfigDescriptor:
-      type: object
-      properties:
-        jspPropertyGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/JspPropertyGroupDescriptor'
-        taglibs:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaglibDescriptor'
     OpenIdConfigurationResponse:
       type: object
       properties:
@@ -759,6 +530,235 @@ components:
           type: array
           items:
             type: string
+    UserInfoResponse:
+      type: object
+      properties:
+        sub:
+          type: string
+          description: Subject identifier
+        name:
+          type: string
+          description: User's full name
+        given_name:
+          type: string
+          description: Given name
+        family_name:
+          type: string
+          description: Family name
+        email:
+          type: string
+          description: Email address
+        email_verified:
+          type: boolean
+          description: Email verification status
+        username:
+          type: string
+          description: Username
+        groups:
+          type: array
+          description: User groups
+          items:
+            type: string
+            description: User groups
+    JspConfigDescriptor:
+      type: object
+      properties:
+        jspPropertyGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/JspPropertyGroupDescriptor'
+        taglibs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaglibDescriptor'
+    SessionCookieConfig:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        comment:
+          type: string
+          deprecated: true
+        maxAge:
+          type: integer
+          format: int32
+        secure:
+          type: boolean
+        httpOnly:
+          type: boolean
+        domain:
+          type: string
+    AuthorizeRequest:
+      required:
+      - clientId
+      - responseType
+      type: object
+      properties:
+        responseType:
+          type: string
+          description: Response type
+          example: code
+        clientId:
+          type: string
+          description: Client identifier
+        redirectUri:
+          type: string
+          description: Redirection URI
+        scope:
+          type: string
+          description: Scope of access request
+          example: openid profile email
+        state:
+          type: string
+          description: State parameter for CSRF protection
+        nonce:
+          type: string
+          description: Nonce for ID Token security (OpenID Connect)
+        codeChallenge:
+          type: string
+          description: Code challenge for PKCE
+        codeChallengeMethod:
+          type: string
+          description: Code challenge method for PKCE
+          example: S256
+    JspPropertyGroupDescriptor:
+      type: object
+      properties:
+        defaultContentType:
+          type: string
+        elIgnored:
+          type: string
+        errorOnELNotFound:
+          type: string
+        pageEncoding:
+          type: string
+        scriptingInvalid:
+          type: string
+        isXml:
+          type: string
+        includePreludes:
+          type: array
+          items:
+            type: string
+        includeCodas:
+          type: array
+          items:
+            type: string
+        deferredSyntaxAllowedAsLiteral:
+          type: string
+        trimDirectiveWhitespaces:
+          type: string
+        errorOnUndeclaredNamespace:
+          type: string
+        buffer:
+          type: string
+        urlPatterns:
+          type: array
+          items:
+            type: string
+    FilterRegistration:
+      type: object
+      properties:
+        servletNameMappings:
+          type: array
+          items:
+            type: string
+        urlPatternMappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    RedirectView:
+      type: object
+      properties:
+        applicationContext:
+          $ref: '#/components/schemas/ApplicationContext'
+        servletContext:
+          $ref: '#/components/schemas/ServletContext'
+        contentType:
+          type: string
+        requestContextAttribute:
+          type: string
+        staticAttributes:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+        exposePathVariables:
+          type: boolean
+        exposeContextBeansAsAttributes:
+          type: boolean
+          writeOnly: true
+        exposedContextBeanNames:
+          type: array
+          writeOnly: true
+          items:
+            type: string
+        beanName:
+          type: string
+        url:
+          type: string
+        contextRelative:
+          type: boolean
+          writeOnly: true
+        http10Compatible:
+          type: boolean
+          writeOnly: true
+        exposeModelAttributes:
+          type: boolean
+          writeOnly: true
+        encodingScheme:
+          type: string
+          writeOnly: true
+        statusCode:
+          $ref: '#/components/schemas/HttpStatusCode'
+        expandUriTemplateVariables:
+          type: boolean
+          writeOnly: true
+        propagateQueryParams:
+          type: boolean
+          writeOnly: true
+        hosts:
+          type: array
+          items:
+            type: string
+        redirectView:
+          type: boolean
+        propagateQueryProperties:
+          type: boolean
+        attributesMap:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+        attributesCSV:
+          type: string
+          writeOnly: true
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          writeOnly: true
+    TaglibDescriptor:
+      type: object
+      properties:
+        taglibURI:
+          type: string
+        taglibLocation:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

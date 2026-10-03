@@ -63,6 +63,21 @@ components:
           type: string
         baseURL:
           type: string
+    BoundingBox:
+      type: object
+      properties:
+        north:
+          type: number
+          format: double
+        south:
+          type: number
+          format: double
+        east:
+          type: number
+          format: double
+        west:
+          type: number
+          format: double
     RemoteSpaceAgriField:
       type: object
       properties:
@@ -101,21 +116,6 @@ components:
           type: string
         baseUrl:
           type: string
-    BoundingBox:
-      type: object
-      properties:
-        north:
-          type: number
-          format: double
-        south:
-          type: number
-          format: double
-        east:
-          type: number
-          format: double
-        west:
-          type: number
-          format: double
   securitySchemes:
     bearerAuth:
       type: http

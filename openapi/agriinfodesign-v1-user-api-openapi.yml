@@ -91,6 +91,13 @@ paths:
                 $ref: '#/components/schemas/UserGroupsInfo'
 components:
   schemas:
+    UserGroupsInfo:
+      type: object
+      properties:
+        userGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroupInfo'
     UpdateUserRequest:
       type: object
       properties:
@@ -107,6 +114,19 @@ components:
           - Imperial
           - JpUnitsOfArea
           - ThUnitsOfArea
+    UserGroupInfo:
+      type: object
+      properties:
+        name:
+          type: string
+    ResetPasswordRequest:
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+          description: Eメール
     UserPicture:
       type: object
       properties:
@@ -118,18 +138,6 @@ components:
           - Custom|null
         url:
           type: string
-    ChangePasswordRequest:
-      required:
-      - currentPassword
-      - newPassword
-      type: object
-      properties:
-        currentPassword:
-          type: string
-          description: 現在のパスワード
-        newPassword:
-          type: string
-          description: 新しいパスワード
     UserInfo:
       type: object
       properties:
@@ -192,26 +200,18 @@ components:
           description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
         oauthUser:
           type: boolean
-    UserGroupsInfo:
-      type: object
-      properties:
-        userGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserGroupInfo'
-    ResetPasswordRequest:
+    ChangePasswordRequest:
       required:
-      - email
+      - currentPassword
+      - newPassword
       type: object
       properties:
-        email:
+        currentPassword:
           type: string
-          description: Eメール
-    UserGroupInfo:
-      type: object
-      properties:
-        name:
+          description: 現在のパスワード
+        newPassword:
           type: string
+          description: 新しいパスワード
   securitySchemes:
     bearerAuth:
       type: http
