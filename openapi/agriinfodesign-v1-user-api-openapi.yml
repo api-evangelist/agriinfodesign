@@ -91,34 +91,6 @@ paths:
                 $ref: '#/components/schemas/UserGroupsInfo'
 components:
   schemas:
-    UserGroupsInfo:
-      type: object
-      properties:
-        userGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserGroupInfo'
-    UpdateUserRequest:
-      type: object
-      properties:
-        nickname:
-          type: string
-        sendMeNews:
-          type: boolean
-        language:
-          type: string
-        systemOfUnits:
-          type: string
-          enum:
-          - Metric
-          - Imperial
-          - JpUnitsOfArea
-          - ThUnitsOfArea
-    UserGroupInfo:
-      type: object
-      properties:
-        name:
-          type: string
     ResetPasswordRequest:
       required:
       - email
@@ -127,17 +99,18 @@ components:
         email:
           type: string
           description: Eメール
-    UserPicture:
+    ChangePasswordRequest:
+      required:
+      - currentPassword
+      - newPassword
       type: object
       properties:
-        icon:
+        currentPassword:
           type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        url:
+          description: 現在のパスワード
+        newPassword:
           type: string
+          description: 新しいパスワード
     UserInfo:
       type: object
       properties:
@@ -200,18 +173,45 @@ components:
           description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
         oauthUser:
           type: boolean
-    ChangePasswordRequest:
-      required:
-      - currentPassword
-      - newPassword
+    UserGroupsInfo:
       type: object
       properties:
-        currentPassword:
+        userGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroupInfo'
+    UserPicture:
+      type: object
+      properties:
+        icon:
           type: string
-          description: 現在のパスワード
-        newPassword:
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        url:
           type: string
-          description: 新しいパスワード
+    UpdateUserRequest:
+      type: object
+      properties:
+        nickname:
+          type: string
+        sendMeNews:
+          type: boolean
+        language:
+          type: string
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+          - JpUnitsOfArea
+          - ThUnitsOfArea
+    UserGroupInfo:
+      type: object
+      properties:
+        name:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

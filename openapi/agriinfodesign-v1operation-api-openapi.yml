@@ -28,6 +28,8 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    LocalizedValues:
+      type: object
     RemoteOperationType:
       type: object
       properties:
@@ -35,8 +37,6 @@ components:
           type: string
         localizedNames:
           $ref: '#/components/schemas/LocalizedValues'
-    LocalizedValues:
-      type: object
   securitySchemes:
     bearerAuth:
       type: http

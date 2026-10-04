@@ -276,33 +276,6 @@ components:
           - Canceled
         subscriptionId:
           type: string
-    InquiryRequest:
-      type: object
-      required:
-      - content
-      - type
-      properties:
-        content:
-          type: string
-          description: 問い合わせの内容
-        type:
-          type: string
-          description: 問い合わせの種類
-          enum:
-          - QUIT
-    UploadIconImageResult:
-      type: object
-      properties:
-        url:
-          type: string
-    CreatePasswordRequest:
-      type: object
-      required:
-      - newPassword
-      properties:
-        newPassword:
-          type: string
-          description: 新しいパスワード
     ResetPasswordRequest:
       type: object
       required:
@@ -311,108 +284,33 @@ components:
         email:
           type: string
           description: Eメール
-    UpdateIconRequest:
+    EditUserRequest:
       type: object
       properties:
-        base64EncordedImage:
-          type: string
-          description: Base64エンコードされた画像
-        icon:
-          type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        preset:
-          type: string
-          enum:
-          - Preset1
-          - Preset2
-          - Preset3
-          - Preset4
-          - Preset5
-          - Preset6
-    PurchaseInfo:
-      type: object
-      properties:
-        activeSubscriptionCount:
-          type: integer
-          format: int32
-        autoRenewing:
-          type: boolean
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        plan:
-          type: string
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        planEnforced:
-          type: boolean
-        planExpiredAt:
-          type: string
-        planStartedAt:
-          type: string
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-        subscriptionId:
-          type: string
-        subscriptionIdForFunctionality:
-          type: string
-        trial:
-          type: boolean
-    ConfirmRequest:
-      type: object
-      required:
-      - confirmationCode
-      - secureToken
-      - username
-      properties:
-        confirmationCode:
-          type: string
-        secureToken:
-          type: string
-        username:
-          type: string
-    SignUpRequest:
-      type: object
-      required:
-      - email
-      - password
-      properties:
-        email:
-          type: string
-          description: Eメール
         language:
           type: string
-          description: 表示言語・en/ja
-        metaData:
-          type: object
-          description: ユーザーメタデータ
-          additionalProperties:
-            type: object
+          description: 言語
         nickname:
           type: string
           description: ニックネーム
-        password:
-          type: string
-        region:
-          type: string
-          description: リージョン（your-region.agribus-connect.net を利用して調べてください）
         sendMeNews:
           type: boolean
           description: メルマガ受信
-        zoneinfo:
+        systemOfUnits:
           type: string
-          description: タイムゾーン
+          description: 単位
+    ChangePasswordRequest:
+      type: object
+      required:
+      - currentPassword
+      - newPassword
+      properties:
+        currentPassword:
+          type: string
+          description: 現在のパスワード
+        newPassword:
+          type: string
+          description: 新しいパスワード
     UserInfo:
       type: object
       properties:
@@ -483,6 +381,135 @@ components:
           type: string
         zoneinfo:
           type: string
+    UpdateIconRequest:
+      type: object
+      properties:
+        base64EncordedImage:
+          type: string
+          description: Base64エンコードされた画像
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        preset:
+          type: string
+          enum:
+          - Preset1
+          - Preset2
+          - Preset3
+          - Preset4
+          - Preset5
+          - Preset6
+    InquiryRequest:
+      type: object
+      required:
+      - content
+      - type
+      properties:
+        content:
+          type: string
+          description: 問い合わせの内容
+        type:
+          type: string
+          description: 問い合わせの種類
+          enum:
+          - QUIT
+    ConfirmRequest:
+      type: object
+      required:
+      - confirmationCode
+      - secureToken
+      - username
+      properties:
+        confirmationCode:
+          type: string
+        secureToken:
+          type: string
+        username:
+          type: string
+    CreatePasswordRequest:
+      type: object
+      required:
+      - newPassword
+      properties:
+        newPassword:
+          type: string
+          description: 新しいパスワード
+    SignUpRequest:
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          description: Eメール
+        language:
+          type: string
+          description: 表示言語・en/ja
+        metaData:
+          type: object
+          description: ユーザーメタデータ
+          additionalProperties:
+            type: object
+        nickname:
+          type: string
+          description: ニックネーム
+        password:
+          type: string
+        region:
+          type: string
+          description: リージョン（your-region.agribus-connect.net を利用して調べてください）
+        sendMeNews:
+          type: boolean
+          description: メルマガ受信
+        zoneinfo:
+          type: string
+          description: タイムゾーン
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
+    UploadIconImageResult:
+      type: object
+      properties:
+        url:
+          type: string
     InquiryResponse:
       type: object
       required:
@@ -491,33 +518,6 @@ components:
         number:
           type: string
           description: お問い合わせ番号
-    EditUserRequest:
-      type: object
-      properties:
-        language:
-          type: string
-          description: 言語
-        nickname:
-          type: string
-          description: ニックネーム
-        sendMeNews:
-          type: boolean
-          description: メルマガ受信
-        systemOfUnits:
-          type: string
-          description: 単位
-    ChangePasswordRequest:
-      type: object
-      required:
-      - currentPassword
-      - newPassword
-      properties:
-        currentPassword:
-          type: string
-          description: 現在のパスワード
-        newPassword:
-          type: string
-          description: 新しいパスワード
   securitySchemes:
     mykey:
       type: apiKey

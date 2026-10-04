@@ -53,6 +53,23 @@ paths:
           description: OK
 components:
   schemas:
+    UpdateUserFromPayRequest:
+      type: object
+      properties:
+        stripeId:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsPlus
+          - AsProfessional
+          - Custom
+          - AsStandard
+        trialAvailable:
+          type: boolean
+        continuousSince:
+          type: string
     UserPicture:
       type: object
       properties:
@@ -126,23 +143,6 @@ components:
           description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
         oauthUser:
           type: boolean
-    UpdateUserFromPayRequest:
-      type: object
-      properties:
-        stripeId:
-          type: string
-        functionality:
-          type: string
-          enum:
-          - AsFree
-          - AsPlus
-          - AsProfessional
-          - Custom
-          - AsStandard
-        trialAvailable:
-          type: boolean
-        continuousSince:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

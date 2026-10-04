@@ -93,48 +93,6 @@ components:
           - Canceled
         subscriptionId:
           type: string
-    Subscription:
-      type: object
-      required:
-      - type
-      - uuid
-      properties:
-        email:
-          type: string
-        enterprise:
-          type: boolean
-        groupUsernames:
-          type: array
-          items:
-            type: string
-        iconUrl:
-          type: string
-        name:
-          type: string
-          description: nameとnicknameは同じものが常に入ります
-        nickname:
-          type: string
-          description: nameとnicknameは同じものが常に入ります
-        organizationName:
-          type: string
-        region:
-          type: string
-        type:
-          type: string
-          enum:
-          - Account
-          - Group
-        uuid:
-          type: string
-    UpdateSystemOfUnitsRequest:
-      type: object
-      properties:
-        systemOfUnits:
-          type: string
-          description: 単位
-          enum:
-          - Metric
-          - Imperial
     SimpleSignUpAndSignInRequest:
       type: object
       required:
@@ -184,58 +142,24 @@ components:
         zoneinfo:
           type: string
           description: タイムゾーン
-    TokenResponse:
+    SubscriptionInfo:
       type: object
       properties:
-        accessToken:
-          type: string
-        accessTokenExpiredAt:
-          type: string
-        refreshToken:
-          type: string
-        refreshTokenExpiredAt:
-          type: string
-        subscriptionInfo:
-          $ref: '#/components/schemas/SubscriptionInfo'
-        userInfo:
-          $ref: '#/components/schemas/UserInfo'
-    PurchaseInfo:
-      type: object
-      properties:
-        activeSubscriptionCount:
-          type: integer
-          format: int32
-        autoRenewing:
-          type: boolean
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        plan:
-          type: string
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        planEnforced:
-          type: boolean
-        planExpiredAt:
-          type: string
-        planStartedAt:
-          type: string
-        purchases:
+        subscriberAccounts:
           type: array
+          description: 購読されているアカウント
           items:
-            $ref: '#/components/schemas/Purchase'
-        subscriptionId:
-          type: string
-        subscriptionIdForFunctionality:
-          type: string
-        trial:
-          type: boolean
+            $ref: '#/components/schemas/Subscription'
+        subscribingAccounts:
+          type: array
+          description: 購読しているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingGroups:
+          type: array
+          description: 購読しているグループ
+          items:
+            $ref: '#/components/schemas/Subscription'
     UserInfo:
       type: object
       properties:
@@ -306,24 +230,100 @@ components:
           type: string
         zoneinfo:
           type: string
-    SubscriptionInfo:
+    UpdateSystemOfUnitsRequest:
       type: object
       properties:
-        subscriberAccounts:
+        systemOfUnits:
+          type: string
+          description: 単位
+          enum:
+          - Metric
+          - Imperial
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        accessTokenExpiredAt:
+          type: string
+        refreshToken:
+          type: string
+        refreshTokenExpiredAt:
+          type: string
+        subscriptionInfo:
+          $ref: '#/components/schemas/SubscriptionInfo'
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
           type: array
-          description: 購読されているアカウント
           items:
-            $ref: '#/components/schemas/Subscription'
-        subscribingAccounts:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
+    Subscription:
+      type: object
+      required:
+      - type
+      - uuid
+      properties:
+        email:
+          type: string
+        enterprise:
+          type: boolean
+        groupUsernames:
           type: array
-          description: 購読しているアカウント
           items:
-            $ref: '#/components/schemas/Subscription'
-        subscribingGroups:
-          type: array
-          description: 購読しているグループ
-          items:
-            $ref: '#/components/schemas/Subscription'
+            type: string
+        iconUrl:
+          type: string
+        name:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        nickname:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        organizationName:
+          type: string
+        region:
+          type: string
+        type:
+          type: string
+          enum:
+          - Account
+          - Group
+        uuid:
+          type: string
   securitySchemes:
     mykey:
       type: apiKey

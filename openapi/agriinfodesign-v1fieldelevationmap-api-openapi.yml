@@ -58,6 +58,27 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ColorRanges:
+      type: object
+      properties:
+        ranges:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColorRange'
+    ColorRange:
+      type: object
+      properties:
+        stage:
+          type: integer
+          format: int32
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
+        color:
+          type: string
     CreateElevationMapRequest:
       type: object
       properties:
@@ -106,27 +127,6 @@ components:
           format: date
         specifiedDateRange:
           type: boolean
-    ColorRange:
-      type: object
-      properties:
-        stage:
-          type: integer
-          format: int32
-        min:
-          type: number
-          format: double
-        max:
-          type: number
-          format: double
-        color:
-          type: string
-    ColorRanges:
-      type: object
-      properties:
-        ranges:
-          type: array
-          items:
-            $ref: '#/components/schemas/ColorRange'
     RemoteFieldElevationMap:
       type: object
       properties:

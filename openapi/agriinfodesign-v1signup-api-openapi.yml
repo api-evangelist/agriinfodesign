@@ -32,6 +32,21 @@ paths:
                 $ref: '#/components/schemas/TokenResponse'
 components:
   schemas:
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type:
+          - string
+          - 'null'
+        accessTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        refreshTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
     SimpleSignUpAndSignInRequest:
       required:
       - email
@@ -51,21 +66,6 @@ components:
         zoneinfo:
           type: string
           description: タイムゾーン
-    TokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type:
-          - string
-          - 'null'
-        accessTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        refreshTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
   securitySchemes:
     bearerAuth:
       type: http

@@ -152,69 +152,6 @@ components:
           - Canceled
         subscriptionId:
           type: string
-    Subscription:
-      type: object
-      required:
-      - type
-      - uuid
-      properties:
-        email:
-          type: string
-        enterprise:
-          type: boolean
-        groupUsernames:
-          type: array
-          items:
-            type: string
-        iconUrl:
-          type: string
-        name:
-          type: string
-          description: nameとnicknameは同じものが常に入ります
-        nickname:
-          type: string
-          description: nameとnicknameは同じものが常に入ります
-        organizationName:
-          type: string
-        region:
-          type: string
-        type:
-          type: string
-          enum:
-          - Account
-          - Group
-        uuid:
-          type: string
-    RefreshTokenRequest:
-      type: object
-      required:
-      - deviceId
-      - email
-      - refreshToken
-      properties:
-        deviceId:
-          type: string
-          description: 端末で取得できるデバイスのID
-        deviceManufacturer:
-          type: string
-          description: 端末製造メーカー
-        deviceModel:
-          type: string
-          description: 端末デバイス名
-        deviceSystemVersion:
-          type: string
-          description: 端末OSバージョン
-        email:
-          type: string
-          description: Eメール
-        refreshToken:
-          type: string
-          description: リフレッシュトークン
-        userMetaData:
-          type: object
-          description: ユーザーメタデータ情報
-          additionalProperties:
-            type: object
     PublishTokenRequest:
       type: object
       required:
@@ -253,11 +190,129 @@ components:
           description: ユーザーメタデータ情報
           additionalProperties:
             type: object
+    SubscriptionInfo:
+      type: object
+      properties:
+        subscriberAccounts:
+          type: array
+          description: 購読されているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingAccounts:
+          type: array
+          description: 購読しているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingGroups:
+          type: array
+          description: 購読しているグループ
+          items:
+            $ref: '#/components/schemas/Subscription'
+    UserInfo:
+      type: object
+      properties:
+        calclatedPlan:
+          type: string
+          description: 後方互換性を保つためだけにあります。値はセットされることがありません。常にnullです。計算済みプランはpurchaseInfo#planを利用してください。
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        customIconUrl:
+          type: string
+        email:
+          type: string
+        functionality:
+          type: string
+          enum:
+          - AsFree
+          - AsStandard
+          - AsPlus
+          - AsProfessional
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        iconUrl:
+          type: string
+        impersonatingNickname:
+          type: string
+        impersonatingUsername:
+          type: string
+        isEnterprise:
+          type: boolean
+        isFsMigrated:
+          type: boolean
+        isPayer:
+          type: boolean
+        language:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+        purchaseInfo:
+          $ref: '#/components/schemas/PurchaseInfo'
+        region:
+          type: string
+        sendMeNews:
+          type: boolean
+        sharedMountPoint:
+          type: string
+        stripeId:
+          type: string
+        systemAdmin:
+          type: boolean
+        systemOfUnits:
+          type: string
+          enum:
+          - Metric
+          - Imperial
+        trialAvailable:
+          type: boolean
+        username:
+          type: string
+        zoneinfo:
+          type: string
     ImpersonationRequest:
       type: object
       properties:
         targetUserEmail:
           type: string
+    RefreshTokenRequest:
+      type: object
+      required:
+      - deviceId
+      - email
+      - refreshToken
+      properties:
+        deviceId:
+          type: string
+          description: 端末で取得できるデバイスのID
+        deviceManufacturer:
+          type: string
+          description: 端末製造メーカー
+        deviceModel:
+          type: string
+          description: 端末デバイス名
+        deviceSystemVersion:
+          type: string
+          description: 端末OSバージョン
+        email:
+          type: string
+          description: Eメール
+        refreshToken:
+          type: string
+          description: リフレッシュトークン
+        userMetaData:
+          type: object
+          description: ユーザーメタデータ情報
+          additionalProperties:
+            type: object
     OAuthLoginRequest:
       type: object
       required:
@@ -359,94 +414,39 @@ components:
           type: string
         trial:
           type: boolean
-    UserInfo:
+    Subscription:
       type: object
+      required:
+      - type
+      - uuid
       properties:
-        calclatedPlan:
-          type: string
-          description: 後方互換性を保つためだけにあります。値はセットされることがありません。常にnullです。計算済みプランはpurchaseInfo#planを利用してください。
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        customIconUrl:
-          type: string
         email:
           type: string
-        functionality:
-          type: string
-          enum:
-          - AsFree
-          - AsStandard
-          - AsPlus
-          - AsProfessional
-        icon:
-          type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
+        enterprise:
+          type: boolean
+        groupUsernames:
+          type: array
+          items:
+            type: string
         iconUrl:
-          type: string
-        impersonatingNickname:
-          type: string
-        impersonatingUsername:
-          type: string
-        isEnterprise:
-          type: boolean
-        isFsMigrated:
-          type: boolean
-        isPayer:
-          type: boolean
-        language:
           type: string
         name:
           type: string
+          description: nameとnicknameは同じものが常に入ります
         nickname:
           type: string
-        purchaseInfo:
-          $ref: '#/components/schemas/PurchaseInfo'
+          description: nameとnicknameは同じものが常に入ります
+        organizationName:
+          type: string
         region:
           type: string
-        sendMeNews:
-          type: boolean
-        sharedMountPoint:
-          type: string
-        stripeId:
-          type: string
-        systemAdmin:
-          type: boolean
-        systemOfUnits:
+        type:
           type: string
           enum:
-          - Metric
-          - Imperial
-        trialAvailable:
-          type: boolean
-        username:
+          - Account
+          - Group
+        uuid:
           type: string
-        zoneinfo:
-          type: string
-    SubscriptionInfo:
-      type: object
-      properties:
-        subscriberAccounts:
-          type: array
-          description: 購読されているアカウント
-          items:
-            $ref: '#/components/schemas/Subscription'
-        subscribingAccounts:
-          type: array
-          description: 購読しているアカウント
-          items:
-            $ref: '#/components/schemas/Subscription'
-        subscribingGroups:
-          type: array
-          description: 購読しているグループ
-          items:
-            $ref: '#/components/schemas/Subscription'
   securitySchemes:
     mykey:
       type: apiKey

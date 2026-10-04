@@ -57,6 +57,112 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ExportTaskCsvResponse:
+      type: object
+      properties:
+        geoPoints:
+          type: array
+          description: 出力対象のGeoPointsデータ
+          items:
+            $ref: '#/components/schemas/TaskRecordItemGeoPoint'
+        status:
+          type: string
+          description: 出力対象のGeoPointsデータ
+          enum:
+          - COMPLETED
+          - INTERRUPTED
+    FetchedResult:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        username:
+          type: string
+        createdAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        syncedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        documentId:
+          type: string
+        gnssSource:
+          type: integer
+          format: int32
+        operationType:
+          type: integer
+          format: int32
+        oldGeoInfoKey:
+          type: string
+        name:
+          type: string
+        caption:
+          type: string
+        fieldItemId:
+          type: string
+        fieldName:
+          type: string
+        fieldArea:
+          type: number
+        taskGroupId:
+          type: string
+        startedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        endedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        avgSpeed:
+          type: number
+        workWidthOnStarted:
+          type: number
+        workWidthOnEnded:
+          type: number
+        distance:
+          type: number
+        distanceOnStarted:
+          type: number
+        distanceOnEnded:
+          type: number
+        workedArea:
+          type: number
+        workedAreaOnStarted:
+          type: number
+        workedAreaOnEnded:
+          type: number
+        overlappedAreaOnStarted:
+          type: number
+        overlappedAreaOnEnded:
+          type: number
+        operationTypeAsEnum:
+          type: string
+          enum:
+          - Tilling
+          - Sowing
+          - Planting
+          - Fertilizing
+          - CropProtection
+          - Harvesting
+          - Other
+        gnssSourceAsEnum:
+          type: string
+          enum:
+          - Internal
+          - Usb
+          - Bluetooth
+          - Port
+          - DemoReplay
+          - DemoVirtual
+          - GPlus
+          - TcpClient
+          - AutoSteerGnssTest
+          - GMini
+          - GMiniR
+          - G2
+          - NtripClient
     TaskRecordItemGeoPoint:
       type: object
       properties:
@@ -162,112 +268,6 @@ components:
           type: integer
           format: int32
       description: 出力対象のGeoPointsデータ
-    FetchedResult:
-      type: object
-      properties:
-        sessionId:
-          type: string
-        username:
-          type: string
-        createdAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        updatedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        syncedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        documentId:
-          type: string
-        gnssSource:
-          type: integer
-          format: int32
-        operationType:
-          type: integer
-          format: int32
-        oldGeoInfoKey:
-          type: string
-        name:
-          type: string
-        caption:
-          type: string
-        fieldItemId:
-          type: string
-        fieldName:
-          type: string
-        fieldArea:
-          type: number
-        taskGroupId:
-          type: string
-        startedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        endedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        avgSpeed:
-          type: number
-        workWidthOnStarted:
-          type: number
-        workWidthOnEnded:
-          type: number
-        distance:
-          type: number
-        distanceOnStarted:
-          type: number
-        distanceOnEnded:
-          type: number
-        workedArea:
-          type: number
-        workedAreaOnStarted:
-          type: number
-        workedAreaOnEnded:
-          type: number
-        overlappedAreaOnStarted:
-          type: number
-        overlappedAreaOnEnded:
-          type: number
-        operationTypeAsEnum:
-          type: string
-          enum:
-          - Tilling
-          - Sowing
-          - Planting
-          - Fertilizing
-          - CropProtection
-          - Harvesting
-          - Other
-        gnssSourceAsEnum:
-          type: string
-          enum:
-          - Internal
-          - Usb
-          - Bluetooth
-          - Port
-          - DemoReplay
-          - DemoVirtual
-          - GPlus
-          - TcpClient
-          - AutoSteerGnssTest
-          - GMini
-          - GMiniR
-          - G2
-          - NtripClient
-    ExportTaskCsvResponse:
-      type: object
-      properties:
-        geoPoints:
-          type: array
-          description: 出力対象のGeoPointsデータ
-          items:
-            $ref: '#/components/schemas/TaskRecordItemGeoPoint'
-        status:
-          type: string
-          description: 出力対象のGeoPointsデータ
-          enum:
-          - COMPLETED
-          - INTERRUPTED
   securitySchemes:
     bearerAuth:
       type: http

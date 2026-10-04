@@ -56,21 +56,19 @@ paths:
                 $ref: '#/components/schemas/User'
 components:
   schemas:
-    Picture:
-      type: object
-      properties:
-        icon:
-          type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        url:
-          type: string
     BillingMetaInfo:
       type: object
       properties:
         doubleBilling:
+          type: boolean
+    SignUpInfo:
+      type: object
+      properties:
+        environment:
+          type: string
+        language:
+          type: string
+        passwordEntered:
           type: boolean
     User:
       type: object
@@ -149,15 +147,17 @@ components:
           type: string
         zoneinfo:
           type: string
-    SignUpInfo:
+    Picture:
       type: object
       properties:
-        environment:
+        icon:
           type: string
-        language:
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        url:
           type: string
-        passwordEntered:
-          type: boolean
   securitySchemes:
     mykey:
       type: apiKey

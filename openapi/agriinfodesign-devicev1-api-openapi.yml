@@ -61,13 +61,6 @@ paths:
                 $ref: '#/components/schemas/DevicesInfo'
 components:
   schemas:
-    DevicesInfo:
-      type: object
-      properties:
-        devices:
-          type: array
-          items:
-            $ref: '#/components/schemas/Device'
     Device:
       type: object
       properties:
@@ -87,6 +80,13 @@ components:
           type: string
         username:
           type: string
+    DevicesInfo:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
   securitySchemes:
     mykey:
       type: apiKey

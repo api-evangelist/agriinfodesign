@@ -57,89 +57,6 @@ paths:
         required: true
 components:
   schemas:
-    SessionStatus:
-      type: object
-      properties:
-        dnsServers:
-          type: array
-          items:
-            type: string
-        gatewayPrivateIpAddress:
-          type: string
-        gatewayPublicIpAddress:
-          type: string
-        imei:
-          type: string
-        lastUpdatedAt:
-          type: integer
-          format: int64
-        online:
-          type: boolean
-        ueIpAddress:
-          type: string
-        vpgId:
-          type: string
-    SoracomSubscriberInfo:
-      type: object
-      properties:
-        subscriber:
-          $ref: '#/components/schemas/Subscriber'
-    ActivateSimResponse:
-      type: object
-      required:
-      - activationStatus
-      - imeiLockStatus
-      - setGroupIdResult
-      - setNameResult
-      properties:
-        activationStatus:
-          type: string
-          enum:
-          - AlreadyActivated
-          - Activated
-          - Deactivated
-          - Failure
-        imeiLockStatus:
-          type: string
-          enum:
-          - Locked
-          - Unlocked
-          - Failure
-        setGroupIdResult:
-          type: string
-          enum:
-          - Success
-          - Failure
-        setNameResult:
-          type: string
-          enum:
-          - Success
-          - Failure
-    ImeiLock:
-      type: object
-      properties:
-        imei:
-          type: string
-    ActivateSimRequest:
-      type: object
-      required:
-      - imei
-      - imsi
-      - simGroupId
-      - simName
-      properties:
-        agriBusProductId:
-          type: string
-        agriBusProductSerialNumber:
-          type: string
-        imei:
-          type: string
-        imsi:
-          type: string
-        simGroupId:
-          type: string
-        simName:
-          type: string
     Subscriber:
       type: object
       properties:
@@ -189,6 +106,89 @@ components:
             type: string
         terminationEnabled:
           type: boolean
+    ActivateSimRequest:
+      type: object
+      required:
+      - imei
+      - imsi
+      - simGroupId
+      - simName
+      properties:
+        agriBusProductId:
+          type: string
+        agriBusProductSerialNumber:
+          type: string
+        imei:
+          type: string
+        imsi:
+          type: string
+        simGroupId:
+          type: string
+        simName:
+          type: string
+    ActivateSimResponse:
+      type: object
+      required:
+      - activationStatus
+      - imeiLockStatus
+      - setGroupIdResult
+      - setNameResult
+      properties:
+        activationStatus:
+          type: string
+          enum:
+          - AlreadyActivated
+          - Activated
+          - Deactivated
+          - Failure
+        imeiLockStatus:
+          type: string
+          enum:
+          - Locked
+          - Unlocked
+          - Failure
+        setGroupIdResult:
+          type: string
+          enum:
+          - Success
+          - Failure
+        setNameResult:
+          type: string
+          enum:
+          - Success
+          - Failure
+    SessionStatus:
+      type: object
+      properties:
+        dnsServers:
+          type: array
+          items:
+            type: string
+        gatewayPrivateIpAddress:
+          type: string
+        gatewayPublicIpAddress:
+          type: string
+        imei:
+          type: string
+        lastUpdatedAt:
+          type: integer
+          format: int64
+        online:
+          type: boolean
+        ueIpAddress:
+          type: string
+        vpgId:
+          type: string
+    SoracomSubscriberInfo:
+      type: object
+      properties:
+        subscriber:
+          $ref: '#/components/schemas/Subscriber'
+    ImeiLock:
+      type: object
+      properties:
+        imei:
+          type: string
   securitySchemes:
     mykey:
       type: apiKey

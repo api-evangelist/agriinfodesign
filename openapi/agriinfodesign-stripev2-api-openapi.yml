@@ -119,11 +119,6 @@ paths:
           description: OK
 components:
   schemas:
-    UpdateStripeCustomerEmailRequest:
-      type: object
-      properties:
-        email:
-          type: string
     StripeSubscribeRequest:
       type: object
       required:
@@ -154,6 +149,11 @@ components:
       type: object
       properties:
         name:
+          type: string
+    UpdateStripeCustomerEmailRequest:
+      type: object
+      properties:
+        email:
           type: string
   securitySchemes:
     mykey:

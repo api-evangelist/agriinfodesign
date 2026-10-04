@@ -213,48 +213,6 @@ components:
       properties:
         standardPlan:
           $ref: '#/components/schemas/AndroidPurchase'
-    PurchaseInfo:
-      type: object
-      properties:
-        activeSubscriptionCount:
-          type: integer
-          format: int32
-        autoRenewing:
-          type: boolean
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        plan:
-          type: string
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        planEnforced:
-          type: boolean
-        planExpiredAt:
-          type: string
-        planStartedAt:
-          type: string
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-        subscriptionId:
-          type: string
-        subscriptionIdForFunctionality:
-          type: string
-        trial:
-          type: boolean
-    CheckAndroidPurchasesResponse:
-      type: object
-      properties:
-        exists:
-          type: boolean
     UserInfo:
       type: object
       properties:
@@ -325,6 +283,43 @@ components:
           type: string
         zoneinfo:
           type: string
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
     AgriBusNaviStatusRequest:
       type: object
       required:
@@ -335,6 +330,11 @@ components:
           $ref: '#/components/schemas/AndroidPurchases'
         settings:
           type: object
+    CheckAndroidPurchasesResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
   securitySchemes:
     mykey:
       type: apiKey

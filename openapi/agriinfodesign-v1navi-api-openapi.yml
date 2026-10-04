@@ -57,11 +57,11 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CheckAndroidPurchasesResponse:
+    AndroidPurchases:
       type: object
       properties:
-        exists:
-          type: boolean
+        standardPlan:
+          $ref: '#/components/schemas/AndroidPurchase'
     AndroidPurchase:
       type: object
       properties:
@@ -85,11 +85,11 @@ components:
           type: boolean
         testPurchase:
           type: boolean
-    AndroidPurchases:
+    CheckAndroidPurchasesResponse:
       type: object
       properties:
-        standardPlan:
-          $ref: '#/components/schemas/AndroidPurchase'
+        exists:
+          type: boolean
   securitySchemes:
     bearerAuth:
       type: http

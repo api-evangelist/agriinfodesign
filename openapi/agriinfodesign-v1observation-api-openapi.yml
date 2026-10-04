@@ -175,39 +175,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RemoteSoilMoistureObservation:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        username:
-          type: string
-        placeType:
-          type: string
-        fireFieldId:
-          type: string
-        geohash:
-          type: string
-        drainage:
-          type: string
-        soil:
-          type: string
-    SaveAccumulatedTemperatureObservationRequest:
-      type: object
-      properties:
-        fireFieldId:
-          type: string
-        placeType:
-          type: string
-        lowerLimitTemperature:
-          type: number
-        startDate:
-          type: string
-        endDate:
-          type: string
-        zoneId:
-          type: string
     RemoteAccumulatedTemperatureObservation:
       type: object
       properties:
@@ -233,12 +200,45 @@ components:
           format: int32
         zoneId:
           type: string
+    SaveAccumulatedTemperatureObservationRequest:
+      type: object
+      properties:
+        fireFieldId:
+          type: string
+        placeType:
+          type: string
+        lowerLimitTemperature:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+        zoneId:
+          type: string
     SaveSoilMoistureObservationRequest:
       type: object
       properties:
         fireFieldId:
           type: string
         placeType:
+          type: string
+        drainage:
+          type: string
+        soil:
+          type: string
+    RemoteSoilMoistureObservation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        placeType:
+          type: string
+        fireFieldId:
+          type: string
+        geohash:
           type: string
         drainage:
           type: string

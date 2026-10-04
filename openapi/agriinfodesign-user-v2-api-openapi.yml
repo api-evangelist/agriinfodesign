@@ -173,55 +173,6 @@ components:
           - Canceled
         subscriptionId:
           type: string
-    UserGroupsInfo:
-      type: object
-      properties:
-        userGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserGroupInfo'
-    UserGroupInfo:
-      type: object
-      properties:
-        name:
-          type: string
-    PurchaseInfo:
-      type: object
-      properties:
-        activeSubscriptionCount:
-          type: integer
-          format: int32
-        autoRenewing:
-          type: boolean
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        plan:
-          type: string
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        planEnforced:
-          type: boolean
-        planExpiredAt:
-          type: string
-        planStartedAt:
-          type: string
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-        subscriptionId:
-          type: string
-        subscriptionIdForFunctionality:
-          type: string
-        trial:
-          type: boolean
     SimpleSignUpConfirmRequest:
       type: object
       required:
@@ -244,6 +195,43 @@ components:
           type: boolean
         username:
           type: string
+    SimpleSignUpRequest:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Eメール
+        language:
+          type: string
+          description: 表示言語・en/ja
+        metaData:
+          type: object
+          description: ユーザーメタデータ
+          additionalProperties:
+            type: object
+        region:
+          type: string
+          description: リージョン（your-region.agribus-connect.net を利用して調べてください）
+        zoneinfo:
+          type: string
+          description: タイムゾーン
+    EditUserRequest:
+      type: object
+      properties:
+        language:
+          type: string
+          description: 言語
+        nickname:
+          type: string
+          description: ニックネーム
+        sendMeNews:
+          type: boolean
+          description: メルマガ受信
+        systemOfUnits:
+          type: string
+          description: 単位
     UserInfo:
       type: object
       properties:
@@ -314,43 +302,55 @@ components:
           type: string
         zoneinfo:
           type: string
-    SimpleSignUpRequest:
-      type: object
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          description: Eメール
-        language:
-          type: string
-          description: 表示言語・en/ja
-        metaData:
-          type: object
-          description: ユーザーメタデータ
-          additionalProperties:
-            type: object
-        region:
-          type: string
-          description: リージョン（your-region.agribus-connect.net を利用して調べてください）
-        zoneinfo:
-          type: string
-          description: タイムゾーン
-    EditUserRequest:
+    UserGroupsInfo:
       type: object
       properties:
-        language:
-          type: string
-          description: 言語
-        nickname:
-          type: string
-          description: ニックネーム
-        sendMeNews:
+        userGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroupInfo'
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
           type: boolean
-          description: メルマガ受信
-        systemOfUnits:
+        billingVendor:
           type: string
-          description: 単位
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
+    UserGroupInfo:
+      type: object
+      properties:
+        name:
+          type: string
   securitySchemes:
     mykey:
       type: apiKey

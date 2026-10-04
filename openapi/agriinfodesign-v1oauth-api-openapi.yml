@@ -52,49 +52,6 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 components:
   schemas:
-    OAuthLoginRequest:
-      type: object
-      properties:
-        email:
-          type: string
-        language:
-          type: string
-          description: 言語。en、jaなど
-        zoneinfo:
-          type: string
-          description: タイムゾーン。Asia/Tokyoなど
-        username:
-          type: string
-          description: Cognitoのusername。ただしGoogleOAuthでサインアップした場合は、CognitoがGoogleログインフェデレーションで生成したユーザーID
-        nickname:
-          type: string
-          description: Cognitoのnickname。ただしGoogleOAuthでサインアップした場合は、Googleから渡された氏名
-    TokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type:
-          - string
-          - 'null'
-        accessTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        refreshTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-    UserPicture:
-      type: object
-      properties:
-        icon:
-          type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        url:
-          type: string
     OAuthCreateNewPasswordRequest:
       required:
       - newPassword
@@ -165,6 +122,49 @@ components:
           description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
         oauthUser:
           type: boolean
+    OAuthLoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        language:
+          type: string
+          description: 言語。en、jaなど
+        zoneinfo:
+          type: string
+          description: タイムゾーン。Asia/Tokyoなど
+        username:
+          type: string
+          description: Cognitoのusername。ただしGoogleOAuthでサインアップした場合は、CognitoがGoogleログインフェデレーションで生成したユーザーID
+        nickname:
+          type: string
+          description: Cognitoのnickname。ただしGoogleOAuthでサインアップした場合は、Googleから渡された氏名
+    UserPicture:
+      type: object
+      properties:
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        url:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type:
+          - string
+          - 'null'
+        accessTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        refreshTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
   securitySchemes:
     bearerAuth:
       type: http

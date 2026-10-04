@@ -48,36 +48,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SpaceAgriPutRequest:
-      type: object
-      properties:
-        farmId:
-          type: string
-        fieldId:
-          type: string
-        sceneId:
-          type: string
-        globalImageFileName:
-          type: string
-        localImageFileName:
-          type: string
-        baseURL:
-          type: string
-    BoundingBox:
-      type: object
-      properties:
-        north:
-          type: number
-          format: double
-        south:
-          type: number
-          format: double
-        east:
-          type: number
-          format: double
-        west:
-          type: number
-          format: double
     RemoteSpaceAgriField:
       type: object
       properties:
@@ -115,6 +85,36 @@ components:
         countryId:
           type: string
         baseUrl:
+          type: string
+    BoundingBox:
+      type: object
+      properties:
+        north:
+          type: number
+          format: double
+        south:
+          type: number
+          format: double
+        east:
+          type: number
+          format: double
+        west:
+          type: number
+          format: double
+    SpaceAgriPutRequest:
+      type: object
+      properties:
+        farmId:
+          type: string
+        fieldId:
+          type: string
+        sceneId:
+          type: string
+        globalImageFileName:
+          type: string
+        localImageFileName:
+          type: string
+        baseURL:
           type: string
   securitySchemes:
     bearerAuth:
