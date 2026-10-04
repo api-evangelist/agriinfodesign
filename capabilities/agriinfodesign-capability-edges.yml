@@ -1,0 +1,70 @@
+slug: agriinfodesign
+provider: Agri Info Design
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: StripeV1
+  spec_file: agriinfodesign-stripev1-api-openapi.yml
+  capability_id: BC-4250
+  capability_id_l1: BC-4250
+  capability_name: Subscription Billing & Revenue Management
+  confidence: 0.8
+  evidence: POST /v1/stripe/card  addCard ... GET /v1/stripe/invoices  getInvoices ... GET /v1/stripe/coupons  listCoupons
+  reason: Payment-card management, invoice retrieval (including upcoming invoices), coupon/discount application
+    and plan subscription against Stripe — recurring billing and payment collection for the SaaS offering.
+    Spans payment methods, invoicing and plan subscription, so only the L1 is asserted.
+- tag: SubscriptionV1
+  spec_file: agriinfodesign-subscriptionv1-api-openapi.yml
+  capability_id: BC-4240
+  capability_id_l1: BC-4240
+  capability_name: Subscription Lifecycle Management
+  confidence: 0.8
+  evidence: 'DELETE /v1/subscription/account/{uuid}  unsubscribeAccountUsingDELETE ... schemas: Subscription,
+    CreateSubscriptionRequest, UnsubscribeResponse'
+  reason: CRUD over subscriptions and subscription requests including account unsubscribe — provisioning,
+    modification and cancellation of the service subscription. Spans several sub-capabilities, so the
+    L1 is asserted alone.
+- tag: V1Stripe
+  spec_file: agriinfodesign-v1stripe-api-openapi.yml
+  capability_id: BC-4250
+  capability_id_l1: BC-4250
+  capability_name: Subscription Billing & Revenue Management
+  confidence: 0.8
+  evidence: '"subscribe", "unsubscribe", "changePlan  Change plan", "listBillingPlans  List billing plans",
+    "getInvoices  Get invoices", "addCard  Add card", schemas StripeInvoice, StripePlan, StripeCard, Coupon'
+  reason: 'Unambiguously a subscription billing surface: plan catalogue, subscribe/unsubscribe, payment-method
+    (card) management, invoices and upcoming invoices, coupons. L1 is subscription billing & revenue;
+    the sub-capability is ambiguous because the operations straddle invoicing (.30), payment-method/collection
+    (.40) and plan change (which belongs to BC-4240.40), so no L2 is asserted.'
+- tag: StripeV2
+  spec_file: agriinfodesign-stripev2-api-openapi.yml
+  capability_id: BC-4240
+  capability_id_l1: BC-4240
+  capability_name: Subscription Lifecycle Management
+  confidence: 0.7
+  evidence: PUT /v2/stripe/subscriptions/{subscriptionId}/{planId}  changePlanUsingPUT  changePlan
+  reason: In-life subscription changes (change plan, change payment-method type) plus new subscribe and
+    billing-customer detail updates. Dominantly subscription lifecycle modification, though payment-method
+    handling also touches billing, hence L1 only at moderate confidence.
+- tag: V1AgriculturalApiOAuth
+  spec_file: agriinfodesign-v1agriculturalapioauth-api-openapi.yml
+  capability_id: BC-4270.40
+  capability_id_l1: BC-4270
+  capability_name: Developer Identity & Credential Management
+  confidence: 0.7
+  evidence: 農機API用OAuth2管理; GET /v1/agricultural-api/oauth/scopes getScopes スコープ一覧取得; GET /v1/agricultural-api/oauth/client/validate
+    validateClient クライアント検証; schema ClientValidationResult
+  reason: 'The tag manages OAuth2 for the open farm-machinery API: listing available scopes and validating
+    registered OAuth clients. That is stewardship of third-party developer credentials/OAuth clients for
+    a public API, i.e. Developer Identity & Credential Management. Confidence moderated because only two
+    read operations are exposed.'
