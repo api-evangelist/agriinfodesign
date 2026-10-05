@@ -1,0 +1,12 @@
+{
+ "url": "https://pay.agribus-connect.net/v3/api-docs",
+ "requested_url": "http://pay.agribus-connect.net/v3/api-docs",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 17716,
+ "sha256": "ffed172beec67f322febb519f900a573f6db4917a8285ae5c0b57f4a9ca6bcd0",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
