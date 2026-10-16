@@ -9,11 +9,18 @@
       "method": "discovered"
     },
     {
-      "source": "https://agri-info-design.com/faq/",
-      "feed_url": "https://agri-info-design.com/faq/blog/feed/",
+      "source": "https://agri-info-design.com/feed/",
+      "feed_url": "https://agri-info-design.com/feed/",
       "title": "",
       "saved": 0,
-      "method": "discovered"
+      "method": "feed"
+    },
+    {
+      "source": "https://agri-info-design.com/en/feed/",
+      "feed_url": "https://agri-info-design.com/en/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
     },
     {
       "source": "https://agri-info-design.com/en/news/feed/",
@@ -31,5 +38,5 @@
     }
   ],
   "post_count": 10,
-  "fetched": "2026-10-03T12:30:02Z"
+  "fetched": "2026-10-10T13:15:00Z"
 }
