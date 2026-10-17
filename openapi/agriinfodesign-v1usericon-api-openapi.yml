@@ -52,11 +52,6 @@ paths:
                 $ref: '#/components/schemas/UploadIconImageResult'
 components:
   schemas:
-    UploadIconImageResult:
-      type: object
-      properties:
-        url:
-          type: string
     UpdateIconRequest:
       type: object
       properties:
@@ -78,6 +73,11 @@ components:
         base64EncordedImage:
           type: string
           description: Base64エンコードされた画像
+    UploadIconImageResult:
+      type: object
+      properties:
+        url:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

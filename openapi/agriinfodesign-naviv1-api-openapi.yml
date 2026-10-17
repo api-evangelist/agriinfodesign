@@ -137,6 +137,48 @@ paths:
         required: true
 components:
   schemas:
+    CheckAndroidPurchasesResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
     Purchase:
       type: object
       properties:
@@ -208,11 +250,16 @@ components:
           type: boolean
         testPurchase:
           type: boolean
-    AndroidPurchases:
+    AgriBusNaviStatusRequest:
       type: object
+      required:
+      - androidPurchases
+      - settings
       properties:
-        standardPlan:
-          $ref: '#/components/schemas/AndroidPurchase'
+        androidPurchases:
+          $ref: '#/components/schemas/AndroidPurchases'
+        settings:
+          type: object
     UserInfo:
       type: object
       properties:
@@ -283,58 +330,11 @@ components:
           type: string
         zoneinfo:
           type: string
-    PurchaseInfo:
+    AndroidPurchases:
       type: object
       properties:
-        activeSubscriptionCount:
-          type: integer
-          format: int32
-        autoRenewing:
-          type: boolean
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        plan:
-          type: string
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        planEnforced:
-          type: boolean
-        planExpiredAt:
-          type: string
-        planStartedAt:
-          type: string
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-        subscriptionId:
-          type: string
-        subscriptionIdForFunctionality:
-          type: string
-        trial:
-          type: boolean
-    AgriBusNaviStatusRequest:
-      type: object
-      required:
-      - androidPurchases
-      - settings
-      properties:
-        androidPurchases:
-          $ref: '#/components/schemas/AndroidPurchases'
-        settings:
-          type: object
-    CheckAndroidPurchasesResponse:
-      type: object
-      properties:
-        exists:
-          type: boolean
+        standardPlan:
+          $ref: '#/components/schemas/AndroidPurchase'
   securitySchemes:
     mykey:
       type: apiKey

@@ -119,6 +119,21 @@ paths:
           description: OK
 components:
   schemas:
+    AddCardRequest:
+      type: object
+      required:
+      - stripeCardName
+      - stripeToken
+      properties:
+        stripeCardName:
+          type: string
+        stripeToken:
+          type: string
+    UpdateStripeCustomerEmailRequest:
+      type: object
+      properties:
+        email:
+          type: string
     StripeSubscribeRequest:
       type: object
       required:
@@ -135,25 +150,10 @@ components:
           type: string
         planId:
           type: string
-    AddCardRequest:
-      type: object
-      required:
-      - stripeCardName
-      - stripeToken
-      properties:
-        stripeCardName:
-          type: string
-        stripeToken:
-          type: string
     UpdateStripeCustomerNameRequest:
       type: object
       properties:
         name:
-          type: string
-    UpdateStripeCustomerEmailRequest:
-      type: object
-      properties:
-        email:
           type: string
   securitySchemes:
     mykey:

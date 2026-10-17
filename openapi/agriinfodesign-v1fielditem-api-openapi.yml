@@ -237,27 +237,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Crs:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - name
-          - link
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-            format: '2016-01-01T00:00:00.000Z'
-    Point:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          coordinates:
-            $ref: '#/components/schemas/LngLatAlt'
     SyncUpdateGeoItemRequest:
       type: object
       properties:
@@ -267,93 +246,34 @@ components:
         syncedAt:
           type: string
           format: '2016-01-01T00:00:00.000Z'
-    PagingResponseRemoteFieldItem:
+    FirestoreUpdateResponse:
       type: object
       properties:
-        contents:
+        id:
+          type: string
+    LngLatAlt:
+      type: object
+      properties:
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+        altitude:
+          type: number
+          format: double
+        additionalElements:
           type: array
-          description: データのリスト
           items:
-            $ref: '#/components/schemas/RemoteFieldItem'
-        paginationInfo:
-          $ref: '#/components/schemas/PaginationInfo'
+            type: number
+            format: double
     CountTaskInFieldResponse:
       type: object
       properties:
         taskCount:
           type: integer
           format: int32
-    FirestoreUpdateResponse:
-      type: object
-      properties:
-        id:
-          type: string
-    SyncUpdateFieldItemResponse:
-      type: object
-      properties:
-        isCompleted:
-          type: boolean
-        syncDateTime:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        remoteFieldItem:
-          $ref: '#/components/schemas/RemoteFieldItem'
-    PaginationInfo:
-      type: object
-      properties:
-        number:
-          type: integer
-          description: 現在何ページ目にいるか
-          format: int32
-        numberOfElements:
-          type: integer
-          description: いくつの要素があるか
-          format: int32
-        size:
-          type: integer
-          description: いくつの要素をページで持つか
-          format: int32
-        totalElements:
-          type: integer
-          description: 全要素数
-          format: int64
-        totalPages:
-          type: integer
-          description: 総ページ数
-          format: int32
-      description: ページネーション情報
-    UpdateMetaDataRequest:
-      required:
-      - metaDataUpdatedAt
-      type: object
-      properties:
-        metaDataUpdatedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        name:
-          type: string
-        caption:
-          type: string
-        metaDatas:
-          type: object
-          additionalProperties:
-            type: string
-    GeoJsonObject:
-      required:
-      - type
-      type: object
-      properties:
-        crs:
-          $ref: '#/components/schemas/Crs'
-        bbox:
-          type: array
-          items:
-            type: number
-            format: double
-        type:
-          type: string
-      discriminator:
-        propertyName: type
     FirestoreImportResponse:
       type: object
       properties:
@@ -361,13 +281,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FirestoreImportResult'
-    UpdateFieldPolygonRequest:
-      type: object
-      properties:
-        features:
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature'
     RemoteFieldItem:
       type: object
       properties:
@@ -413,18 +326,6 @@ components:
           $ref: '#/components/schemas/Polygon'
         geohash:
           type: string
-    Polygon:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                $ref: '#/components/schemas/LngLatAlt'
     Feature:
       type: object
       allOf:
@@ -440,6 +341,24 @@ components:
             $ref: '#/components/schemas/GeoJsonObject'
           id:
             type: string
+    Point:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            $ref: '#/components/schemas/LngLatAlt'
+    PagingResponseRemoteFieldItem:
+      type: object
+      properties:
+        contents:
+          type: array
+          description: データのリスト
+          items:
+            $ref: '#/components/schemas/RemoteFieldItem'
+        paginationInfo:
+          $ref: '#/components/schemas/PaginationInfo'
     ImportRequest:
       type: object
       properties:
@@ -451,6 +370,45 @@ components:
         propertyAsName:
           type: string
           description: 名称として利用する属性名
+    PaginationInfo:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: 現在何ページ目にいるか
+          format: int32
+        numberOfElements:
+          type: integer
+          description: いくつの要素があるか
+          format: int32
+        size:
+          type: integer
+          description: いくつの要素をページで持つか
+          format: int32
+        totalElements:
+          type: integer
+          description: 全要素数
+          format: int64
+        totalPages:
+          type: integer
+          description: 総ページ数
+          format: int32
+      description: ページネーション情報
+    SyncUpdateFieldItemResponse:
+      type: object
+      properties:
+        isCompleted:
+          type: boolean
+        syncDateTime:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        remoteFieldItem:
+          $ref: '#/components/schemas/RemoteFieldItem'
+    FirestoreDeleteResponse:
+      type: object
+      properties:
+        id:
+          type: string
     FirestoreImportResult:
       type: object
       properties:
@@ -458,28 +416,70 @@ components:
           type: string
         success:
           type: boolean
-    LngLatAlt:
+    Crs:
       type: object
       properties:
-        longitude:
-          type: number
-          format: double
-        latitude:
-          type: number
-          format: double
-        altitude:
-          type: number
-          format: double
-        additionalElements:
+        type:
+          type: string
+          enum:
+          - name
+          - link
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
+    Polygon:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/LngLatAlt'
+    UpdateMetaDataRequest:
+      required:
+      - metaDataUpdatedAt
+      type: object
+      properties:
+        metaDataUpdatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        name:
+          type: string
+        caption:
+          type: string
+        metaDatas:
+          type: object
+          additionalProperties:
+            type: string
+    UpdateFieldPolygonRequest:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    GeoJsonObject:
+      required:
+      - type
+      type: object
+      properties:
+        crs:
+          $ref: '#/components/schemas/Crs'
+        bbox:
           type: array
           items:
             type: number
             format: double
-    FirestoreDeleteResponse:
-      type: object
-      properties:
-        id:
+        type:
           type: string
+      discriminator:
+        propertyName: type
   securitySchemes:
     bearerAuth:
       type: http

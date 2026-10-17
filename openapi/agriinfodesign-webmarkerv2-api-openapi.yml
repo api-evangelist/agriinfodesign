@@ -68,13 +68,13 @@ paths:
         required: true
 components:
   schemas:
-    UpdateWebMarkerRequest:
+    WebMarkersInfo:
       type: object
       properties:
-        trackColor:
-          type: string
-        trackName:
-          type: string
+        webMarkers:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebMarker'
     WebMarker:
       type: object
       properties:
@@ -90,13 +90,13 @@ components:
           type: string
         username:
           type: string
-    WebMarkersInfo:
+    UpdateWebMarkerRequest:
       type: object
       properties:
-        webMarkers:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebMarker'
+        trackColor:
+          type: string
+        trackName:
+          type: string
   securitySchemes:
     mykey:
       type: apiKey

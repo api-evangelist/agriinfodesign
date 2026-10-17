@@ -62,6 +62,17 @@ paths:
                 $ref: '#/components/schemas/ClientValidationResponse'
 components:
   schemas:
+    ScopeInfo:
+      type: object
+      properties:
+        scope:
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+        required:
+          type: boolean
     ClientValidationResponse:
       type: object
       properties:
@@ -87,17 +98,6 @@ components:
             type: string
         errorMessage:
           type: string
-    ScopeInfo:
-      type: object
-      properties:
-        scope:
-          type: string
-        displayName:
-          type: string
-        description:
-          type: string
-        required:
-          type: boolean
   securitySchemes:
     bearerAuth:
       type: http

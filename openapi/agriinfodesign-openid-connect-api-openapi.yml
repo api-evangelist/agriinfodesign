@@ -197,223 +197,6 @@ components:
           type: string
         contextPath:
           type: string
-    ServletRegistration:
-      type: object
-      properties:
-        runAsRole:
-          type: string
-        mappings:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-        className:
-          type: string
-        initParameters:
-          type: object
-          additionalProperties:
-            type: string
-    JspConfigDescriptor:
-      type: object
-      properties:
-        jspPropertyGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/JspPropertyGroupDescriptor'
-        taglibs:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaglibDescriptor'
-    BeanFactory:
-      type: object
-    AutowireCapableBeanFactory:
-      type: object
-    AuthorizeRequest:
-      required:
-      - clientId
-      - responseType
-      type: object
-      properties:
-        responseType:
-          type: string
-          description: Response type
-          example: code
-        clientId:
-          type: string
-          description: Client identifier
-        redirectUri:
-          type: string
-          description: Redirection URI
-        scope:
-          type: string
-          description: Scope of access request
-          example: openid profile email
-        state:
-          type: string
-          description: State parameter for CSRF protection
-        nonce:
-          type: string
-          description: Nonce for ID Token security (OpenID Connect)
-        codeChallenge:
-          type: string
-          description: Code challenge for PKCE
-        codeChallengeMethod:
-          type: string
-          description: Code challenge method for PKCE
-          example: S256
-    SessionCookieConfig:
-      type: object
-      properties:
-        name:
-          type: string
-        path:
-          type: string
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-        comment:
-          type: string
-          deprecated: true
-        maxAge:
-          type: integer
-          format: int32
-        secure:
-          type: boolean
-        httpOnly:
-          type: boolean
-        domain:
-          type: string
-    OpenIdConfigurationResponse:
-      type: object
-      properties:
-        issuer:
-          type: string
-        authorization_endpoint:
-          type: string
-        token_endpoint:
-          type: string
-        userinfo_endpoint:
-          type: string
-        jwks_uri:
-          type: string
-        response_types_supported:
-          type: array
-          items:
-            type: string
-        subject_types_supported:
-          type: array
-          items:
-            type: string
-        id_token_signing_alg_values_supported:
-          type: array
-          items:
-            type: string
-        scopes_supported:
-          type: array
-          items:
-            type: string
-        token_endpoint_auth_methods_supported:
-          type: array
-          items:
-            type: string
-        claims_supported:
-          type: array
-          items:
-            type: string
-        grant_types_supported:
-          type: array
-          items:
-            type: string
-        claim_types_supported:
-          type: array
-          items:
-            type: string
-    JspPropertyGroupDescriptor:
-      type: object
-      properties:
-        defaultContentType:
-          type: string
-        elIgnored:
-          type: string
-        errorOnELNotFound:
-          type: string
-        pageEncoding:
-          type: string
-        scriptingInvalid:
-          type: string
-        isXml:
-          type: string
-        includePreludes:
-          type: array
-          items:
-            type: string
-        includeCodas:
-          type: array
-          items:
-            type: string
-        deferredSyntaxAllowedAsLiteral:
-          type: string
-        trimDirectiveWhitespaces:
-          type: string
-        errorOnUndeclaredNamespace:
-          type: string
-        buffer:
-          type: string
-        urlPatterns:
-          type: array
-          items:
-            type: string
-    FilterRegistration:
-      type: object
-      properties:
-        servletNameMappings:
-          type: array
-          items:
-            type: string
-        urlPatternMappings:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-        className:
-          type: string
-        initParameters:
-          type: object
-          additionalProperties:
-            type: string
-    UserInfoResponse:
-      type: object
-      properties:
-        sub:
-          type: string
-          description: Subject identifier
-        name:
-          type: string
-          description: User's full name
-        given_name:
-          type: string
-          description: Given name
-        family_name:
-          type: string
-          description: Family name
-        email:
-          type: string
-          description: Email address
-        email_verified:
-          type: boolean
-          description: Email verification status
-        username:
-          type: string
-          description: Username
-        groups:
-          type: array
-          description: User groups
-          items:
-            type: string
-            description: User groups
     RedirectView:
       type: object
       properties:
@@ -485,6 +268,32 @@ components:
           additionalProperties:
             type: string
           writeOnly: true
+    TaglibDescriptor:
+      type: object
+      properties:
+        taglibURI:
+          type: string
+        taglibLocation:
+          type: string
+    AutowireCapableBeanFactory:
+      type: object
+    ServletRegistration:
+      type: object
+      properties:
+        runAsRole:
+          type: string
+        mappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
     HttpStatusCode:
       type: object
       properties:
@@ -500,6 +309,39 @@ components:
           type: boolean
         is5xxServerError:
           type: boolean
+    AuthorizeRequest:
+      required:
+      - clientId
+      - responseType
+      type: object
+      properties:
+        responseType:
+          type: string
+          description: Response type
+          example: code
+        clientId:
+          type: string
+          description: Client identifier
+        redirectUri:
+          type: string
+          description: Redirection URI
+        scope:
+          type: string
+          description: Scope of access request
+          example: openid profile email
+        state:
+          type: string
+          description: State parameter for CSRF protection
+        nonce:
+          type: string
+          description: Nonce for ID Token security (OpenID Connect)
+        codeChallenge:
+          type: string
+          description: Code challenge for PKCE
+        codeChallengeMethod:
+          type: string
+          description: Code challenge method for PKCE
+          example: S256
     ApplicationContext:
       type: object
       properties:
@@ -741,13 +583,36 @@ components:
             defaultAssertionStatus:
               type: boolean
               writeOnly: true
-    TaglibDescriptor:
+    UserInfoResponse:
       type: object
       properties:
-        taglibURI:
+        sub:
           type: string
-        taglibLocation:
+          description: Subject identifier
+        name:
           type: string
+          description: User's full name
+        given_name:
+          type: string
+          description: Given name
+        family_name:
+          type: string
+          description: Family name
+        email:
+          type: string
+          description: Email address
+        email_verified:
+          type: boolean
+          description: Email verification status
+        username:
+          type: string
+          description: Username
+        groups:
+          type: array
+          description: User groups
+          items:
+            type: string
+            description: User groups
     Environment:
       type: object
       properties:
@@ -759,6 +624,141 @@ components:
           type: array
           items:
             type: string
+    JspPropertyGroupDescriptor:
+      type: object
+      properties:
+        defaultContentType:
+          type: string
+        elIgnored:
+          type: string
+        errorOnELNotFound:
+          type: string
+        pageEncoding:
+          type: string
+        scriptingInvalid:
+          type: string
+        isXml:
+          type: string
+        includePreludes:
+          type: array
+          items:
+            type: string
+        includeCodas:
+          type: array
+          items:
+            type: string
+        deferredSyntaxAllowedAsLiteral:
+          type: string
+        trimDirectiveWhitespaces:
+          type: string
+        errorOnUndeclaredNamespace:
+          type: string
+        buffer:
+          type: string
+        urlPatterns:
+          type: array
+          items:
+            type: string
+    BeanFactory:
+      type: object
+    SessionCookieConfig:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        comment:
+          type: string
+          deprecated: true
+        maxAge:
+          type: integer
+          format: int32
+        secure:
+          type: boolean
+        httpOnly:
+          type: boolean
+        domain:
+          type: string
+    OpenIdConfigurationResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+        authorization_endpoint:
+          type: string
+        token_endpoint:
+          type: string
+        userinfo_endpoint:
+          type: string
+        jwks_uri:
+          type: string
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        subject_types_supported:
+          type: array
+          items:
+            type: string
+        id_token_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        scopes_supported:
+          type: array
+          items:
+            type: string
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        claims_supported:
+          type: array
+          items:
+            type: string
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+        claim_types_supported:
+          type: array
+          items:
+            type: string
+    FilterRegistration:
+      type: object
+      properties:
+        servletNameMappings:
+          type: array
+          items:
+            type: string
+        urlPatternMappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    JspConfigDescriptor:
+      type: object
+      properties:
+        jspPropertyGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/JspPropertyGroupDescriptor'
+        taglibs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaglibDescriptor'
   securitySchemes:
     bearerAuth:
       type: http

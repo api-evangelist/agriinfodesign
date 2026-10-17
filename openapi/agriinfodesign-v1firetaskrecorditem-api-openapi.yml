@@ -213,14 +213,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    TaskInfo:
-      type: object
-      properties:
-        geoJson:
-          type: string
-        effectiveSpeed:
-          type: number
-          format: double
     SyncUpdateGeoItemRequest:
       type: object
       properties:
@@ -230,19 +222,33 @@ components:
         syncedAt:
           type: string
           format: '2016-01-01T00:00:00.000Z'
-    OperationType:
-      required:
-      - values
+    TaskInfo:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/Query'
-      - type: object
-        properties:
-          values:
-            type: array
-            items:
-              type: integer
-              format: int32
+      properties:
+        geoJson:
+          type: string
+        effectiveSpeed:
+          type: number
+          format: double
+    Query:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+    SyncUpdateTaskRecordItemResponse:
+      type: object
+      properties:
+        isCompleted:
+          type: boolean
+        syncDateTime:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        remoteTaskRecordItem:
+          $ref: '#/components/schemas/RemoteTaskRecordItem'
     Field:
       required:
       - fieldItemIds
@@ -255,6 +261,85 @@ components:
             type: array
             items:
               type: string
+    Account:
+      required:
+      - uuids
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Query'
+      - type: object
+        properties:
+          uuids:
+            type: array
+            items:
+              type: string
+    Area:
+      required:
+      - operator
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Query'
+      - type: object
+        properties:
+          operator:
+            type: string
+            enum:
+            - Equals
+            - NotEquals
+            - MoreThan
+            - MoreThanEquals
+            - Less
+            - LessThanEquals
+          value:
+            type: number
+    PagingResponseRemoteTaskRecordItem:
+      type: object
+      properties:
+        contents:
+          type: array
+          description: データのリスト
+          items:
+            $ref: '#/components/schemas/RemoteTaskRecordItem'
+        paginationInfo:
+          $ref: '#/components/schemas/PaginationInfo'
+    Distance:
+      required:
+      - operator
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Query'
+      - type: object
+        properties:
+          operator:
+            type: string
+            enum:
+            - Equals
+            - NotEquals
+            - MoreThan
+            - MoreThanEquals
+            - Less
+            - LessThanEquals
+          value:
+            type: number
+    DateTimeRange:
+      required:
+      - from
+      - to
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Start
+        from:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        to:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
     RemoteTaskRecordItem:
       type: object
       properties:
@@ -339,64 +424,12 @@ components:
         overlappedArea:
           type: number
       description: データのリスト
-    SyncUpdateTaskRecordItemResponse:
+    SseEmitter:
       type: object
       properties:
-        isCompleted:
-          type: boolean
-        syncDateTime:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        remoteTaskRecordItem:
-          $ref: '#/components/schemas/RemoteTaskRecordItem'
-    Query:
-      required:
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-      discriminator:
-        propertyName: type
-    DateTimeRange:
-      required:
-      - from
-      - to
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - Start
-        from:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        to:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-    FirestoreUpdateResponse:
-      type: object
-      properties:
-        id:
-          type: string
-    TaskFilter:
-      required:
-      - dateTimeRange
-      - queries
-      type: object
-      properties:
-        dateTimeRange:
-          $ref: '#/components/schemas/DateTimeRange'
-        queries:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/Account'
-            - $ref: '#/components/schemas/Area'
-            - $ref: '#/components/schemas/Distance'
-            - $ref: '#/components/schemas/Field'
-            - $ref: '#/components/schemas/OperationType'
+        timeout:
+          type: integer
+          format: int64
     PaginationInfo:
       type: object
       properties:
@@ -421,36 +454,24 @@ components:
           description: 総ページ数
           format: int32
       description: ページネーション情報
-    PagingResponseRemoteTaskRecordItem:
+    FirestoreDeleteResponse:
       type: object
       properties:
-        contents:
-          type: array
-          description: データのリスト
-          items:
-            $ref: '#/components/schemas/RemoteTaskRecordItem'
-        paginationInfo:
-          $ref: '#/components/schemas/PaginationInfo'
-    Distance:
+        id:
+          type: string
+    OperationType:
       required:
-      - operator
-      - value
+      - values
       type: object
       allOf:
       - $ref: '#/components/schemas/Query'
       - type: object
         properties:
-          operator:
-            type: string
-            enum:
-            - Equals
-            - NotEquals
-            - MoreThan
-            - MoreThanEquals
-            - Less
-            - LessThanEquals
-          value:
-            type: number
+          values:
+            type: array
+            items:
+              type: integer
+              format: int32
     UpdateMetaDataRequest:
       required:
       - metaDataUpdatedAt
@@ -467,53 +488,32 @@ components:
           type: object
           additionalProperties:
             type: string
+    TaskFilter:
+      required:
+      - dateTimeRange
+      - queries
+      type: object
+      properties:
+        dateTimeRange:
+          $ref: '#/components/schemas/DateTimeRange'
+        queries:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Account'
+            - $ref: '#/components/schemas/Area'
+            - $ref: '#/components/schemas/Distance'
+            - $ref: '#/components/schemas/Field'
+            - $ref: '#/components/schemas/OperationType'
+    FirestoreUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
     SaveTaskFilterResponse:
       type: object
       properties:
         filterName:
-          type: string
-    SseEmitter:
-      type: object
-      properties:
-        timeout:
-          type: integer
-          format: int64
-    Area:
-      required:
-      - operator
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Query'
-      - type: object
-        properties:
-          operator:
-            type: string
-            enum:
-            - Equals
-            - NotEquals
-            - MoreThan
-            - MoreThanEquals
-            - Less
-            - LessThanEquals
-          value:
-            type: number
-    Account:
-      required:
-      - uuids
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Query'
-      - type: object
-        properties:
-          uuids:
-            type: array
-            items:
-              type: string
-    FirestoreDeleteResponse:
-      type: object
-      properties:
-        id:
           type: string
   securitySchemes:
     bearerAuth:

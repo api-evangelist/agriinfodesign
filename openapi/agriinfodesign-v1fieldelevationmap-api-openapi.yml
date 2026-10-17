@@ -58,13 +58,65 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ColorRanges:
+    RemoteFieldElevationMap:
       type: object
       properties:
-        ranges:
-          type: array
-          items:
-            $ref: '#/components/schemas/ColorRange'
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+          - Creating
+          - Completed
+          - Failed
+        geoJson:
+          type: string
+          description: Mapに表示するGeoJSON
+        createdAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        meshSize:
+          type: number
+          format: double
+        gridColCount:
+          type: integer
+          format: int32
+        gridRowCount:
+          type: integer
+          format: int32
+        taskFetchLimit:
+          type: integer
+          format: int32
+        newestTaskDate:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        oldestTaskDate:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        taskPointCount:
+          type: integer
+          description: 計算に利用した作業履歴の地点情報数
+          format: int32
+        colorRanges:
+          $ref: '#/components/schemas/ColorRanges'
+        gnssStatusFilter:
+          type: string
+        interpolation:
+          type: string
+        vertexValuator:
+          type: string
+        zRangeMin:
+          type: number
+          description: 標高レンジ最小値
+          format: double
+        zRangeMax:
+          type: number
+          description: 標高レンジ最大値
+          format: double
     ColorRange:
       type: object
       properties:
@@ -127,65 +179,13 @@ components:
           format: date
         specifiedDateRange:
           type: boolean
-    RemoteFieldElevationMap:
+    ColorRanges:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-        status:
-          type: string
-          enum:
-          - Creating
-          - Completed
-          - Failed
-        geoJson:
-          type: string
-          description: Mapに表示するGeoJSON
-        createdAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        updatedAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        meshSize:
-          type: number
-          format: double
-        gridColCount:
-          type: integer
-          format: int32
-        gridRowCount:
-          type: integer
-          format: int32
-        taskFetchLimit:
-          type: integer
-          format: int32
-        newestTaskDate:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        oldestTaskDate:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        taskPointCount:
-          type: integer
-          description: 計算に利用した作業履歴の地点情報数
-          format: int32
-        colorRanges:
-          $ref: '#/components/schemas/ColorRanges'
-        gnssStatusFilter:
-          type: string
-        interpolation:
-          type: string
-        vertexValuator:
-          type: string
-        zRangeMin:
-          type: number
-          description: 標高レンジ最小値
-          format: double
-        zRangeMax:
-          type: number
-          description: 標高レンジ最大値
-          format: double
+        ranges:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColorRange'
   securitySchemes:
     bearerAuth:
       type: http

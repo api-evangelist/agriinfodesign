@@ -100,12 +100,12 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AgriBusNaviRefLine:
+    AgriBusNaviField:
       type: object
       properties:
         firestoreDocumentPath:
           type: string
-    AgriBusNaviField:
+    AgriBusNaviRefLine:
       type: object
       properties:
         firestoreDocumentPath:

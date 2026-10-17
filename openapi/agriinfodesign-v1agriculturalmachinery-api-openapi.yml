@@ -73,6 +73,22 @@ paths:
                 $ref: '#/components/schemas/FeatureCollection'
 components:
   schemas:
+    GeoJsonObject:
+      required:
+      - type
+      type: object
+      properties:
+        crs:
+          $ref: '#/components/schemas/Crs'
+        bbox:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      discriminator:
+        propertyName: type
     FeatureCollection:
       type: object
       allOf:
@@ -83,6 +99,19 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Feature'
+    Crs:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - name
+          - link
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            format: '2016-01-01T00:00:00.000Z'
     DeviceListResponse:
       type: object
       properties:
@@ -107,35 +136,21 @@ components:
           format: int32
           example: 10
       description: デバイス一覧レスポンス
-    Crs:
+    Feature:
       type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - name
-          - link
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
         properties:
-          type: object
-          additionalProperties:
+          properties:
+            type: object
+            additionalProperties:
+              type: string
+              format: '2016-01-01T00:00:00.000Z'
+          geometry:
+            $ref: '#/components/schemas/GeoJsonObject'
+          id:
             type: string
-            format: '2016-01-01T00:00:00.000Z'
-    GeoJsonObject:
-      required:
-      - type
-      type: object
-      properties:
-        crs:
-          $ref: '#/components/schemas/Crs'
-        bbox:
-          type: array
-          items:
-            type: number
-            format: double
-        type:
-          type: string
-      discriminator:
-        propertyName: type
     DeviceInfo:
       type: object
       properties:
@@ -164,21 +179,6 @@ components:
           description: ファームウェアバージョン
           example: 1.0.0
       description: 農機デバイス情報
-    Feature:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GeoJsonObject'
-      - type: object
-        properties:
-          properties:
-            type: object
-            additionalProperties:
-              type: string
-              format: '2016-01-01T00:00:00.000Z'
-          geometry:
-            $ref: '#/components/schemas/GeoJsonObject'
-          id:
-            type: string
   securitySchemes:
     bearerAuth:
       type: http

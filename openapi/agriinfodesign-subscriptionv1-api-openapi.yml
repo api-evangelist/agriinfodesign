@@ -145,42 +145,6 @@ paths:
                 $ref: '#/components/schemas/DeleteSubscriptionResponse'
 components:
   schemas:
-    DeleteSubscriptionResponse:
-      type: object
-    UpdateSubscriptionResponse:
-      type: object
-    CreateSubscriptionResponse:
-      type: object
-    SubscriptionInfo:
-      type: object
-      properties:
-        subscriberAccounts:
-          type: array
-          description: 購読されているアカウント
-          items:
-            $ref: '#/components/schemas/Subscription'
-        subscribingAccounts:
-          type: array
-          description: 購読しているアカウント
-          items:
-            $ref: '#/components/schemas/Subscription'
-        subscribingGroups:
-          type: array
-          description: 購読しているグループ
-          items:
-            $ref: '#/components/schemas/Subscription'
-    CreateSubscriptionRequest:
-      type: object
-      required:
-      - fromUsername
-      - toUsername
-      properties:
-        fromUsername:
-          type: string
-        toUsername:
-          type: string
-    UnsubscribeResponse:
-      type: object
     UpdateSubscriptionRequest:
       type: object
       required:
@@ -191,25 +155,18 @@ components:
           enum:
           - Accept
           - Reject
-    SubscriptionRequestInfo:
+    CreateSubscriptionRequest:
       type: object
+      required:
+      - fromUsername
+      - toUsername
       properties:
-        createdAt:
-          type: string
-        fromIconUrl:
-          type: string
-        fromNickname:
-          type: string
         fromUsername:
-          type: string
-        id:
-          type: string
-        toIconUrl:
-          type: string
-        toNickname:
           type: string
         toUsername:
           type: string
+    UpdateSubscriptionResponse:
+      type: object
     Subscription:
       type: object
       required:
@@ -242,6 +199,49 @@ components:
           - Account
           - Group
         uuid:
+          type: string
+    CreateSubscriptionResponse:
+      type: object
+    SubscriptionInfo:
+      type: object
+      properties:
+        subscriberAccounts:
+          type: array
+          description: 購読されているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingAccounts:
+          type: array
+          description: 購読しているアカウント
+          items:
+            $ref: '#/components/schemas/Subscription'
+        subscribingGroups:
+          type: array
+          description: 購読しているグループ
+          items:
+            $ref: '#/components/schemas/Subscription'
+    DeleteSubscriptionResponse:
+      type: object
+    UnsubscribeResponse:
+      type: object
+    SubscriptionRequestInfo:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        fromIconUrl:
+          type: string
+        fromNickname:
+          type: string
+        fromUsername:
+          type: string
+        id:
+          type: string
+        toIconUrl:
+          type: string
+        toNickname:
+          type: string
+        toUsername:
           type: string
   securitySchemes:
     mykey:

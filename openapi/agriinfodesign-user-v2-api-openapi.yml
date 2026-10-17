@@ -133,6 +133,55 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 components:
   schemas:
+    UserGroupInfo:
+      type: object
+      properties:
+        name:
+          type: string
+    SimpleSignUpConfirmRequest:
+      type: object
+      required:
+      - confirmationCode
+      - newPassword
+      - nickName
+      - secureToken
+      - sendMeNews
+      - username
+      properties:
+        confirmationCode:
+          type: string
+        newPassword:
+          type: string
+        nickName:
+          type: string
+        secureToken:
+          type: string
+        sendMeNews:
+          type: boolean
+        username:
+          type: string
+    EditUserRequest:
+      type: object
+      properties:
+        language:
+          type: string
+          description: 言語
+        nickname:
+          type: string
+          description: ニックネーム
+        sendMeNews:
+          type: boolean
+          description: メルマガ受信
+        systemOfUnits:
+          type: string
+          description: 単位
+    UserGroupsInfo:
+      type: object
+      properties:
+        userGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroupInfo'
     Purchase:
       type: object
       properties:
@@ -173,28 +222,43 @@ components:
           - Canceled
         subscriptionId:
           type: string
-    SimpleSignUpConfirmRequest:
+    PurchaseInfo:
       type: object
-      required:
-      - confirmationCode
-      - newPassword
-      - nickName
-      - secureToken
-      - sendMeNews
-      - username
       properties:
-        confirmationCode:
-          type: string
-        newPassword:
-          type: string
-        nickName:
-          type: string
-        secureToken:
-          type: string
-        sendMeNews:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
           type: boolean
-        username:
+        billingVendor:
           type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
     SimpleSignUpRequest:
       type: object
       required:
@@ -217,21 +281,6 @@ components:
         zoneinfo:
           type: string
           description: タイムゾーン
-    EditUserRequest:
-      type: object
-      properties:
-        language:
-          type: string
-          description: 言語
-        nickname:
-          type: string
-          description: ニックネーム
-        sendMeNews:
-          type: boolean
-          description: メルマガ受信
-        systemOfUnits:
-          type: string
-          description: 単位
     UserInfo:
       type: object
       properties:
@@ -301,55 +350,6 @@ components:
         username:
           type: string
         zoneinfo:
-          type: string
-    UserGroupsInfo:
-      type: object
-      properties:
-        userGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserGroupInfo'
-    PurchaseInfo:
-      type: object
-      properties:
-        activeSubscriptionCount:
-          type: integer
-          format: int32
-        autoRenewing:
-          type: boolean
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        plan:
-          type: string
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        planEnforced:
-          type: boolean
-        planExpiredAt:
-          type: string
-        planStartedAt:
-          type: string
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-        subscriptionId:
-          type: string
-        subscriptionIdForFunctionality:
-          type: string
-        trial:
-          type: boolean
-    UserGroupInfo:
-      type: object
-      properties:
-        name:
           type: string
   securitySchemes:
     mykey:

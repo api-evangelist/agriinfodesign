@@ -52,6 +52,32 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 components:
   schemas:
+    UserPicture:
+      type: object
+      properties:
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        url:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type:
+          - string
+          - 'null'
+        accessTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
+        refreshTokenExpiredAt:
+          type: string
+          format: '2016-01-01T00:00:00.000Z'
     OAuthCreateNewPasswordRequest:
       required:
       - newPassword
@@ -139,32 +165,6 @@ components:
         nickname:
           type: string
           description: Cognitoのnickname。ただしGoogleOAuthでサインアップした場合は、Googleから渡された氏名
-    UserPicture:
-      type: object
-      properties:
-        icon:
-          type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        url:
-          type: string
-    TokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type:
-          - string
-          - 'null'
-        accessTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
-        refreshTokenExpiredAt:
-          type: string
-          format: '2016-01-01T00:00:00.000Z'
   securitySchemes:
     bearerAuth:
       type: http

@@ -95,6 +95,59 @@ paths:
         required: true
 components:
   schemas:
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        accessTokenExpiredAt:
+          type: string
+        refreshToken:
+          type: string
+        refreshTokenExpiredAt:
+          type: string
+        subscriptionInfo:
+          $ref: '#/components/schemas/SubscriptionInfo'
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+    Subscription:
+      type: object
+      required:
+      - type
+      - uuid
+      properties:
+        email:
+          type: string
+        enterprise:
+          type: boolean
+        groupUsernames:
+          type: array
+          items:
+            type: string
+        iconUrl:
+          type: string
+        name:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        nickname:
+          type: string
+          description: nameとnicknameは同じものが常に入ります
+        organizationName:
+          type: string
+        region:
+          type: string
+        type:
+          type: string
+          enum:
+          - Account
+          - Group
+        uuid:
+          type: string
+    ImpersonationRequest:
+      type: object
+      properties:
+        targetUserEmail:
+          type: string
     Purchase:
       type: object
       properties:
@@ -135,44 +188,6 @@ components:
           - Canceled
         subscriptionId:
           type: string
-    PublishTokenRequest:
-      type: object
-      required:
-      - appId
-      - deviceId
-      - email
-      - password
-      - secretHash
-      properties:
-        appId:
-          type: string
-          description: AgriBus Platformに登録済みのアプリケーションID
-        deviceId:
-          type: string
-          description: 端末で取得できるデバイスのID
-        deviceManufacturer:
-          type: string
-          description: 端末製造メーカー
-        deviceModel:
-          type: string
-          description: 端末デバイス名
-        deviceSystemVersion:
-          type: string
-          description: 端末OSバージョン
-        email:
-          type: string
-          description: Eメール
-        password:
-          type: string
-          description: ユーザーのパスワード
-        secretHash:
-          type: string
-          description: アプリケーションシークレットを元にしたハッシュ
-        userMetaData:
-          type: object
-          description: ユーザーメタデータ情報
-          additionalProperties:
-            type: object
     SubscriptionInfo:
       type: object
       properties:
@@ -191,6 +206,73 @@ components:
           description: 購読しているグループ
           items:
             $ref: '#/components/schemas/Subscription'
+    RefreshTokenRequest:
+      type: object
+      required:
+      - deviceId
+      - email
+      - refreshToken
+      properties:
+        deviceId:
+          type: string
+          description: 端末で取得できるデバイスのID
+        deviceManufacturer:
+          type: string
+          description: 端末製造メーカー
+        deviceModel:
+          type: string
+          description: 端末デバイス名
+        deviceSystemVersion:
+          type: string
+          description: 端末OSバージョン
+        email:
+          type: string
+          description: Eメール
+        refreshToken:
+          type: string
+          description: リフレッシュトークン
+        userMetaData:
+          type: object
+          description: ユーザーメタデータ情報
+          additionalProperties:
+            type: object
+    PurchaseInfo:
+      type: object
+      properties:
+        activeSubscriptionCount:
+          type: integer
+          format: int32
+        autoRenewing:
+          type: boolean
+        billingVendor:
+          type: string
+          enum:
+          - Google
+          - Stripe
+        plan:
+          type: string
+          enum:
+          - Free
+          - Standard
+          - Enterprise
+          - Plus
+          - Professional
+        planEnforced:
+          type: boolean
+        planExpiredAt:
+          type: string
+        planStartedAt:
+          type: string
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        subscriptionId:
+          type: string
+        subscriptionIdForFunctionality:
+          type: string
+        trial:
+          type: boolean
     UserInfo:
       type: object
       properties:
@@ -261,13 +343,18 @@ components:
           type: string
         zoneinfo:
           type: string
-    RefreshTokenRequest:
+    PublishTokenRequest:
       type: object
       required:
+      - appId
       - deviceId
       - email
-      - refreshToken
+      - password
+      - secretHash
       properties:
+        appId:
+          type: string
+          description: AgriBus Platformに登録済みのアプリケーションID
         deviceId:
           type: string
           description: 端末で取得できるデバイスのID
@@ -283,104 +370,17 @@ components:
         email:
           type: string
           description: Eメール
-        refreshToken:
+        password:
           type: string
-          description: リフレッシュトークン
+          description: ユーザーのパスワード
+        secretHash:
+          type: string
+          description: アプリケーションシークレットを元にしたハッシュ
         userMetaData:
           type: object
           description: ユーザーメタデータ情報
           additionalProperties:
             type: object
-    ImpersonationRequest:
-      type: object
-      properties:
-        targetUserEmail:
-          type: string
-    TokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        accessTokenExpiredAt:
-          type: string
-        refreshToken:
-          type: string
-        refreshTokenExpiredAt:
-          type: string
-        subscriptionInfo:
-          $ref: '#/components/schemas/SubscriptionInfo'
-        userInfo:
-          $ref: '#/components/schemas/UserInfo'
-    PurchaseInfo:
-      type: object
-      properties:
-        activeSubscriptionCount:
-          type: integer
-          format: int32
-        autoRenewing:
-          type: boolean
-        billingVendor:
-          type: string
-          enum:
-          - Google
-          - Stripe
-        plan:
-          type: string
-          enum:
-          - Free
-          - Standard
-          - Enterprise
-          - Plus
-          - Professional
-        planEnforced:
-          type: boolean
-        planExpiredAt:
-          type: string
-        planStartedAt:
-          type: string
-        purchases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-        subscriptionId:
-          type: string
-        subscriptionIdForFunctionality:
-          type: string
-        trial:
-          type: boolean
-    Subscription:
-      type: object
-      required:
-      - type
-      - uuid
-      properties:
-        email:
-          type: string
-        enterprise:
-          type: boolean
-        groupUsernames:
-          type: array
-          items:
-            type: string
-        iconUrl:
-          type: string
-        name:
-          type: string
-          description: nameとnicknameは同じものが常に入ります
-        nickname:
-          type: string
-          description: nameとnicknameは同じものが常に入ります
-        organizationName:
-          type: string
-        region:
-          type: string
-        type:
-          type: string
-          enum:
-          - Account
-          - Group
-        uuid:
-          type: string
   securitySchemes:
     mykey:
       type: apiKey

@@ -104,6 +104,11 @@ components:
           type: boolean
         collectionMethod:
           type: string
+    CalculateFunctionalityRequest:
+      type: object
+      properties:
+        username:
+          type: string
     PurchaseInfo:
       type: object
       properties:
@@ -128,11 +133,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Purchase'
-    CalculateFunctionalityRequest:
-      type: object
-      properties:
-        username:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

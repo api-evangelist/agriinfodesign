@@ -91,6 +91,29 @@ paths:
                 $ref: '#/components/schemas/UserGroupsInfo'
 components:
   schemas:
+    UserGroupInfo:
+      type: object
+      properties:
+        name:
+          type: string
+    UserPicture:
+      type: object
+      properties:
+        icon:
+          type: string
+          enum:
+          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
+          - Gravatar|null
+          - Custom|null
+        url:
+          type: string
+    UserGroupsInfo:
+      type: object
+      properties:
+        userGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroupInfo'
     ResetPasswordRequest:
       required:
       - email
@@ -99,18 +122,6 @@ components:
         email:
           type: string
           description: Eメール
-    ChangePasswordRequest:
-      required:
-      - currentPassword
-      - newPassword
-      type: object
-      properties:
-        currentPassword:
-          type: string
-          description: 現在のパスワード
-        newPassword:
-          type: string
-          description: 新しいパスワード
     UserInfo:
       type: object
       properties:
@@ -173,24 +184,18 @@ components:
           description: OAuthユーザーの場合に、パスワードがセットされているかどうかを示します。
         oauthUser:
           type: boolean
-    UserGroupsInfo:
+    ChangePasswordRequest:
+      required:
+      - currentPassword
+      - newPassword
       type: object
       properties:
-        userGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserGroupInfo'
-    UserPicture:
-      type: object
-      properties:
-        icon:
+        currentPassword:
           type: string
-          enum:
-          - Default|https://s3-ap-northeast-1.amazonaws.com/agri-info-design-public/icons/ic_person_black_48dp.png
-          - Gravatar|null
-          - Custom|null
-        url:
+          description: 現在のパスワード
+        newPassword:
           type: string
+          description: 新しいパスワード
     UpdateUserRequest:
       type: object
       properties:
@@ -207,11 +212,6 @@ components:
           - Imperial
           - JpUnitsOfArea
           - ThUnitsOfArea
-    UserGroupInfo:
-      type: object
-      properties:
-        name:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http
