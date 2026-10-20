@@ -1,0 +1,38 @@
+edges:
+- partner_name: AEF (Agricultural Industry Electronics Foundation) members
+  partner: null
+  partner_match: register-name
+  type: register
+  direction: partner-built
+  evidence: https://www.aef-online.org/membership/memberlist.html
+  category: ISOBUS / agricultural electronics
+  channel: standard-directory
+  relationship: standard-participant
+  contract_reference:
+    register: AEF member list (aef-online.org/membership/memberlist.html)
+    spec_file: null
+    standard: ISOBUS (ISO 11783) / AEF
+    role: aef-member
+    registered_name: Agri Info Design
+    country: Japan
+    website: null
+    matched_domain: null
+    matched_by: register-name
+    identity_note: register-name 'agriinfodesign' = agriinfodesign; no wikidata P856
+    signal_note: 'participation only: membership is not ISOBUS conformance (the AEF certified-product database is
+      behind a login)'
+    detected_by: sweep-agriculture-food.py
+    detected: '2026-10-20'
+    identity_source: register-name
+  detected_by: sweep-agriculture-food.py
+  first_seen: '2026-10-20'
+generated: '2026-10-20'
+method: searched
+source:
+- https://aggateway.org/AboutUs/Members.aspx
+- https://agrirouter.com/en/solutions
+checked:
+- https://aggateway.org/AboutUs/Members.aspx
+- https://agrirouter.com/en/solutions
+- https://climate.com/en-us/partners.html
+- https://www.aef-online.org/membership/memberlist.html
