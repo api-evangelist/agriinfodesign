@@ -64,56 +64,177 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Agri Info Design, Ltd. (株式会社農業情報設計社) is a Japanese agricultural-technology company founded
-21 April 2014 in Obihiro, Hokkaido, with a Tokyo office in Nihonbashi. It builds the **AgriBus**
-precision-farming line: **AgriBus-NAVI**, an Android GPS/GNSS guidance app for tractors with more
-than 100,000 downloads worldwide; **AgriBus-GMiniR** and **AgriBus-G2** RTK-GNSS receivers; the
-**AgriBus-AutoSteer** automatic steering package; and **AgriBus-Web**, a browser console for field
-boundaries, guidance lines, work-record history, elevation maps and RTK base-station management. The
-company also sells ISOBUS / ISO 11783 / AG-PORT consulting.
+Agri Info Design, Ltd. (株式会社農業情報設計社) is a Japanese agricultural-technology company founded 21 April 2014 in Obihiro, Hokkaido, building precision-farming guidance for tractors and other agricultural machinery. Its AgriBus product line pairs the AgriBus-NAVI Android GPS/GNSS guidance app (100,000+ downloads worldwide) with AgriBus-GMiniR and AgriBus-G2 RTK-GNSS receivers, the AgriBus-AutoSteer automatic steering package, and AgriBus-Web, a browser console for field boundaries, reference lines, work-record history, elevation maps and RTK base-station management. The company also sells ISOBUS / ISO 11783 / AG-PORT consulting. Its cloud platform is a set of Spring Boot microservices on agribus-connect.net, each of which publishes a machine-readable OpenAPI/Swagger contract anonymously, including an implementation of Japan's NARO-led 農機オープンAPI (Agricultural Machinery Open API) device and location surface.
 
-## What this profile found
+**Areas:** Agriculture · AgTech · Precision Agriculture · GNSS · GPS · RTK · Farm Management · Agricultural Machinery · ISOBUS · Geospatial · Japan · Telematics
 
-The AgriBus cloud platform is a set of Spring Boot microservices on `agribus-connect.net`, and each
-one **publishes a machine-readable contract anonymously** at the framework's default path. Four
-contracts, 186 operations, harvested verbatim into `openapi/`:
+## Agri Info Design on APIs.io
 
-| Service | Contract | Size |
-|---|---|---|
-| [datastore](https://datastore.agribus-connect.net/v3/api-docs) | OpenAPI 3.0.1 | 50 paths / 61 operations |
-| [auth](https://auth.agribus-connect.net/v3/api-docs) | OpenAPI 3.0.1 | 20 paths / 22 operations |
-| [manager](https://manager.agribus-connect.net/swagger-resources) | Swagger 2.0 | 71 paths |
-| [pay](https://pay.agribus-connect.net/v3/api-docs) | OpenAPI 3.0.1 | 21 paths / 22 operations |
+Everything profiled for Agri Info Design is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/agriinfodesign/](https://apis.io/providers/agriinfodesign/)** — or go straight to one of the APIs or properties below.
 
-The datastore contract **declares a domain standard in its own tag metadata** — `農機オープンAPI
-v2.0.0`, the Japanese cross-vendor Agricultural Machinery Open API coordinated by NARO under MAFF's
-data-infrastructure programme — and implements its device and location surface, returning machine
-work-position history as RFC 7946 GeoJSON. The auth service backs it with an OAuth 2.0 surface and a
-**live, anonymously readable catalogue of ten `noki.*` scopes**.
+### APIs (53)
 
-## And what it did not find
+- [Agri Info Design Agricultural API O Auth API](https://apis.io/apis/agriinfodesign/agriinfodesign-agriculturalapioauth-api/) — 農機API OAuth管理
+- [Agri Info Design Caster V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-casterv1-api/) — V 1 Caster Controller
+- [Agri Info Design Caster V2 API](https://apis.io/apis/agriinfodesign/agriinfodesign-casterv2-api/) — V 2 Caster Controller
+- [Agri Info Design Caster V3 API](https://apis.io/apis/agriinfodesign/agriinfodesign-casterv3-api/) — V 3 Caster Controller
+- [Agri Info Design Device V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-devicev1-api/) — V 1 Device Controller
+- [Agri Info Design Errors Duplication API](https://apis.io/apis/agriinfodesign/agriinfodesign-errorsduplication-api/) — データ修復API
+- [Agri Info Design Errors Duplication For Test API](https://apis.io/apis/agriinfodesign/agriinfodesign-errorsduplicationfortest-api/) — データ修復テスト用API
+- [Agri Info Design Firebase V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-firebasev1-api/) — V 1 Firebase Controller
+- [Agri Info Design Google V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-googlev1-api/) — V 1 Google Controller
+- [Agri Info Design Migration V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-migrationv1-api/) — V 1 Migration Controller
+- [Agri Info Design Navi V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-naviv1-api/) — V 1 Navi Controller
+- [Agri Info Design OpenID Connect API](https://apis.io/apis/agriinfodesign/agriinfodesign-openid-connect-api/) — OpenID Connect Discovery and endpoints
+- [Agri Info Design Poc Noki Open API](https://apis.io/apis/agriinfodesign/agriinfodesign-pocnokiopenapi-api/) — The PocNokiOpenApi API from Agri Info Design — 1 operation(s) for pocnokiopenapi.
+- [Agri Info Design Soracom V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-soracomv1-api/) — V 1 Soracom Controller
+- [Agri Info Design Stripe V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-stripev1-api/) — V 1 Stripe Controller
+- [Agri Info Design Stripe V2 API](https://apis.io/apis/agriinfodesign/agriinfodesign-stripev2-api/) — V 2 Stripe Controller
+- [Agri Info Design Subscription V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-subscriptionv1-api/) — V 1 Subscription Controller
+- [Agri Info Design Token V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-tokenv1-api/) — V 1 Token Controller
+- [Agri Info Design Token V2 API](https://apis.io/apis/agriinfodesign/agriinfodesign-tokenv2-api/) — V 2 Token Controller
+- [Agri Info Design User V3 API](https://apis.io/apis/agriinfodesign/agriinfodesign-userv3-api/) — V 3 User Controller
+- [Agri Info Design V1 Agri Bus Navi API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1agribusnavi-api/) — AgriBus-NAVI専用のAPI
+- [Agri Info Design V1 Agricultural API O Auth API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1agriculturalapioauth-api/) — 農機API用OAuth2管理
+- [Agri Info Design V1 Agricultural Machinery API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1agriculturalmachinery-api/) — 農機オープンAPI v2.0.0
+- [Agri Info Design V1 Caster API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1caster-api/) — Caster関連API
+- [Agri Info Design V1 Connect Admin API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1connectadmin-api/) — The V1ConnectAdmin API from Agri Info Design — 2 operation(s) for v1connectadmin.
+- [Agri Info Design V1 Field Elevation Map API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1fieldelevationmap-api/) — The V1FieldElevationMap API from Agri Info Design — 1 operation(s) for v1fieldelevationmap.
+- [Agri Info Design V1 Field Item API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1fielditem-api/) — The V1FieldItem API from Agri Info Design — 9 operation(s) for v1fielditem.
+- [Agri Info Design V1 Firebase API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1firebase-api/) — Firebase関連API
+- [Agri Info Design V1 Fire Ref Line Item API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1firereflineitem-api/) — The V1FireRefLineItem API from Agri Info Design — 7 operation(s) for v1firereflineitem.
+- [Agri Info Design V1 Fire Task Record Item API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1firetaskrecorditem-api/) — The V1FireTaskRecordItem API from Agri Info Design — 7 operation(s) for v1firetaskrecorditem.
+- [Agri Info Design V1 Google API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1google-api/) — Google関係のAPI
+- [Agri Info Design V1 Impersonate API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1impersonate-api/) — Connect管理者権限ユーザー専用のなりすましユーザートークン発行API
+- [Agri Info Design V1 Import API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1import-api/) — The V1Import API from Agri Info Design — 1 operation(s) for v1import.
+- [Agri Info Design V1 Market Monitor API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1marketmonitor-api/) — マーケット情報 (AgriBus-DWH) 連携API
+- [Agri Info Design V1 Migration Test API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1migrationtest-api/) — Migration Test Controller
+- [Agri Info Design V1 Navi API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1navi-api/) — Navi関係のAPI
+- [Agri Info Design V1 O Auth API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1oauth-api/) — OAuth関連API
+- [Agri Info Design V1 Observation API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1observation-api/) — The V1Observation API from Agri Info Design — 4 operation(s) for v1observation.
+- [Agri Info Design V1 Operation API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1operation-api/) — The V1Operation API from Agri Info Design — 1 operation(s) for v1operation.
+- [Agri Info Design V1 Partner API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1partner-api/) — The V1Partner API from Agri Info Design — 1 operation(s) for v1partner.
+- [Agri Info Design V1 Pay API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1pay-api/) — 課金関連のAPI
+- [Agri Info Design V1 Planting API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1planting-api/) — The V1Planting API from Agri Info Design — 3 operation(s) for v1planting.
+- [Agri Info Design V1 Real Time API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1realtime-api/) — The V1RealTime API from Agri Info Design — 1 operation(s) for v1realtime.
+- [Agri Info Design V1 Sign Up API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1signup-api/) — サインアップAPI
+- [Agri Info Design V1 Stripe API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1stripe-api/) — Stripe関係のAPI
+- [Agri Info Design V1 System API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1system-api/) — システム情報API
+- [Agri Info Design V1 User Icon API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1usericon-api/) — ユーザーアイコンAPI
+- [Agri Info Design Web Marker V2 API](https://apis.io/apis/agriinfodesign/agriinfodesign-webmarkerv2-api/) — V 2 Web Marker Controller
+- [Agri Info Design search V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-search-v1-api/) — V 1 Search Controller
+- [Agri Info Design System V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-system-v1-api/) — V 1 System Controller
+- [Agri Info Design User V1 API](https://apis.io/apis/agriinfodesign/agriinfodesign-user-v1-api/) — V 1 User Controller
+- [Agri Info Design User v2 API](https://apis.io/apis/agriinfodesign/agriinfodesign-user-v2-api/) — V 2 User Controller
+- [Agri Info Design V1 User API](https://apis.io/apis/agriinfodesign/agriinfodesign-v1-user-api/) — ユーザー情報API
 
-There is no developer program around any of it. No developer portal, no API reference, no
-getting-started guide, no authentication documentation, no SDK in any language, no CLI, no sandbox,
-no Postman collection, no status page, no changelog, no published rate limits, no error catalogue,
-no MCP server, no agent card, and no documented way for a third party to register an OAuth client.
-Not one of the 186 published operations declares a single non-200 response.
+### Published properties
 
-Everything in this repository was therefore established by reading the contracts the platform serves
-and by calling the live hosts without credentials. Notable findings are recorded in place:
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-- `conformance/` — the 農機オープンAPI domain-standard signature, and an OIDC discovery document
-  served at `/.well-known/openid_configuration` (underscore) that **404s at the standard hyphenated
-  path** and advertises a *development* issuer from the production host.
-- `errors/` — the two vendor error envelopes, probed live, including a billing endpoint that answers
-  a missing credential with **HTTP 500**.
-- `lifecycle/` — 13 operations flagged deprecated with no sunset date, no replacement and no RFC 8594
-  headers.
-- `conventions/` — `idempotency.coverage: none` across a surface that includes money-moving writes,
-  and a `reversibility` grade of `documented` with no stated window anywhere.
-- `data-model/` — the entity graph, plus spec-hygiene findings: every timestamp declares
-  `"format": "2016-01-01T00:00:00.000Z"`, and the auth contract publishes 13 Spring framework
-  internals as schemas.
-- `skills/` — three Agent Skills grounded operation-by-operation in the provider's own contracts.
+#### MCP servers (1)
 
-Full machine-readable index: [`apis.yml`](apis.yml).
+Model Context Protocol servers that expose the API to agents.
+
+- [agriinfodesign-mcp.yml](https://apis.io/servers/agriinfodesign/agriinfodesign-mcp-yml/)
+
+#### Overlays (4)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Agriinfodesign Auth Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-auth-overlay/)
+- [Agriinfodesign Datastore Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-datastore-overlay/)
+- [Agriinfodesign Manager Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-manager-overlay/)
+- [Agriinfodesign Pay Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-pay-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Agriinfodesign Authentication](https://apis.io/security/agriinfodesign/agriinfodesign-authentication/)
+- [Agriinfodesign Domain Security](https://apis.io/security/agriinfodesign/agriinfodesign-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Agriinfodesign Scopes](https://apis.io/scopes/agriinfodesign/agriinfodesign-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Agriinfodesign Plans Pricing](https://apis.io/plans/agriinfodesign/agriinfodesign-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Agriinfodesign Rate Limits](https://apis.io/rate-limits/agriinfodesign/agriinfodesign-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://agri-info-design.com/)
+- [Pricing](https://agri-info-design.com/paidplans/)
+- [Support](https://support.agri-info-design.com/)
+- [Blog](https://agri-info-design.com/en/news/)
+- [Terms of service](https://agri-info-design.com/term/)
+- [Privacy policy](https://agri-info-design.com/privacy-policy/)
+- [GitHub](https://github.com/agri-info-design)
+
+## API Evangelist rating
+
+**Kin Score 41.3** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 45.3 |
+| Contract governance | 18.2 |
+| Operational transparency | 2.6 |
+| Developer ergonomics | 20.8 |
+| Access clarity | 69.7 |
+
+**Agent readiness 32.1** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/agriinfodesign/](https://apis.io/providers/agriinfodesign/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Agri Info Design: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/agriinfodesign/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
