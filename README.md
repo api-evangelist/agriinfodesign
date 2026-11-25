@@ -138,39 +138,60 @@ Model Context Protocol servers that expose the API to agents.
 
 - [agriinfodesign-mcp.yml](https://apis.io/servers/agriinfodesign/agriinfodesign-mcp-yml/)
 
-#### Overlays (4)
+#### Overlays (12)
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Agriinfodesign Auth Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-auth-overlay/)
-- [Agriinfodesign Datastore Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-datastore-overlay/)
-- [Agriinfodesign Manager Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-manager-overlay/)
-- [Agriinfodesign Pay Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-pay-overlay/)
+- [Agri Info Design Auth Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-auth-overlay/)
+- [Agri Info Design Casterv1 Api Certification Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-casterv1-api-certification-overlay/)
+- [Agri Info Design Casterv3 Api Certification Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-casterv3-api-certification-overlay/)
+- [Agri Info Design Datastore Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-datastore-overlay/)
+- [Agri Info Design Devicev1 Api Certification Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-devicev1-api-certification-overlay/)
+- [Agri Info Design Firebasev1 Api Certification Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-firebasev1-api-certification-overlay/)
+- [Agri Info Design Manager Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-manager-overlay/)
+- [Agri Info Design Pay Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-pay-overlay/)
+- [Agri Info Design Stripev1 Api Certification Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-stripev1-api-certification-overlay/)
+- [Agri Info Design Subscriptionv1 Api Certification Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-subscriptionv1-api-certification-overlay/)
+- [Agri Info Design User V1 Api Certification Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-user-v1-api-certification-overlay/)
+- [Agri Info Design User V2 Api Certification Overlay](https://apis.io/overlays/agriinfodesign/agriinfodesign-user-v2-api-certification-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Agri Info Design API Rules](https://apis.io/rules/agriinfodesign/agriinfodesign-rules/)
 
 #### Security (2)
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [Agriinfodesign Authentication](https://apis.io/security/agriinfodesign/agriinfodesign-authentication/)
-- [Agriinfodesign Domain Security](https://apis.io/security/agriinfodesign/agriinfodesign-domain-security/)
+- [Agri Info Design Authentication](https://apis.io/security/agriinfodesign/agriinfodesign-authentication/)
+- [Agri Info Design Domain Security](https://apis.io/security/agriinfodesign/agriinfodesign-domain-security/)
 
 #### OAuth scopes (1)
 
 The permissions the API asks for.
 
-- [Agriinfodesign Scopes](https://apis.io/scopes/agriinfodesign/agriinfodesign-scopes/)
+- [Agri Info Design Scopes](https://apis.io/scopes/agriinfodesign/agriinfodesign-scopes/)
 
-#### Plans and pricing (1)
+#### Plans and pricing (2)
 
 Published plans, tiers and prices.
 
-- [Agriinfodesign Plans Pricing](https://apis.io/plans/agriinfodesign/agriinfodesign-plans-pricing/)
+- [Agri Info Design Plans Pricing](https://apis.io/plans/agriinfodesign/agriinfodesign-plans-pricing/)
+- [Agri Info Design Price Estimates](https://apis.io/plans/agriinfodesign/agriinfodesign-price-estimates/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [Agriinfodesign Rate Limits](https://apis.io/rate-limits/agriinfodesign/agriinfodesign-rate-limits/)
+- [Agri Info Design Rate Limits](https://apis.io/rate-limits/agriinfodesign/agriinfodesign-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Agri Info Design Finops](https://apis.io/finops/agriinfodesign/agriinfodesign-finops/)
 
 ## Where to find this API
 
@@ -186,18 +207,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 41.3** — developing · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 42.0** — developing · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
 | Discoverability | 71.4 |
-| Contract quality | 45.3 |
-| Contract governance | 18.2 |
-| Operational transparency | 2.6 |
+| Contract quality | 47.1 |
+| Contract governance | 31.8 |
+| Operational transparency | 4.8 |
 | Developer ergonomics | 20.8 |
-| Access clarity | 69.7 |
+| Access clarity | 66.0 |
 
-**Agent readiness 32.1** — agent-ready
+**Agent readiness 31.4** — agent-ready
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -222,8 +243,12 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | — |
 | Pagination Ratio | — |
 | Operation Distinctiveness | distinct |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
-**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+**Regulatory alignment 28.4** — Horizontal (data, software, accessibility, platform)
 
 The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/agriinfodesign/](https://apis.io/providers/agriinfodesign/).
 
